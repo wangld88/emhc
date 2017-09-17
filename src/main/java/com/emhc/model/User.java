@@ -1,12 +1,23 @@
 package com.emhc.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
-
-import org.hibernate.validator.constraints.NotEmpty;
-
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 
 /**
@@ -29,6 +40,8 @@ public class User implements Serializable {
 
 //	private String email;
 
+	@Column(name = "firstname")
+	@NotEmpty(message = "*Please provide your first name")
 	private String firstname;
 
 	@Column(name = "lastname")
@@ -40,17 +53,18 @@ public class User implements Serializable {
 	@NotEmpty(message = "*Please provide an email")
 	private String email;
 	@Column(name = "password")
-//	@Length(min = 5, message = "*Your password must have at least 5 characters")
+	@Length(min = 5, message = "*Your password must have at least 5 characters")
 	@NotEmpty(message = "*Please provide your password")
 	@Transient
 	private String password;
 	
-//	private String password;
 
 	private int programyear;
 
 	private String status;
 
+	@Column(name = "username")
+	@NotEmpty(message = "*Please provide your user name")
 	private String username;
 
 	private byte viewer;

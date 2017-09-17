@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
+@EnableWebSecurity
 public class MultiHttpSecurityConfig {
 
 	@Autowired
@@ -40,7 +41,7 @@ public class MultiHttpSecurityConfig {
 	            .anyRequest().authenticated()
 	            .and().csrf().disable()
 	        .formLogin()
-	            .loginPage("/student/login")
+	            .loginPage("/student/login").failureUrl("/login?error=true")
 	            .defaultSuccessUrl("/student/home")
 	            .permitAll()
 	            .and()

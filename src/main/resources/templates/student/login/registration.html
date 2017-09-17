@@ -31,6 +31,14 @@
 					
 					<div class="form-group">
 						<div class="col-sm-9">
+						<label th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
+								class="validation-message"></label>
+						<input type="text" th:field="*{username}" placeholder="User Name"
+								class="form-control" /> 
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-9">
 						<label th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"
 								class="validation-message"></label>
 						<input type="text" th:field="*{firstname}" placeholder="First Name"
