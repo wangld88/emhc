@@ -53,9 +53,9 @@ public class User implements Serializable {
 	@NotEmpty(message = "*Please provide an email")
 	private String email;
 	@Column(name = "password")
-	@Length(min = 5, message = "*Your password must have at least 5 characters")
+	@Length(min = 3, message = "*Your password must have at least 3 characters")
 	@NotEmpty(message = "*Please provide your password")
-	@Transient
+	//@Transient
 	private String password;
 	
 
