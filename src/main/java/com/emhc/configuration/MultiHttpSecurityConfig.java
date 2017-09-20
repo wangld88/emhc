@@ -32,7 +32,7 @@ public class MultiHttpSecurityConfig {
 			
 			http.
 				authorizeRequests()
-	            .antMatchers("/", "/student/login/**").permitAll()
+	            .antMatchers("/*", "/student/login/**").permitAll()
 	            .antMatchers("/student/registration").permitAll()
 	            .antMatchers("/student/").permitAll()
 				.antMatchers("/student/*").hasAuthority("student")

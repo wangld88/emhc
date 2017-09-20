@@ -11,4 +11,10 @@ public class HomeController {
 		
 		return "/index";
 	}
+	
+	@RequestMapping(value="/layout")
+	public String dspLayout() {
+		
+		return "/layout";
+	}
 }
