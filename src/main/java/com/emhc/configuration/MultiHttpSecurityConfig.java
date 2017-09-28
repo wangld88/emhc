@@ -23,6 +23,9 @@ public class MultiHttpSecurityConfig {
 	@Value("${spring.queries.users-query}")
 	private String usersQuery;
 
+	@Value("${spring.queries.roles-query}")
+	private String rolesQuery;
+
 	
 	@Configuration
 	public static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -34,13 +37,16 @@ public class MultiHttpSecurityConfig {
 				authorizeRequests()
 	            .antMatchers("/*", "/student/login/**").permitAll()
 	            .antMatchers("/student/registration").permitAll()
+	            .antMatchers("/student/home").permitAll()
 	            .antMatchers("/student/").permitAll()
-				.antMatchers("/student/*").hasAuthority("student")
+				.antMatchers("/student/*").hasAuthority("ADMIN")
 	            .anyRequest().authenticated()
 	            .and().csrf().disable()
 	        .formLogin()
 	            .loginPage("/student/login").failureUrl("/login?error=true")
 	            .defaultSuccessUrl("/student/home")
+				.usernameParameter("email")
+				.passwordParameter("password")
 	            .permitAll()
 	            .and()
 	        .logout()
@@ -72,11 +78,21 @@ public class MultiHttpSecurityConfig {
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth)
 			throws Exception {
-		auth.
+		System.out.println("--------------------------------run into configureGlobal-----------------------------");
+		try
+		{auth.
 			jdbcAuthentication()
 				.usersByUsernameQuery(usersQuery)
-//				.authoritiesByUsernameQuery(rolesQuery)
+				.authoritiesByUsernameQuery(rolesQuery)
 				.dataSource(dataSource)
 				.passwordEncoder(bCryptPasswordEncoder);
+//				.withDefaultSchema()
+//				.withUser("jerrywang@hotmail.com").roles("ADMIN");
+				
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

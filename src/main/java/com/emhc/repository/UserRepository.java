@@ -1,12 +1,9 @@
 package com.emhc.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import com.emhc.model.User;
 
-@Repository("userRepository")
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Integer> {
 	 User findByEmail(String email);
-	 //User findUserByUsernameAndRole(User user, List<Role> roles);
 }
