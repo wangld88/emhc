@@ -69,16 +69,7 @@ public class LoginController {
 		programs = programService.findAll();
 		userDTO.setPrograms(programs);
 		ModelAndView modelAndView = new ModelAndView();
-		User userExists = userService.findUserByEmail(userDTO.getEmail());
-		//System.out.println("---Program is ---"+ pro.getProgramid() + pro.getName());
-		System.out.println(userExists);
-		if (userExists != null) {
-			System.out.println("------run to user exist-----");
 
-			bindingResult
-					.rejectValue("email", "error.user",
-							"There is already a user registered with the email provided");
-		}
 		if (bindingResult.hasErrors()) {
 			System.out.println("------run to has error-----");
 
