@@ -39,7 +39,7 @@ public class MultiHttpSecurityConfig {
 	            .anyRequest().authenticated()
 	            .and().csrf().disable()
 	        .formLogin()
-	            .loginPage("/student/login").failureUrl("/login?error=true")
+	            .loginPage("/student/login").failureUrl("/student/login?error=true")
 	            .defaultSuccessUrl("/student/home")
 	            .permitAll()
 	            .and()
@@ -72,6 +72,7 @@ public class MultiHttpSecurityConfig {
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth)
 			throws Exception {
+    	System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 		auth.
 			jdbcAuthentication()
 				.usersByUsernameQuery(usersQuery)
