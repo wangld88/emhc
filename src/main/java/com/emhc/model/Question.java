@@ -15,12 +15,16 @@ public class Question implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(name="id")
 	private int questionid;
 
+	@Column(name = "isprimary")
 	private byte isprimary;
 
+	@Column(name = "name")
 	private String name;
 
+	@Column(name = "secondary")
 	private String secondary;
 
 	public Question() {
