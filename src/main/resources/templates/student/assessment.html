@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Registration Form</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<form autocomplete="off" th:action="@{/student/assessment}"
+					th:object="${answer}" method="post" class="form-horizontal"
+					role="form">
+					<h3>Primary Assessment</h3>
+					<h4>________________________________________________________________________</h4>
+					<h4>Please add pertinent information to yes answers and be as explicit as possible, i.e. triggers & severity for asthma etc.</h4>
+
+ 					<div class="form-group">
+						<div class="col-sm-9">
+						
+						<h5>Do you have or do you experience any of the following:</h5>
+						
+						 <label>1. Asthma </label> <br>
+     	  				 <input type="checkbox" name="sd3[]" value="mfi_nam9" onClick="toggleTB(this,'text01')" />Yes(please specify):
+	    				 <input type="text" th:field=*{answer1} name="mfi_nam9" class="text required" id="text01" disabled=1 />
+
+				           <br>
+						
+						 <label>2. Claustrophobia </label> <br>
+
+     	  				 <input type="checkbox" name="sd3[]" value="mfi_nam9" onClick="toggleTB(this,'text02')" />Yes(please specify):
+	    				 <input type="text" th:field=*{answer2} name="mfi_nam9" class="text required" id="text02" disabled=1 />
+ 						 <br>
+						 <br>										
+							<button type="submit" class="btn btn-primary btn-block">Submit</button>
+						</div>
+						
+					</div>
+					
+					<span th:utext="${successMessage}"></span>
+					
+					
+				</form>
+			</div>
+		</div>
+	</div>
+<script>	
+	function toggleTB(what,elid)
+{
+    if(what.checked)
+    {
+        document.getElementById(elid).disabled=0
+    }
+    else
+    {
+        document.getElementById(elid).disabled=1
+    }
+}
+	
+	function disable() {
+	    document.getElementById("text02").disabled = true;
+	}
+	</script>
+
+</body>
+</html>

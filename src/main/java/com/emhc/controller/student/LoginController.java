@@ -57,6 +57,7 @@ public class LoginController {
 //		List<Organization> organization = organizationService.findAll();
 		userDTO.setPrograms(programs);
 		modelAndView.addObject("userDTO", userDTO);
+//		modelAndView.setViewName("student/assessment");
 		modelAndView.setViewName("student/login/registration");
 		return modelAndView;
 	}
