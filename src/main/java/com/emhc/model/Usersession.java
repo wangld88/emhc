@@ -25,7 +25,7 @@ public class Usersession implements Serializable {
 	//bi-directional many-to-one association to User
 	@ManyToOne
 	@JoinColumn(name="userid")
-	private User user;
+	private EmhcUser user;
 
 	public Usersession() {
 	}
@@ -46,11 +46,11 @@ public class Usersession implements Serializable {
 		this.session = session;
 	}
 
-	public User getUser() {
+	public EmhcUser getUser() {
 		return this.user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(EmhcUser user) {
 		this.user = user;
 	}
 

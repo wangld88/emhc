@@ -4,7 +4,6 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.emhc</groupId>
-	<artifactId>emhc</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
@@ -84,4 +83,5 @@
 	</build>
 
 
+	<artifactId>emhc</artifactId>
 </project>

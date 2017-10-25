@@ -20,7 +20,7 @@ import com.emhc.dto.UserDTO;
 import com.emhc.model.Organization;
 import com.emhc.model.Program;
 import com.emhc.model.Role;
-import com.emhc.model.User;
+import com.emhc.model.EmhcUser;
 import com.emhc.service.OrganizationService;
 import com.emhc.service.ProgramService;
 import com.emhc.service.UserService;
@@ -42,11 +42,26 @@ public class LoginController {
 	@RequestMapping(value={"/login"}, method = RequestMethod.GET)
 	public ModelAndView login(){
 		System.out.println("-------run to here login of student--------");
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println("auth.getName = " + auth.getName());
+		
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("student/login/login");
 		return modelAndView;
 	}
 	
+	@RequestMapping(value={"/login_emhc"}, method = RequestMethod.GET)
+	public ModelAndView login_emhc(){
+		System.out.println("-------run to here login of student--------");
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println("auth.getName = " + auth.getName());
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("student/login/login_emhc");
+		return modelAndView;
+	}
 	
 	@RequestMapping(value={"/","/registration"}, method = RequestMethod.GET)
 	public ModelAndView registration(){
@@ -57,7 +72,6 @@ public class LoginController {
 //		List<Organization> organization = organizationService.findAll();
 		userDTO.setPrograms(programs);
 		modelAndView.addObject("userDTO", userDTO);
-//		modelAndView.setViewName("student/assessment");
 		modelAndView.setViewName("student/login/registration");
 		return modelAndView;
 	}
@@ -108,8 +122,10 @@ public class LoginController {
 	public ModelAndView home(){
 		ModelAndView modelAndView = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		User user = userService.findUserByEmail(auth.getName());
-		modelAndView.addObject("userName", "Welcome " + user.getUsername() + " " + user.getLastname() + " (" + user.getEmail() + ")");
+		EmhcUser emhcuser = userService.findUserByEmail(auth.getName());
+		System.out.println("auth.getName = " + auth.getName());
+		System.out.println("userName = " + emhcuser.getUsername());
+		modelAndView.addObject("userName", "Welcome " + emhcuser.getUsername() + " " + emhcuser.getLastname() + " (" + emhcuser.getEmail() + ")");
 		modelAndView.addObject("adminMessage","Content Available Only for Users with Admin Role");
 		modelAndView.setViewName("student/home");
 		return modelAndView;

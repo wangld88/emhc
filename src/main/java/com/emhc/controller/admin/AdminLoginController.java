@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.emhc.model.User;
+import com.emhc.dto.UserDTO;
+import com.emhc.model.EmhcUser;
 import com.emhc.service.UserService;
 
 @Controller
@@ -32,16 +33,16 @@ public class AdminLoginController {
 	@RequestMapping(value={"/userCreation"}, method = RequestMethod.GET)
 	public ModelAndView registration(){
 		ModelAndView modelAndView = new ModelAndView();
-		User user = new User();
+		UserDTO user = new UserDTO();
 		modelAndView.addObject("user", user);
 		modelAndView.setViewName("admin/registration");
 		return modelAndView;
 	}
 	
 	@RequestMapping(value = "/userCreation", method = RequestMethod.POST)
-	public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
+	public ModelAndView createNewUser(@Valid UserDTO userDTO, BindingResult bindingResult) {
 		ModelAndView modelAndView = new ModelAndView();
-		User userExists = userService.findUserByEmail(user.getEmail());
+		EmhcUser userExists = userService.findUserByEmail(userDTO.getEmail());
 		if (userExists != null) {
 			bindingResult
 					.rejectValue("email", "error.user",
@@ -50,9 +51,9 @@ public class AdminLoginController {
 		if (bindingResult.hasErrors()) {
 			modelAndView.setViewName("registration");
 		} else {
-			userService.saveUser(user);
+			userService.saveUser(userDTO.getUser());
 			modelAndView.addObject("successMessage", "User has been registered successfully");
-			modelAndView.addObject("user", new User());
+			modelAndView.addObject("user", new UserDTO());
 			modelAndView.setViewName("admin/registration");
 			
 		}
@@ -63,7 +64,7 @@ public class AdminLoginController {
 	public ModelAndView home(){
 		ModelAndView modelAndView = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		User user = userService.findUserByEmail(auth.getName());
+		EmhcUser user = userService.findUserByEmail(auth.getName());
 		modelAndView.addObject("userName", "Welcome " + user.getUsername() + " " + user.getLastname() + " (" + user.getEmail() + ")");
 		modelAndView.addObject("adminMessage","Content Available Only for Users with Admin Role!!!");
 		modelAndView.setViewName("admin/home");

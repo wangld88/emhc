@@ -4,7 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.emhc.model.User;
+import com.emhc.dto.UserDTO;
+import com.emhc.model.EmhcUser;
 import com.emhc.repository.UserRepository;
 
 
@@ -17,11 +18,11 @@ public class UserService{
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
-	public User findUserByEmail(String email) {
+	public EmhcUser findUserByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
 
-	public User saveUser(User user) {
+	public EmhcUser saveUser(EmhcUser user) {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		return userRepository.save(user);
 	}

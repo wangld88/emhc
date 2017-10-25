@@ -11,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.emhc.model.Answer;
 import com.emhc.service.AnswerService;
-import com.emhc.service.UserService;
 
 @Controller
 @RequestMapping("/student")

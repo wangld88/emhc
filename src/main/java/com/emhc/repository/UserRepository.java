@@ -2,8 +2,8 @@ package com.emhc.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.emhc.model.User;
+import com.emhc.model.EmhcUser;
 
-public interface UserRepository extends JpaRepository<User, Integer> {
-	 User findByEmail(String email);
+public interface UserRepository extends JpaRepository<EmhcUser, Integer> {
+	 EmhcUser findByEmail(String email);
 }

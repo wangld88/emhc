@@ -25,8 +25,8 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 @Entity
 @Table(name="users")
-@NamedQuery(name="User.findAll", query="SELECT u FROM User u")
-public class User implements Serializable {
+@NamedQuery(name="EmhcUser.findAll", query="SELECT u FROM EmhcUser u")
+public class EmhcUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -90,7 +90,7 @@ public class User implements Serializable {
 	@OneToMany(mappedBy="user")
 	private List<Usersession> usersessions;
 
-	public User() {
+	public EmhcUser() {
 	}
 
 	public int getUserid() {

@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.emhc.model.Program;
 import com.emhc.model.Role;
-import com.emhc.model.User;
+import com.emhc.model.EmhcUser;
 
 public class UserDTO {
 	private int userid;
@@ -28,7 +28,7 @@ public class UserDTO {
 		
 	}
 
-	public UserDTO(User user) {
+	public UserDTO(EmhcUser user) {
 		this.userid = user.getUserid();
 		this.username = user.getUsername();
 		this.firstname = user.getFirstname();
@@ -46,8 +46,8 @@ public class UserDTO {
 		
 	}
 
-	public User getUser() {
-		User user = new User();
+	public EmhcUser getUser() {
+		EmhcUser user = new EmhcUser();
 		user.setUserid(this.userid);
 		user.setUsername(this.username);
 		user.setFirstname(this.firstname);

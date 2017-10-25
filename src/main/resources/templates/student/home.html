@@ -1,10 +1,23 @@
 <!DOCTYPE html>
-<html>
-<head>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"><head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 </head>
 <body>
-Student Home Page
+Student Home Page<br><br>
+	<form th:action="@{/student/profile}" method="get">
+		<button class="btn btn-md btn-warning btn-block" type="Submit">Go To Profile updatet!</button>
+	</form>	
+	<br><br>
+	<form th:action="@{/student/resetpassword}" method="get">
+		<button class="btn btn-md btn-warning btn-block" type="Submit">Go To Student Reset Password!</button>
+	</form>	
+	<br><br>
+	<form th:action="@{/student/assessment}" method="get">
+		<button class="btn btn-md btn-warning btn-block" type="Submit">Go To Student Assessment!</button>
+	</form>	
+	<br><br>
+
 </body>
 </html>
