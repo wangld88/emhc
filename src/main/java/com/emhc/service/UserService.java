@@ -23,7 +23,9 @@ public class UserService{
 	}
 
 	public EmhcUser saveUser(EmhcUser user) {
-		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+		if(user.getUserid() == 0) { 
+			user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+		}
 		return userRepository.save(user);
 	}
 
