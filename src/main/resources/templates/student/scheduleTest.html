@@ -1,0 +1,62 @@
+<html layout:decorator="student/template/layout">
+<head>
+	<title>Update Profile Form</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	
+	<div layout:fragment="content">
+	<form th:action="@{/student/schedule}" method="get">
+		<button class="btn btn-md btn-warning btn-block" type="Submit">Go To Schedule My Test!</button>
+	</form>	
+	<br><br>
+<!-- 	
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<form autocomplete="off" th:action="@{/student/schedule}"
+					th:object="${studentScheduleTest}" method="post" class="form-horizontal"
+					role="form">
+					<h3>Primary Assessment</h3>
+					<h5>Please pick up the time slot you want.</h5>
+					<br>
+					<br>
+					<h6>Student from EMHC will have the mask test at toronto.</h6>
+					<div id="errors" class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+						<ul>
+							<li th:each="err : ${#fields.errors('*')}">
+								<font th:text="${err}" style="font-size: 12px;"></font>
+							</li>
+						</ul>
+					</div>	
+ 					
+				
+ 					<div class="form-group">				
+						<div class="col-sm-9" >
+							<label>Available sessions (choose your session):</label>
+ 						    <select class="form-control" th:field="${schedule.session.sessionid}" id="sessionid" name="sessionid">
+ 						        <option th:each="sess : ${schedule.sessions}"
+						                th:value="${sess.sessionid}"
+						                th:text="${sess.name}"></option>
+						    </select>
+  						</div>
+					</div>							
+
+					
+					<div class="form-group">
+						<div class="col-sm-5">
+							<button type="submit" class="btn btn-primary btn-block">Submit</button>
+						</div>
+					</div>
+					<input type="hidden" name="userid" th:value="${studentProfileUpdate.userid}">
+					<span th:utext="${successMessage}"></span>
+					
+				</form>
+			</div>
+		</div>-->
+	</div> 
+
+</body>
+</html>
