@@ -14,15 +14,14 @@ public class LoginStudent extends User {
 	private static final long serialVersionUID = 1L;
 	private EmhcUser emhc;
     public LoginStudent(EmhcUser emhc) {
-        super(emhc.getEmail(), emhc.getPassword(), AuthorityUtils.createAuthorityList("CLIENT"));
-/*
-//        super(emhc.getEmail(), emhc.getPassword(), AuthorityUtils.createAuthorityList(emhc.getRole().toString()));
-      //  System.out.println(super.getUsername()+", "+super.getAuthorities().toString());
-       System.out.println("-------------role name is :" + emhc.getRole().toString());
-*/		
-		//super(emhc.getUsername(), emhc.getPassword(), AuthorityUtils.createAuthorityList((emhc.getRole().getName())));
-		System.out.println("emhc.getUsername(): "+emhc.getUsername() + ", Password:" +emhc.getPassword()+", role: "+emhc.getRole().getName());
-    	
+
+       super(emhc.getEmail(), emhc.getPassword(), AuthorityUtils.createAuthorityList(emhc.getRoles()));
+
+/*       for (String i: emhc.getRoles()){
+			
+			System.out.println("i:"+ i +" is "+ i.equals("CLIENT"));
+		}
+*/    	
     	
     	this.emhc = emhc;
     }

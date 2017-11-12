@@ -10,27 +10,38 @@
 </head>
 
 <body>
-	<div class="container">
+	<div layout:fragment="content">
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
 				<form autocomplete="off" th:action="@{/student/assessment}"
-					th:object="${answer}" method="post" class="form-horizontal"
+					th:object="${answerDTO}" method="post" class="form-horizontal"
 					role="form">
 					<h3>Primary Assessment</h3>
 					<h4>________________________________________________________________________</h4>
 					<h4>Please add pertinent information to yes answers and be as explicit as possible, i.e. triggers & severity for asthma etc.</h4>
 
+
  					<div class="form-group">
 						<div class="col-sm-9">
-						
+							<div th:if="${message != null and #strings.length(message.message) != 0}" th:class="${message.status}">
+								<font style="font-size: 12px;"><span th:utext="${message.message}" th:remove="tag" /></font>
+							</div>	
+								
 						<h5>Do you have or do you experience any of the following:</h5>
 						
-						 <label>1. Asthma </label> <br>
-     	  				 <input type="checkbox" name="sd3[]" value="mfi_nam9" onClick="toggleTB(this,'text01')" />Yes(please specify):
-	    				 <input type="text" th:field=*{answer1} name="mfi_nam9" class="text required" id="text01" disabled=1 /><br>
-						 <label>2. Claustrophobia </label> <br>
-     	  				 <input type="checkbox" name="sd3[]" value="mfi_nam9" onClick="toggleTB(this,'text02')" />Yes(please specify):
-	    				 <input type="text" th:field=*{answer2} name="mfi_nam9" class="text required" id="text02" disabled=1 /><br>
+					    <label>1. Asthma </label> <br>
+						<input type="radio" name="button01" value="Yes" onclick="toggleTB(this,'text01',0)">Yes
+						<input type="radio" name="button01" value="No" onclick="toggleTB(this,'text01',1)">No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer1}  name="mfi_nam9" class="text required" id="text01" disabled=1 /><br>
+						 <!-- "alert('Please explain and be as explicit as possible, i.e. cause, symptoms, severity, frequency and any medical treatment')" -->
+						 
+						 
+						<label>2. Claustrophobia </label> <br>
+						<input type="radio" name="button02" value="Yes" onclick="toggleTB(this,'text02',0)">Yes
+						<input type="radio" name="button02" value="No" onclick="toggleTB(this,'text02',1)">No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer2}  name="mfi_nam9" class="text required" id="text02" disabled=1 /><br>
+						
+						
 						 <label>3. Panic attacks </label> <br>
      	  				 <input type="checkbox" name="sd3[]" value="mfi_nam9" onClick="toggleTB(this,'text03')" />Yes(please specify):
 	    				 <input type="text" th:field=*{answer3} name="mfi_nam9" class="text required" id="text03" disabled=1 /><br>
@@ -81,15 +92,15 @@
 		</div>
 	</div>
 <script>	
-	function toggleTB(what,elid)
+	function toggleTB(what,elid,state)
 {
     if(what.checked)
     {
-        document.getElementById(elid).disabled=0
+        document.getElementById(elid).disabled=state
     }
     else
     {
-        document.getElementById(elid).disabled=1
+        document.getElementById(elid).disabled=state
     }
 }
 	

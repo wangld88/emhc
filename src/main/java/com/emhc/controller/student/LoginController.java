@@ -17,10 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.emhc.dto.UserDTO;
-import com.emhc.model.Organization;
+import com.emhc.model.EmhcUser;
 import com.emhc.model.Program;
 import com.emhc.model.Role;
-import com.emhc.model.EmhcUser;
 import com.emhc.service.OrganizationService;
 import com.emhc.service.ProgramService;
 import com.emhc.service.UserService;

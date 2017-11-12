@@ -70,7 +70,17 @@
 			<artifactId>nekohtml</artifactId>
 			<version>1.9.21</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
-
+		<!-- logging -->
+		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-jcl</artifactId>
+		    <version>1.7.5</version>
+		</dependency>     
+		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-api</artifactId>
+		    <version>1.7.5</version>
+		</dependency>
 	</dependencies>
 
 	<build>

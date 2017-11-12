@@ -263,4 +263,10 @@ public class EmhcUser implements Serializable {
 		return usersession;
 	}
 
+	public String[] getRoles() {
+		String[] rolelist = new String[1];
+		rolelist[0] = this.role.getName();
+		return rolelist;
+	}
+
 }
