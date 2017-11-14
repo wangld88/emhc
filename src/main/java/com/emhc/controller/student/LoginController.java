@@ -46,6 +46,12 @@ public class LoginController {
 		System.out.println("auth.getName = " + auth.getName());
 		
 		ModelAndView modelAndView = new ModelAndView();
+		UserDTO userDTO = new UserDTO();
+		
+		List<Program> programs = programService.findAll();
+//		List<Organization> organization = organizationService.findAll();
+		userDTO.setPrograms(programs);
+		modelAndView.addObject("userDTO", userDTO);
 		modelAndView.setViewName("student/login/login");
 		return modelAndView;
 	}
