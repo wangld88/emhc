@@ -5,19 +5,24 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.emhc.controller.base.BaseController;
 import com.emhc.dto.UserDTO;
 import com.emhc.model.EmhcUser;
+import com.emhc.model.Organization;
 import com.emhc.model.Program;
 import com.emhc.model.Role;
 import com.emhc.service.OrganizationService;
@@ -27,7 +32,7 @@ import com.emhc.validator.UserDTOValidator;
 
 @Controller
 @RequestMapping("/student")
-public class LoginController {
+public class LoginController extends BaseController {
 	
 	@Autowired
 	private UserService userService;
@@ -38,7 +43,7 @@ public class LoginController {
     @Autowired
     UserDTOValidator validator;
 
-	@RequestMapping(value={"/login"}, method = RequestMethod.GET)
+	@RequestMapping(value={"/","/login"}, method = RequestMethod.GET)
 	public ModelAndView login(){
 		System.out.println("-------run to here login of student--------");
 
@@ -48,16 +53,18 @@ public class LoginController {
 		ModelAndView modelAndView = new ModelAndView();
 		UserDTO userDTO = new UserDTO();
 		
-		List<Program> programs = programService.findAll();
-//		List<Organization> organization = organizationService.findAll();
-		userDTO.setPrograms(programs);
+		//List<Program> programs = programService.findAll();
+		List<Organization> organizations = organizationService.findAll();
+		//userDTO.setPrograms(programs);
+		//userDTO.setProgram(programs.get(0));
+		userDTO.setOrganizations(organizations);
 		modelAndView.addObject("userDTO", userDTO);
 		modelAndView.setViewName("student/login/login");
 		return modelAndView;
 	}
 	
 	@RequestMapping(value={"/login_emhc"}, method = RequestMethod.GET)
-	public ModelAndView login_emhc(){
+	public ModelAndView login_emhc() {
 		System.out.println("-------run to here login of student--------");
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -68,16 +75,36 @@ public class LoginController {
 		return modelAndView;
 	}
 	
-	@RequestMapping(value={"/","/registration"}, method = RequestMethod.GET)
-	public ModelAndView registration(){
+	/*@RequestMapping(value={"/","/registration"}, method = RequestMethod.GET)
+	public ModelAndView dspRegistration(ModelMap model, HttpSession httpSession){
 		ModelAndView modelAndView = new ModelAndView();
 		UserDTO userDTO = new UserDTO();
 		
-		List<Program> programs = programService.findAll();
-//		List<Organization> organization = organizationService.findAll();
-		userDTO.setPrograms(programs);
+		//List<Program> programs = programService.findAll();
+		List<Organization> organizations = organizationService.findAll();
+		//userDTO.setPrograms(programs);
+		userDTO.setOrganizations(organizations);
 		modelAndView.addObject("userDTO", userDTO);
 		modelAndView.setViewName("student/login/registration");
+		return modelAndView;
+	}*/
+	
+	@RequestMapping(value={"/registration/{orgid}"}, method = RequestMethod.GET)
+	public ModelAndView dspOrganization(ModelMap model, @PathVariable("orgid") Long orgid, HttpSession httpSession) {
+		ModelAndView modelAndView = new ModelAndView();
+		UserDTO userDTO = new UserDTO();
+		Organization organization = organizationService.getById(orgid);
+		System.out.println("___________organization___________"+organization);
+
+		if(orgid.longValue() != 0) {
+			List<Program> programs = programService.getByOrganization(organization);
+			userDTO.setPrograms(programs);
+		}
+		List<Organization> organizations = organizationService.findAll();
+		userDTO.setOrganization(organization);
+		userDTO.setOrganizations(organizations);
+		modelAndView.addObject("userDTO", userDTO);
+		modelAndView.setViewName("student/login/login");
 		return modelAndView;
 	}
 	
@@ -137,4 +164,5 @@ public class LoginController {
 	}
 	
 
+	
 }

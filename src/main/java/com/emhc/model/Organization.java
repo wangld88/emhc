@@ -16,7 +16,9 @@ public class Organization implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private int organizationid;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "organizationid", updatable = false, nullable = false)
+	private long organizationid;
 
 	private String contact;
 
@@ -39,11 +41,11 @@ public class Organization implements Serializable {
 	public Organization() {
 	}
 
-	public int getOrganizationid() {
+	public long getOrganizationid() {
 		return this.organizationid;
 	}
 
-	public void setOrganizationid(int organizationid) {
+	public void setOrganizationid(long organizationid) {
 		this.organizationid = organizationid;
 	}
 

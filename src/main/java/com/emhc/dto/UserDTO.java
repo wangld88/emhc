@@ -6,6 +6,7 @@ import java.util.List;
 import com.emhc.model.Program;
 import com.emhc.model.Role;
 import com.emhc.model.EmhcUser;
+import com.emhc.model.Organization;
 
 public class UserDTO {
 	private int userid;
@@ -21,8 +22,10 @@ public class UserDTO {
 	private String username;
 	private byte viewer;
 	private Program program;
+	private Organization organization;
 	private Role role;
 	private List<Program> programs;
+	private List<Organization> organizations;
 	
 	public UserDTO() {
 		
@@ -156,6 +159,22 @@ public class UserDTO {
 
 	public void setPrograms(List<Program> programs) {
 		this.programs = programs;
+	}
+
+	public List<Organization> getOrganizations() {
+		return organizations;
+	}
+
+	public void setOrganizations(List<Organization> organizations) {
+		this.organizations = organizations;
+	}
+
+	public Organization getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
 	}
 
 }

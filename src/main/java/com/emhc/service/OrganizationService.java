@@ -16,15 +16,19 @@ public class OrganizationService{
 	@Autowired
 	private OrganizationRepository organizationRepository;
 	
+	public Organization getById(long organizationid) {
+		return organizationRepository.findByOrganizationid(organizationid);
+	}
+	
 	public Organization findOrganizationByEmail(String email) {
 		return organizationRepository.findByEmail(email);
 	}
-	public List <Organization> findAll(){
+	
+	public List<Organization> findAll(){
 		System.out.println("------run in Service-------");
-		List <Organization > org = organizationRepository.findAll();
-		System.out.println(org);
 		return organizationRepository.findAll();
 	}
+	
 	public Organization saveOrganization(Organization organization) {
 		return organizationRepository.save(organization);
 	}

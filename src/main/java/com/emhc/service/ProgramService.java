@@ -8,6 +8,7 @@ import org.springframework.expression.ParseException;
 import org.springframework.format.Formatter;
 import org.springframework.stereotype.Service;
 
+import com.emhc.model.Organization;
 import com.emhc.model.Program;
 import com.emhc.repository.ProgramRepository;
 
@@ -25,6 +26,11 @@ public class ProgramService {
 	public List <Program> findAll(){
 		return programRepository.findAll();
 	}
+	
+	public List<Program> getByOrganization(Organization org) {
+		return programRepository.findByOrganization(org);
+	}
+	
 	public Program saveProgram(Program program) {
 		return programRepository.save(program);
 	}
