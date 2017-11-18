@@ -22,16 +22,16 @@ public class StudentUserService implements UserDetailsService 	{
 	
 
     @Override
-    public UserDetails loadUserByUsername(String email) 
+    public UserDetails loadUserByUsername(String username) 
     		throws UsernameNotFoundException {
     	
-    	LOGGER.debug("Student Auth Begins. Locating User in DB {}", email);
+    	LOGGER.debug("Student Auth Begins. Locating User in DB {}", username);
 		
-        EmhcUser emhcuser = userService.findUserByEmail(email);
+        EmhcUser emhcuser = userService.findUserByEmail(username);
         
         if(emhcuser == null) {
         	LOGGER.debug("Client is not found!!!!!!!!!!!!!!");
-        	throw new UsernameNotFoundException(String.format("User with stdnum=%s was not found", email));
+        	throw new UsernameNotFoundException(String.format("User with stdnum=%s was not found", username));
         }
                 //.orElseThrow(() -> new UsernameNotFoundException(String.format("User with stdnum=%s was not found", stdnum))); //1.8
         return new LoginStudent(emhcuser);

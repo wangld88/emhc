@@ -21,6 +21,10 @@ public class UserService{
 	public EmhcUser findUserByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
+	
+	public EmhcUser getByUsername(String username) {
+		return userRepository.findByUsername(username);
+	}
 
 	public EmhcUser saveUser(EmhcUser user) {
 		if(user.getUserid() == 0) { 

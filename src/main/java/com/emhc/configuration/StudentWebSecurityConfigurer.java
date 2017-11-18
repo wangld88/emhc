@@ -96,7 +96,7 @@ public class StudentWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
             .formLogin()
             .loginPage("/student/login").successHandler(customSuccessHandler)
             .failureUrl("/student/login?error")
-            .usernameParameter("email")
+            .usernameParameter("username")
             .permitAll()
         .and()
             .logout()
