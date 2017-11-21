@@ -42,11 +42,11 @@ public class AdminLoginController {
 	@RequestMapping(value = "/userCreation", method = RequestMethod.POST)
 	public ModelAndView createNewUser(@Valid UserDTO userDTO, BindingResult bindingResult) {
 		ModelAndView modelAndView = new ModelAndView();
-		EmhcUser userExists = userService.findUserByEmail(userDTO.getEmail());
+		EmhcUser userExists = userService.getByUsername(userDTO.getUsername());
 		if (userExists != null) {
 			bindingResult
-					.rejectValue("email", "error.user",
-							"There is already a user registered with the email provided");
+					.rejectValue("username", "error.user",
+							"There is already a user registered with the username provided");
 		}
 		if (bindingResult.hasErrors()) {
 			modelAndView.setViewName("registration");
@@ -64,8 +64,8 @@ public class AdminLoginController {
 	public ModelAndView home(){
 		ModelAndView modelAndView = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		EmhcUser user = userService.findUserByEmail(auth.getName());
-		modelAndView.addObject("userName", "Welcome " + user.getUsername() + " " + user.getLastname() + " (" + user.getEmail() + ")");
+		EmhcUser user = userService.getByUsername(auth.getName());
+		modelAndView.addObject("userName", "Welcome " + user.getUsername() + " " + user.getLastname() + " (" + user.getUsername() + ")");
 		modelAndView.addObject("adminMessage","Content Available Only for Users with Admin Role!!!");
 		modelAndView.setViewName("admin/home");
 		return modelAndView;

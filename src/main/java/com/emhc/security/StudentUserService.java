@@ -27,7 +27,7 @@ public class StudentUserService implements UserDetailsService 	{
     	
     	LOGGER.debug("Student Auth Begins. Locating User in DB {}", username);
 		
-        EmhcUser emhcuser = userService.findUserByEmail(username);
+        EmhcUser emhcuser = userService.getByUsername(username);
         
         if(emhcuser == null) {
         	LOGGER.debug("Client is not found!!!!!!!!!!!!!!");

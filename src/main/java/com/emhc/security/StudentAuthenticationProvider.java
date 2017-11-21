@@ -10,6 +10,7 @@ import org.springframework.security.core.AuthenticationException;
 import com.emhc.model.EmhcUser;
 import com.emhc.repository.UserRepository;
 
+
 public class StudentAuthenticationProvider extends DaoAuthenticationProvider {
 
 	@Autowired
@@ -18,7 +19,7 @@ public class StudentAuthenticationProvider extends DaoAuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication auth) throws AuthenticationException {
     	
-    	EmhcUser emhcuser = userRepository.findByEmail(auth.getName());
+    	EmhcUser emhcuser = userRepository.findByUsername(auth.getName());
     	
         if ((emhcuser == null)) {
             throw new BadCredentialsException("Invalid username or password");

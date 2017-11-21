@@ -4,24 +4,26 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 
 import com.emhc.model.EmhcUser;
-import com.emhc.model.Role;
 
+
+/*
+ * 
+ */
 public class LoginStudent extends User {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private EmhcUser emhc;
-    public LoginStudent(EmhcUser emhc) {
+   
+	
+	public LoginStudent(EmhcUser emhc) {
 
-       super(emhc.getEmail(), emhc.getPassword(), AuthorityUtils.createAuthorityList(emhc.getRoles()));
+		super(emhc.getUsername(), emhc.getPassword(), AuthorityUtils.createAuthorityList(emhc.getRoles()));
 
-/*       for (String i: emhc.getRoles()){
+		for (String i: emhc.getRoles()){
 			
 			System.out.println("i:"+ i +" is "+ i.equals("CLIENT"));
 		}
-*/    	
+		System.out.println(emhc.getRoles());
     	
     	this.emhc = emhc;
     }
@@ -36,7 +38,5 @@ public class LoginStudent extends User {
     public int getId() {
         return emhc.getUserid();
     }
-
-    
     
  }

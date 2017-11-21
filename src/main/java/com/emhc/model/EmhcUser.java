@@ -27,7 +27,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(name="users")
 @NamedQuery(name="EmhcUser.findAll", query="SELECT u FROM EmhcUser u")
 public class EmhcUser implements Serializable {
-	private static final long serialVersionUID = 1L;
+
+	private static final long serialVersionUID = 9116728082295724017L;
 
 	@Id
 	private int userid;
@@ -36,8 +37,6 @@ public class EmhcUser implements Serializable {
 
 	@Temporal(TemporalType.DATE)
 	private Date creationdate;
-
-//	private String email;
 
 	@Column(name = "firstname")
 	@NotEmpty(message = "*Please provide your first name")

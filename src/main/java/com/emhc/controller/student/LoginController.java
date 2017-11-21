@@ -154,10 +154,10 @@ public class LoginController extends BaseController {
 	public ModelAndView home(){
 		ModelAndView modelAndView = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		EmhcUser emhcuser = userService.findUserByEmail(auth.getName());
+		EmhcUser emhcuser = userService.getByUsername(auth.getName());
 		System.out.println("auth.getName = " + auth.getName());
 		System.out.println("userName = " + emhcuser.getUsername());
-		modelAndView.addObject("userName", "Welcome " + emhcuser.getUsername() + " " + emhcuser.getLastname() + " (" + emhcuser.getEmail() + ")");
+		modelAndView.addObject("userName", "Welcome " + emhcuser.getUsername() + " " + emhcuser.getLastname() + " (" + emhcuser.getUsername() + ")");
 		modelAndView.addObject("adminMessage","Content Available Only for Users with Admin Role");
 		modelAndView.setViewName("student/home");
 		return modelAndView;

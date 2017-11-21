@@ -30,7 +30,7 @@ public class UserDTOValidator implements Validator {
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		// TODO Auto-generated method stub
+		
 		UserDTO userDTO = (UserDTO) target;
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "error.username", "User name is required.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstname", "error.firstname", "First name is required.");
@@ -39,11 +39,13 @@ public class UserDTOValidator implements Validator {
 		validatePasswords(errors,userDTO);
 		validateEmail(errors, userDTO);
 	}
+	
     private void validatePasswords(Errors errors, UserDTO userDTO) {
         if (!userDTO.getPassword().equals(userDTO.getConfirmpassword())) {
             errors.reject("password.no_match", "Passwords do not match");
         }
     }
+    
     private void validateEmail(Errors errors, UserDTO userDTO) {
     	EmhcUser userExists  = userService.findUserByEmail(userDTO.getEmail());
         if (userExists != null) {

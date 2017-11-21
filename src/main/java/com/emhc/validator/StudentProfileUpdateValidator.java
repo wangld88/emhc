@@ -12,8 +12,6 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import com.emhc.dto.StudentProfileUpdate;
-//import ca.ryerson.ccs.ads.midwifery.persistence.entity.Student;
-//import ca.ryerson.ccs.ads.midwifery.persistence.service.StudentService;
 
 
 @Component

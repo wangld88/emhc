@@ -270,7 +270,7 @@ public class ProfileController {
         if (principal instanceof LoginStudent) {
             user = ((LoginStudent)principal).getClient();
         } else {
-            user = userService.findUserByEmail("");
+            user = userService.getByUsername("");
         }
         return user;
     }

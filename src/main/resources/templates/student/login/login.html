@@ -10,13 +10,12 @@
   
 		<link rel="stylesheet" th:href="@{/css/student-login.css}" />
 		<link rel="stylesheet" th:href="@{/css/bootstrap-responsive.css}" />
-		<!-- <link rel="stylesheet" th:href="@{/css/style.css}" /> -->
 		<link rel="stylesheet" th:href="@{/color/default.css}" />
 		<script>
 			function loadOrgs(elmt) {
 				form = document.getElementById("orgForm");
 				form.action=form.action+"/"+elmt.value;
-				alert(form.action);
+				alert("login action: "+form.action);
 				form.submit();
 			}
 		</script>
@@ -144,7 +143,7 @@
 								<label>
 									Email Address<span class="req">*</span>
 								</label>
-								<input type="email" class="input" required autocomplete="off"/>
+								<input type="email" class="input" th:field="*{email}" required autocomplete="off"/>
 							</div>
 							<div class="field-wrap">
 								<label>

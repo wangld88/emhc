@@ -1,15 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
-<head>
-	<title>Assessment Form</title>
-	<link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}" />
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
+<html layout:decorator="student/template/layout">
 
-<body>
 	<div layout:fragment="content">
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
@@ -91,20 +82,19 @@
 			</div>
 		</div>
 	</div>
-<script>	
-	function toggleTB(what,elid,state)
-{
-    if(what.checked)
-    {
-        document.getElementById(elid).disabled=state
-    }
-    else
-    {
-        document.getElementById(elid).disabled=state
-    }
-}
-	
-</script>
+	<script>	
+		function toggleTB(what,elid,state)
+	{
+	    if(what.checked)
+	    {
+	        document.getElementById(elid).disabled=state
+	    }
+	    else
+	    {
+	        document.getElementById(elid).disabled=state
+	    }
+	}
+		
+	</script>
 
-</body>
 </html>

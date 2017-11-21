@@ -22,9 +22,9 @@ import com.emhc.security.StudentAuthenticationProvider;
 import com.emhc.security.StudentUserService;
 
 
-@Configuration
-@EnableWebSecurity
-@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+//@Configuration
+//@EnableWebSecurity
+//@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class StudentWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     //private static final String CAS_URL_LOGIN = "cas.service.url.login";
