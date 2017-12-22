@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.emhc.dto.UserDTO;
-import com.emhc.model.EmhcUser;
+import com.emhc.model.User;
 import com.emhc.service.UserService;
 
 @Controller
@@ -42,7 +42,7 @@ public class AdminLoginController {
 	@RequestMapping(value = "/userCreation", method = RequestMethod.POST)
 	public ModelAndView createNewUser(@Valid UserDTO userDTO, BindingResult bindingResult) {
 		ModelAndView modelAndView = new ModelAndView();
-		EmhcUser userExists = userService.getByUsername(userDTO.getUsername());
+		User userExists = userService.getByUsername(userDTO.getUsername());
 		if (userExists != null) {
 			bindingResult
 					.rejectValue("username", "error.user",
@@ -60,11 +60,11 @@ public class AdminLoginController {
 		return modelAndView;
 	}
 	
-	@RequestMapping(value="home", method = RequestMethod.GET)
+	@RequestMapping(value="/home", method = RequestMethod.GET)
 	public ModelAndView home(){
 		ModelAndView modelAndView = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		EmhcUser user = userService.getByUsername(auth.getName());
+		User user = userService.getByUsername(auth.getName());
 		modelAndView.addObject("userName", "Welcome " + user.getUsername() + " " + user.getLastname() + " (" + user.getUsername() + ")");
 		modelAndView.addObject("adminMessage","Content Available Only for Users with Admin Role!!!");
 		modelAndView.setViewName("admin/home");

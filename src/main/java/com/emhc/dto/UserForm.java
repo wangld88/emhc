@@ -3,12 +3,14 @@ package com.emhc.dto;
 import java.util.Date;
 import java.util.List;
 
+import com.emhc.model.Organization;
 import com.emhc.model.Program;
 import com.emhc.model.Role;
 import com.emhc.model.User;
-import com.emhc.model.Organization;
 
-public class UserDTO {
+
+public class UserForm {
+
 	private int userid;
 	private int createdby;
 	private Date creationdate;
@@ -24,14 +26,16 @@ public class UserDTO {
 	private Program program;
 	private Organization organization;
 	private Role role;
+	private List<Role> roles;
 	private List<Program> programs;
 	private List<Organization> organizations;
-	
-	public UserDTO() {
+
+	public UserForm() {
 		
 	}
 
-	public UserDTO(User user) {
+	public UserForm(User user) {
+		
 		this.userid = user.getUserid();
 		this.username = user.getUsername();
 		this.firstname = user.getFirstname();
@@ -46,11 +50,12 @@ public class UserDTO {
 		this.status = user.getStatus();
 		this.viewer = user.getViewer();
 		
-		
 	}
 
 	public User getUser() {
+		
 		User user = new User();
+		
 		user.setUserid(this.userid);
 		user.setUsername(this.username);
 		user.setFirstname(this.firstname);
@@ -64,8 +69,10 @@ public class UserDTO {
 		user.setRole(this.role);
 		user.setStatus(this.status);
 		user.setViewer(this.viewer);
+		
 		return user;
 	}
+	
 	public String getConfirmpassword() {
 		return confirmpassword;
 	}
@@ -175,6 +182,14 @@ public class UserDTO {
 
 	public void setOrganization(Organization organization) {
 		this.organization = organization;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 
 }

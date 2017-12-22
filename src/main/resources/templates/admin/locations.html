@@ -1,0 +1,54 @@
+<html layout:decorator="admin/layout">
+	
+	<div layout:fragment="content" class="container">
+
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a th:href="@{/admin/locations}">Locations</a></li>
+			<!-- <li class="breadcrumb-item"><a href="#">Forms</a></li> -->
+			<li class="breadcrumb-item active">List Locations</li>
+		</ol>
+		
+		<div class="col-xs-12 col-sm-12">
+			<div class="box">
+				<div class="box-content">
+					<h4 class="page-header">Locations</h4>
+					<p></p>
+					<div class="card mb-3">
+						<div class="card-header">
+							<i class="fa fa-table"></i> Locations <a th:href="@{/admin/location}" title="Add Location"><i class="fa fa-plus-circle"></i></a>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table" id="dataTable" width="100%" cellspacing="0">
+									<thead class="thead-light">
+										<tr>
+											<th>Name</th>
+											<th>Organization</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tfoot class="thead-light">
+										<tr>
+											<th>Name</th>
+											<th>Organization</th>
+											<th>Action</th>
+										</tr>
+									</tfoot>
+									<tbody>
+										<tr th:each="location:${locations}">
+											<td><span th:text="${location.name}"></span></td>
+											<td><span th:text="${location.organization.name}"></span></td>
+											<td><a th:href="@{'/admin/location/'}+${location.locationid}" title="Edit"><i class="fa fa-edit"></i></a></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</html>

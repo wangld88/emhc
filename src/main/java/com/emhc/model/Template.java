@@ -17,13 +17,17 @@ public class Template implements Serializable {
 	@Id
 	private int templateid;
 
+	private String subject;
+	
+	private String description;
+	
 	private String bcc;
 
 	private String cc;
 
 	private String content;
 
-	private String name;
+	private String recipient;
 
 	private String sender;
 
@@ -62,12 +66,12 @@ public class Template implements Serializable {
 		this.content = content;
 	}
 
-	public String getName() {
-		return this.name;
+	public String getDescription() {
+		return this.description;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getSender() {
@@ -76,6 +80,22 @@ public class Template implements Serializable {
 
 	public void setSender(String sender) {
 		this.sender = sender;
+	}
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+
+	public String getRecipient() {
+		return recipient;
+	}
+
+	public void setRecipient(String recipient) {
+		this.recipient = recipient;
 	}
 
 }

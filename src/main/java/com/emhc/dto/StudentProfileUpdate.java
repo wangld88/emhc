@@ -3,7 +3,7 @@ package com.emhc.dto;
 import java.util.Date;
 import java.util.List;
 
-import com.emhc.model.EmhcUser;
+import com.emhc.model.User;
 import com.emhc.model.Program;
 import com.emhc.model.Role;
 
@@ -63,7 +63,6 @@ public class StudentProfileUpdate {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 
 	public int getProgramyear() {
 		return programyear;
@@ -135,11 +134,12 @@ public class StudentProfileUpdate {
 	private Program program;
 	private Role role;
 	private List<Program> programs;
-	
+
 	public StudentProfileUpdate() {
-		
+
 	}
-	public StudentProfileUpdate(EmhcUser user) {
+
+	public StudentProfileUpdate(User user) {
 		this.userid = user.getUserid();
 		this.username = user.getUsername();
 		this.firstname = user.getFirstname();
@@ -153,12 +153,11 @@ public class StudentProfileUpdate {
 		this.role = user.getRole();
 		this.status = user.getStatus();
 		this.viewer = user.getViewer();
-		
-		
+
 	}
 
-	public EmhcUser getUser() {
-		EmhcUser user = new EmhcUser();
+	public User getUser() {
+		User user = new User();
 		user.setUserid(this.userid);
 		user.setUsername(this.username);
 		user.setFirstname(this.firstname);

@@ -1,0 +1,117 @@
+<html layout:decorator="admin/layout">
+	
+	<div layout:fragment="content" class="container">
+
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a th:href="@{/admin/schedules}">Schedules</a></li>
+			<!-- <li class="breadcrumb-item"><a href="#">Forms</a></li> -->
+			<li class="breadcrumb-item active"><span th:text="${scheduleForm==null?'New Schedule':'Edit Schedule'}"></span></li>
+		</ol>
+		
+		<div class="col-xs-12 col-sm-12">
+			<div class="box">
+				<div class="box-content">
+					<h4 class="page-header">Schedule form</h4>
+					<p>The field with (*) is mandatory.</p>
+					
+					<div th:if="${message != null and #strings.length(message.message) != 0}" th:class="${message.status}">
+						<font style="font-size: 12px;"><span th:utext="${message.message}" th:remove="tag" /></font>
+					</div>
+					
+					<form class="form-horizontal" id="sch" th:action="@{/admin/schedule}" method="post" th:object="${scheduleForm}">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">Organization*</label>
+							<div class="col-sm-4">
+								<select id="organizationid" name="organizationid" th:field="*{organizationid}" class="form-control" placeholder="Organization" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Organization" onchange="loadOrgs(this)">
+									<option th:each="org:${orgs}" th:value="${org.organizationid}" th:text="${org.name}" th:selected="${org.organizationid==organizationid?'selected':''}" />
+								</select>
+							</div>
+							<!-- <label class="col-sm-4 control-label">Program*</label>
+							<div class="col-sm-4">
+								<select th:field="*{programid}" class="form-control" placeholder="Program" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Program">
+									<option th:each="program:${programs}" th:value="${program.programid}" th:text="${program.name}" />
+								</select>
+							</div> -->
+							<label class="col-sm-4 control-label">Session*</label>
+							<div class="col-sm-4">
+								<select th:field="*{sessionid}" class="form-control" placeholder="Session" data-toggle="tooltip" data-placement="bottom" title="Tooltip for session">
+									<option th:each="session:${sessions}" th:value="${session.sessionid}" th:text="${session.name}" />
+								</select>
+							</div>
+							<label class="col-sm-4 control-label">Schedule time*</label>
+							<div class="col-sm-4" style="overflow: hidden;">
+								<select th:field="*{hour}" class="col-sm-3 form-control" placeholder="Schedule hour" data-toggle="tooltip" data-placement="bottom" title="Tooltip for name" style="float: left;">
+									<!-- <option value="">HH</option> -->
+									<option th:each="i: ${#numbers.sequence(0, 11)}" th:value="${i}" th:text="${i}"></option>
+								</select>
+								<select th:field="*{minute}" class="col-sm-3 form-control" placeholder="Schedule hour" data-toggle="tooltip" data-placement="bottom" title="Tooltip for name" style="float: left; margin-left:5px;">
+									<!-- <option value="">MM</option> -->
+									<option th:each="i: ${#numbers.sequence(0, 59, 5)}" th:value="${i}" th:text="${i}"></option>
+								</select>
+								<select th:field="*{am}" class="col-sm-3 form-control" placeholder="Schedule hour" data-toggle="tooltip" data-placement="bottom" title="Tooltip for name" style="float: left; margin-left:5px;">
+									<option th:value="AM" th:text="AM"></option>
+									<option th:value="PM" th:text="PM"></option>
+								</select>
+								
+							</div>
+							<label class="col-sm-4 control-label">Capacity*</label>
+							<div class="col-sm-4">
+								<input type="text" th:field="*{capacity}" class="form-control" placeholder="Capacity" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Capacity">
+							</div>
+							<label class="col-sm-4 control-label">Duration (mins)*</label>
+							<div class="col-sm-4">
+								<input type="text" th:field="*{duration}" class="form-control" placeholder="Duration" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Session duration start date">
+							</div>
+							<div class="col-sm-4" style="margin-top: 8px;">
+								<label><input type="checkbox" name="multiple" id="multiple" onclick="loadMultiple(this)" value="1" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Multiple schedules">Automatically create sequential schedules</label>
+							</div>
+							<label class="col-sm-4 control-label" id="alb">Number of Schedules*</label>
+							<div class="col-sm-4">
+								<input type="text" id="aa" class="form-control" placeholder="Schedule date" data-toggle="tooltip" data-placement="bottom" title="Tooltip for schedule date">
+							</div>
+							<div class="col-sm-4" style="height: 20px;">
+								<input type="hidden" th:field="*{scheduleid}" />
+							</div>
+							<div class="col-sm-4">
+								<button type="submit" class="btn btn-primary btn-label-left">
+									<span><i class="fa fa-clock-o"></i></span>
+									Submit
+								</button>
+							</div>
+						</div>
+						
+					</form>
+					<form id="orgForm" th:action="@{/admin/schedule/org}" method="get">
+					</form>
+				</div>
+			</div>
+		</div>
+		<script th:inline="javascript">
+		/*<![CDATA[*/
+		loadMultiple(document.getElementById("multiple"));
+		function loadMultiple(elmt) {
+			a = document.getElementById("aa");
+			b = document.getElementById("alb");
+			if(elmt.checked) {
+				a.style.display="";
+				b.style.display="";
+			} else {
+				a.value = "";
+				a.style.display="none";
+				b.style.display="none";
+			}
+			
+		}
+		
+		function loadOrgs(elmt) {
+			form = document.getElementById("orgForm");
+			form.action=form.action+"/"+elmt.value;
+			alert("login action: "+form.action);
+			form.submit();
+		}
+	
+		/*]]>*/
+		</script>
+	</div>
+
+</html>

@@ -1,0 +1,50 @@
+<html layout:decorator="admin/layout">
+	
+	<div layout:fragment="content" class="container">
+
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a th:href="@{/admin/organization}">Locations</a></li>
+			<!-- <li class="breadcrumb-item"><a href="#">Forms</a></li> -->
+			<li class="breadcrumb-item active"><span th:text="${locationForm==null?'New Location':'Edit Location'}"></span></li>
+		</ol>
+		
+		<div class="col-xs-12 col-sm-12">
+			<div class="box">
+				<div class="box-content">
+					<h4 class="page-header">Location form</h4>
+					<p>The field with (*) is mandatory.</p>
+					
+					<div th:if="${message != null and #strings.length(message.message) != 0}" th:class="${message.status}">
+						<font style="font-size: 12px;"><span th:utext="${message.message}" th:remove="tag" /></font>
+					</div>
+					
+					<form class="form-horizontal" id="org" th:action="@{/admin/location}" method="post" th:object="${locationForm}">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Location name*</label>
+							<div class="col-sm-4">
+								<input type="text" th:field="*{name}" class="form-control" placeholder="Location name" data-toggle="tooltip" data-placement="bottom" title="Tooltip for name">
+							</div>
+							<label class="col-sm-2 control-label">Organization*</label>
+							<div class="col-sm-4">
+								<select th:field="*{organization.organizationid}" id="organizationid" name="organizationid" class="form-control" placeholder="Organization" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Organization">
+									<option th:each="org:${orgs}" th:value="${org.organizationid}" th:text="${org.name}" />
+								</select>
+							</div>
+							<div class="col-sm-4" style="height: 20px;">
+								<input type="hidden" th:field="*{locationid}" />
+							</div>
+							<div class="col-sm-2">
+								<button type="submit" class="btn btn-primary btn-label-left">
+									<span><i class="fa fa-clock-o"></i></span>
+									Submit
+								</button>
+							</div>
+						</div>
+						
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</html>

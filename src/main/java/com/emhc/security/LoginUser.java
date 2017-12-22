@@ -3,19 +3,18 @@ package com.emhc.security;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 
-import com.emhc.model.EmhcUser;
 
 
 /*
  * 
  */
-public class LoginStudent extends User {
+public class LoginUser extends User {
 	
 	private static final long serialVersionUID = 1L;
-	private EmhcUser emhc;
+	private com.emhc.model.User emhc;
    
 	
-	public LoginStudent(EmhcUser emhc) {
+	public LoginUser(com.emhc.model.User emhc) {
 
 		super(emhc.getUsername(), emhc.getPassword(), AuthorityUtils.createAuthorityList(emhc.getRoles()));
 
@@ -28,10 +27,10 @@ public class LoginStudent extends User {
     	this.emhc = emhc;
     }
 
-    public EmhcUser getClient() {
+    public com.emhc.model.User getClient() {
         return emhc;
     }
-    public EmhcUser getUser() {
+    public com.emhc.model.User getUser() {
         return emhc;
     }
 
