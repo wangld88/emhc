@@ -1,5 +1,5 @@
 //
-//    Main script of DevOOPS v1.0 Bootstrap Theme
+//    Main script of emhc v1.0 Bootstrap Theme
 //
 "use strict";
 /*-------------------------------------------
@@ -1523,8 +1523,8 @@ function SparkLineDrawBarGraph(elem, arr, color){
 function OpenModalBox(header, inner, bottom){
 	var modalbox = $('#modalbox');
 	modalbox.find('.modal-header-name span').html(header);
-	modalbox.find('.devoops-modal-inner').html(inner);
-	modalbox.find('.devoops-modal-bottom').html(bottom);
+	modalbox.find('.emhc-modal-inner').html(inner);
+	modalbox.find('.emhc-modal-bottom').html(bottom);
 	modalbox.fadeIn('fast');
 	$('body').addClass("body-expanded");
 }
@@ -1536,14 +1536,14 @@ function CloseModalBox(){
 	var modalbox = $('#modalbox');
 	modalbox.fadeOut('fast', function(){
 		modalbox.find('.modal-header-name span').children().remove();
-		modalbox.find('.devoops-modal-inner').children().remove();
-		modalbox.find('.devoops-modal-bottom').children().remove();
+		modalbox.find('.emhc-modal-inner').children().remove();
+		modalbox.find('.emhc-modal-bottom').children().remove();
 		$('body').removeClass("body-expanded");
 	});
 }
 //
 //  Beauty tables plugin (navigation in tables with inputs in cell)
-//  Created by DevOOPS.
+//  Created by emhc.
 //
 (function( $ ){
 	$.fn.beautyTables = function() {
@@ -3342,7 +3342,7 @@ function DrawFullCalendar(){
 //////////////////////////////////////////////////////
 //////////////////////////////////////////////////////
 //
-//      MAIN DOCUMENT READY SCRIPT OF DEVOOPS THEME
+//      MAIN DOCUMENT READY SCRIPT OF emhc THEME
 //
 //      In this script main logic of theme
 //

@@ -11,8 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.emhc.security.CustomSuccessHandler;
-import com.emhc.security.StudentAuthenticationProvider;
-import com.emhc.security.StudentUserService;
+import com.emhc.security.UserAuthenticationProvider;
+import com.emhc.security.AuthUserService;
 
 
 @Configuration
@@ -22,7 +22,7 @@ public class MultiHttpSecurityConfig {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-	StudentUserService studentUserService;
+	AuthUserService studentUserService;
 	
 	@Autowired
 	static CustomSuccessHandler customSuccessHandler;
@@ -101,7 +101,7 @@ public class MultiHttpSecurityConfig {
 
     @Bean
     public DaoAuthenticationProvider getAuthProvider() {
-        final StudentAuthenticationProvider authProvider = new StudentAuthenticationProvider();
+        final UserAuthenticationProvider authProvider = new UserAuthenticationProvider();
         authProvider.setUserDetailsService(studentUserService);
         authProvider.setPasswordEncoder(bCryptPasswordEncoder);
         return authProvider;

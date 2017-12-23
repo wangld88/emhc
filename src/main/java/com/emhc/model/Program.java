@@ -31,7 +31,7 @@ public class Program implements Serializable {
 
 	//bi-directional many-to-one association to User
 	@OneToMany(mappedBy="program")
-	private List<EmhcUser> users;
+	private List<User> users;
 
 	public Program() {
 	}
@@ -82,22 +82,22 @@ public class Program implements Serializable {
 		return session;
 	}
 
-	public List<EmhcUser> getUsers() {
+	public List<User> getUsers() {
 		return this.users;
 	}
 
-	public void setUsers(List<EmhcUser> users) {
+	public void setUsers(List<User> users) {
 		this.users = users;
 	}
 
-	public EmhcUser addUser(EmhcUser user) {
+	public User addUser(User user) {
 		getUsers().add(user);
 		user.setProgram(this);
 
 		return user;
 	}
 
-	public EmhcUser removeUser(EmhcUser user) {
+	public User removeUser(User user) {
 		getUsers().remove(user);
 		user.setProgram(null);
 

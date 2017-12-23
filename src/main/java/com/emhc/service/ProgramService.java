@@ -5,7 +5,6 @@ import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
-import org.springframework.format.Formatter;
 import org.springframework.stereotype.Service;
 
 import com.emhc.model.Organization;
@@ -20,6 +19,9 @@ public class ProgramService {
 	@Autowired
 	private ProgramRepository programRepository;
 	
+	public Program getById(int programid) {
+		return programRepository.findByProgramid(programid);
+	}
 	public Program findProgramByName(String name) {
 		return programRepository.findByName(name);
 	}
@@ -29,6 +31,14 @@ public class ProgramService {
 	
 	public List<Program> getByOrganization(Organization org) {
 		return programRepository.findByOrganization(org);
+	}
+	
+	public List<Program> getByOrganizationId(long orgid) {
+		return programRepository.findByOrganization_organizationid(orgid);
+	}
+	
+	public List<Program> getByNameOrganization(String name, Organization org) {
+		return programRepository.findByNameAndOrganization(name, org);
 	}
 	
 	public Program saveProgram(Program program) {

@@ -64,7 +64,7 @@ public class StudentWebConfig extends WebMvcConfigurerAdapter {
     public LocaleResolver localeResolver() {
 		CookieLocaleResolver resolver = new CookieLocaleResolver();
 		resolver.setDefaultLocale(new Locale("en"));
-		resolver.setCookieName("midwiferyLocaleCookie");
+		resolver.setCookieName("emhcLocaleCookie");
 		resolver.setCookieMaxAge(4800);
 		return resolver;
     }

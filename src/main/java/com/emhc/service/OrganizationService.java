@@ -20,12 +20,19 @@ public class OrganizationService{
 		return organizationRepository.findByOrganizationid(organizationid);
 	}
 	
+	public Organization getByName(String name) {
+		return organizationRepository.findByName(name);
+	}
+	
+	public List<Organization> getByDomain(String name) {
+		return organizationRepository.findByDomain(name);
+	}
+	
 	public Organization findOrganizationByEmail(String email) {
 		return organizationRepository.findByEmail(email);
 	}
 	
 	public List<Organization> findAll(){
-		System.out.println("------run in Service-------");
 		return organizationRepository.findAll();
 	}
 	

@@ -38,7 +38,7 @@ public class Registration implements Serializable {
 	//bi-directional many-to-one association to User
 	@ManyToOne
 	@JoinColumn(name="userid")
-	private EmhcUser user;
+	private User user;
 
 	public Registration() {
 	}
@@ -91,11 +91,11 @@ public class Registration implements Serializable {
 		this.schedule = schedule;
 	}
 
-	public EmhcUser getUser() {
+	public User getUser() {
 		return this.user;
 	}
 
-	public void setUser(EmhcUser user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 

@@ -9,7 +9,7 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import com.emhc.dto.UserDTO;
-import com.emhc.model.EmhcUser;
+import com.emhc.model.User;
 import com.emhc.service.UserService;
 @Component
 public class UserDTOValidator implements Validator {
@@ -47,7 +47,7 @@ public class UserDTOValidator implements Validator {
     }
     
     private void validateEmail(Errors errors, UserDTO userDTO) {
-    	EmhcUser userExists  = userService.findUserByEmail(userDTO.getEmail());
+    	User userExists  = userService.findUserByEmail(userDTO.getEmail());
         if (userExists != null) {
             errors.reject("email.exists", "User with this email already exists");
         }

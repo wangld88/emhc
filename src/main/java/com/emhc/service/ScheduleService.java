@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.emhc.model.Schedule;
+import com.emhc.model.Session;
 import com.emhc.repository.ScheduleRepository;
 
 
@@ -19,6 +20,10 @@ public class ScheduleService {
 		return scheduleRepository.findByScheduleid(scheduleid);
 	}
 	
+	public List<Schedule> getBySession(Session session) {
+		return scheduleRepository.findBySession(session);
+	}
+
 	public List<Schedule> getAll() {
 		return scheduleRepository.findAll();
 	}

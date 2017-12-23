@@ -26,7 +26,7 @@ public class Role implements Serializable {
 
 	//bi-directional many-to-one association to User
 	@OneToMany(mappedBy="role")
-	private List<EmhcUser> users;
+	private List<User> users;
 
 	public Role() {
 	}
@@ -69,22 +69,22 @@ public class Role implements Serializable {
 		return funcrole;
 	}
 
-	public List<EmhcUser> getUsers() {
+	public List<User> getUsers() {
 		return this.users;
 	}
 
-	public void setUsers(List<EmhcUser> users) {
+	public void setUsers(List<User> users) {
 		this.users = users;
 	}
 
-	public EmhcUser addUser(EmhcUser user) {
+	public User addUser(User user) {
 		getUsers().add(user);
 		user.setRole(this);
 
 		return user;
 	}
 
-	public EmhcUser removeUser(EmhcUser user) {
+	public User removeUser(User user) {
 		getUsers().remove(user);
 		user.setRole(null);
 

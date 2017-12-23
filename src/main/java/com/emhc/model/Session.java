@@ -14,26 +14,27 @@ import java.util.List;
 @Table(name="sessions")
 @NamedQuery(name="Session.findAll", query="SELECT s FROM Session s")
 public class Session implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	private int sessionid;
 
-	private int createdby;
-
-	@Temporal(TemporalType.DATE)
-	private Date creationdate;
-
 	private String name;
-
-	@Temporal(TemporalType.DATE)
-	private Date registend;
 
 	@Temporal(TemporalType.DATE)
 	private Date registstart;
 
 	@Temporal(TemporalType.DATE)
+	private Date registend;
+
+	@Temporal(TemporalType.DATE)
 	private Date sessiondate;
+
+	private int createdby;
+
+	@Temporal(TemporalType.DATE)
+	private Date creationdate;
 
 	private String status;
 
@@ -42,18 +43,18 @@ public class Session implements Serializable {
 	private List<Schedule> schedules;
 
 	//bi-directional many-to-one association to Location
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="locationid")
 	private Location location;
 
 	//bi-directional many-to-one association to Program
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="programid")
 	private Program program;
 
 	//bi-directional many-to-one association to Usersession
-	@OneToMany(mappedBy="session")
-	private List<Usersession> usersessions;
+	/*@OneToMany(mappedBy="session")
+	private List<Usersession> usersessions;*/
 
 	public Session() {
 	}
@@ -130,7 +131,7 @@ public class Session implements Serializable {
 		this.schedules = schedules;
 	}
 
-	public Schedule addSchedule(Schedule schedule) {
+	/*public Schedule addSchedule(Schedule schedule) {
 		getSchedules().add(schedule);
 		schedule.setSession(this);
 
@@ -142,7 +143,7 @@ public class Session implements Serializable {
 		schedule.setSession(null);
 
 		return schedule;
-	}
+	}*/
 
 	public Location getLocation() {
 		return this.location;
@@ -160,7 +161,7 @@ public class Session implements Serializable {
 		this.program = program;
 	}
 
-	public List<Usersession> getUsersessions() {
+	/*public List<Usersession> getUsersessions() {
 		return this.usersessions;
 	}
 
@@ -180,6 +181,6 @@ public class Session implements Serializable {
 		usersession.setSession(null);
 
 		return usersession;
-	}
+	}*/
 
 }

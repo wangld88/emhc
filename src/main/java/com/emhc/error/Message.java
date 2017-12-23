@@ -1,12 +1,15 @@
 package com.emhc.error;
 
+import java.io.Serializable;
+
 /**
  * UI message object
  * 
- * @author jerry.wang
+ * @author KJC
  *
  */
-public class Message {
+public class Message implements Serializable {
+	private static final long serialVersionUID = 493717426759324559L;
 	public static final String SUCCESS = "alert alert-success";
 	public static final String ERROR = "alert alert-danger";
 	public static final String JSON_SUCCESS = "Success";

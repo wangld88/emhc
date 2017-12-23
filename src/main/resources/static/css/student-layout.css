@@ -27,7 +27,7 @@ body {
   z-index: 5000;
   background:rgba(0,0,0,0.8);
 }
-#modalbox .devoops-modal {
+#modalbox .emhc-modal {
   position:absolute;top:90px;left:0;right:0;margin:auto;
   border: 1px solid #ccc;
   box-shadow: 0 0 10px #505559;
@@ -39,7 +39,7 @@ body {
   width: 600px;
   z-index:6000;
 }
-#modalbox .devoops-modal-header {
+#modalbox .emhc-modal-header {
   color: #505559;
   position:relative;
   overflow: hidden;
@@ -52,13 +52,13 @@ body {
   background-image:      -o-linear-gradient(top, #eaeaea, #e0e0e0);
   background-image:         linear-gradient(to bottom, #eaeaea, #e0e0e0);
 }
-#modalbox .devoops-modal-inner {
+#modalbox .emhc-modal-inner {
   position: relative;
   overflow: hidden;
   padding: 15px;
   background: #FBFBF0;
 }
-#modalbox .devoops-modal-bottom {
+#modalbox .emhc-modal-bottom {
   position: relative;
   overflow: hidden;
   padding: 15px;
@@ -77,7 +77,7 @@ font-family: "Righteous",cursive;
 display: block;
 font-size: 20px;
 line-height: 50px;
-  background: url(../images/emh_logo.gif) right 42px no-repeat;
+  /* background: url(../images/emh_logo.gif) right 42px no-repeat; */
   -webkit-transition: 0.5s;
   -moz-transition: 0.5s;
   -o-transition: 0.5s;
@@ -99,10 +99,9 @@ line-height: 50px;
   /* margin-top: 50px; */
   min-height: 800px;
   overflow: hidden;
-  border: 1px solid blue;
 }
 
-.navbar1 {
+.navbar {
   margin: 0;
   border: 0;
   position: fixed;

@@ -1,5 +1,7 @@
 package com.emhc.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,10 @@ public class RoleService{
 	
 	public Role findRoleByName(String name) {
 		return roleRepository.findByName(name);
+	}
+
+	public List<Role> getAll() {
+		return roleRepository.findAll();
 	}
 
 	public Role saveProgram(Role role) {

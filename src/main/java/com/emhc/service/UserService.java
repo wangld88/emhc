@@ -1,11 +1,13 @@
 package com.emhc.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.emhc.dto.UserDTO;
-import com.emhc.model.EmhcUser;
+import com.emhc.model.User;
 import com.emhc.repository.UserRepository;
 
 
@@ -18,15 +20,23 @@ public class UserService{
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
-	public EmhcUser findUserByEmail(String email) {
+	public User findUserByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
 	
-	public EmhcUser getByUsername(String username) {
+	public User getByUsername(String username) {
 		return userRepository.findByUsername(username);
 	}
 
-	public EmhcUser saveUser(EmhcUser user) {
+	public User getById(Integer userid) {
+		return userRepository.findOne(userid);
+	}
+
+	public List<User> getAll() {
+		return userRepository.findAll();
+	}
+	
+	public User saveUser(User user) {
 		if(user.getUserid() == 0) { 
 			user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		}

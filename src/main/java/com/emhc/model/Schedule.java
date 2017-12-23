@@ -2,7 +2,7 @@ package com.emhc.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -23,7 +23,7 @@ public class Schedule implements Serializable {
 
 	private int duration;
 
-	private Time scheduletime;
+	private Timestamp scheduletime;
 
 	//bi-directional many-to-one association to Registration
 	@OneToMany(mappedBy="schedule")
@@ -61,11 +61,11 @@ public class Schedule implements Serializable {
 		this.duration = duration;
 	}
 
-	public Time getScheduletime() {
+	public Timestamp getScheduletime() {
 		return this.scheduletime;
 	}
 
-	public void setScheduletime(Time scheduletime) {
+	public void setScheduletime(Timestamp scheduletime) {
 		this.scheduletime = scheduletime;
 	}
 
