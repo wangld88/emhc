@@ -1,0 +1,85 @@
+a.links {
+	text-decoration:underline; color:#003366; font-family: Arial, Helvetica, sans-serif; font-size: 12px;
+}
+.title {
+	FONT-WEIGHT: bold; FONT-SIZE: 18px; COLOR: #000066; FONT-FAMILY: Tahoma
+}
+.instruction {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px; COLOR: #000066; FONT-FAMILY: Tahoma
+}
+.text {
+	FONT-WEIGHT: normal; FONT-SIZE: 12px; COLOR: #000000; FONT-FAMILY: Tahoma
+}
+.error {
+	FONT-WEIGHT: normal; FONT-SIZE: 12px; COLOR: #FF0000; FONT-FAMILY: Tahoma
+}
+
+
+a.button {
+    background: transparent url('../images/bg_button_a.gif') no-repeat scroll top right;
+	cursor: pointer;
+    color: #444;
+    display: block;
+    float: left;
+    font: normal 12px arial, sans-serif;
+    height: 24px;
+    margin-right: 6px;
+    padding-right: 18px; /* sliding doors padding */
+    text-decoration: none;
+}
+
+a.button span {
+    background: transparent url('../images/bg_button_span.gif') no-repeat;
+	cursor: pointer;
+    display: block;
+    line-height: 14px;
+    padding: 5px 0 5px 18px;
+    float: none;
+}
+
+a.button:active {
+    background-position: bottom right;
+    color: #000;
+    outline: none; /* hide dotted outline in Firefox */
+}
+
+a.button:active span {
+    background-position: bottom left;
+    padding: 6px 0 4px 18px; /* push text down 1px */
+}
+
+#content table {
+	padding: 5px;
+	margin: 10px;
+}
+
+#content td {
+	margin: 10px;
+	padding: 5px;
+}
+
+TH {
+	font-size: 1em;
+	background-color : #CCCCFF;
+	font-weight : bold;
+	text-align : center;
+	FONT-FAMILY: Arial,sans-serif
+}
+
+.tbbox { 
+	border-collapse:collapse; 
+	/*border:1px solid #dcdddc;*/
+	background:#fefffe;
+	border-left:0;
+	border-top:0;
+	border-bottom:0;
+	margin:0;
+}
+
+
+.d2 td,.d2 th {
+	border-top:1px solid #a1bdeb;
+	border-bottom:1px solid #a1bdeb;
+	border-left:1px solid #a1bdeb;
+	border-right:1px solid #a1bdeb;
+}

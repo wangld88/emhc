@@ -36,7 +36,7 @@ public class MultiHttpSecurityConfig {
 			System.out.println("/student/login/ configure");
 			http.
 				authorizeRequests()
-	            .antMatchers("/", "/student/login/**").permitAll()
+	            .antMatchers("/", "/*", "/student/login/**").permitAll()
 	            //.antMatchers("/student/registration").permitAll()
 	        	.antMatchers("/error/**").permitAll()
 	        	.antMatchers("/image/**").permitAll()
@@ -49,7 +49,7 @@ public class MultiHttpSecurityConfig {
 		        .formLogin()
 		            .loginPage("/student/login")
 		            //.successHandler(customSuccessHandler)
-		            .failureUrl("/login?error=true")
+		            .failureUrl("/student/login?error=true")
 		            .usernameParameter("username")
 		            .defaultSuccessUrl("/student/home")
 		            .permitAll()
