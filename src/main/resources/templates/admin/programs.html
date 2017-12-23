@@ -1,0 +1,54 @@
+<html layout:decorator="admin/layout">
+	
+	<div layout:fragment="content" class="container">
+
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a th:href="@{/admin/programs}">Programs</a></li>
+			<!-- <li class="breadcrumb-item"><a href="#">Forms</a></li> -->
+			<li class="breadcrumb-item active">List Programs</li>
+		</ol>
+		
+		<div class="col-xs-12 col-sm-12">
+			<div class="box">
+				<div class="box-content">
+					<h4 class="page-header">Programs</h4>
+					<p></p>
+					<div class="card mb-3">
+						<div class="card-header">
+							<i class="fa fa-table"></i> Programs <a th:href="@{/admin/program}" title="Add Program"><i class="fa fa-plus-circle"></i></a>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table" id="dataTable" width="100%" cellspacing="0">
+									<thead class="thead-light">
+										<tr>
+											<th>Name</th>
+											<th>Organization</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tfoot class="thead-light">
+										<tr>
+											<th>Name</th>
+											<th>Organization</th>
+											<th>Action</th>
+										</tr>
+									</tfoot>
+									<tbody>
+										<tr th:each="program:${programs}">
+											<td><span th:text="${program.name}"></span></td>
+											<td><span th:text="${program.organization.name}"></span></td>
+											<td><a th:href="@{'/admin/program/'}+${program.programid}" title="Edit"><i class="fa fa-edit"></i></a></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</html>

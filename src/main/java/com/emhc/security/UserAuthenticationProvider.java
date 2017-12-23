@@ -7,11 +7,11 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
-import com.emhc.model.EmhcUser;
+import com.emhc.model.User;
 import com.emhc.repository.UserRepository;
 
 
-public class StudentAuthenticationProvider extends DaoAuthenticationProvider {
+public class UserAuthenticationProvider extends DaoAuthenticationProvider {
 
 	@Autowired
     private UserRepository userRepository;
@@ -19,7 +19,7 @@ public class StudentAuthenticationProvider extends DaoAuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication auth) throws AuthenticationException {
     	
-    	EmhcUser emhcuser = userRepository.findByUsername(auth.getName());
+    	User emhcuser = userRepository.findByUsername(auth.getName());
     	
         if ((emhcuser == null)) {
             throw new BadCredentialsException("Invalid username or password");
@@ -28,7 +28,7 @@ public class StudentAuthenticationProvider extends DaoAuthenticationProvider {
         final Authentication result = super.authenticate(auth);
         
         //System.out.println("result.getCredentials(): " + result.getCredentials().toString());
-        return new UsernamePasswordAuthenticationToken(new LoginStudent(emhcuser), result.getCredentials(), result.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(new LoginUser(emhcuser), result.getCredentials(), result.getAuthorities());
 
     }
     
