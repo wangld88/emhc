@@ -48,7 +48,7 @@ public class Answer implements Serializable {
 	//bi-directional many-to-one association to User
 	@ManyToOne
 	@JoinColumn(name="userid")
-	private EmhcUser user;
+	private User user;
 
 	public Answer() {
 	}
@@ -173,11 +173,11 @@ public class Answer implements Serializable {
 		this.answer9 = answer9;
 	}
 
-	public EmhcUser getUser() {
+	public User getUser() {
 		return this.user;
 	}
 
-	public void setUser(EmhcUser user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 

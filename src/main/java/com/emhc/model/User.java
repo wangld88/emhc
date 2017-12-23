@@ -25,8 +25,8 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 @Entity
 @Table(name="users")
-@NamedQuery(name="EmhcUser.findAll", query="SELECT u FROM EmhcUser u")
-public class EmhcUser implements Serializable {
+@NamedQuery(name="User.findAll", query="SELECT u FROM User u")
+public class User implements Serializable {
 
 	private static final long serialVersionUID = 9116728082295724017L;
 
@@ -85,11 +85,8 @@ public class EmhcUser implements Serializable {
 	@JoinColumn(name="roleid")
 	private Role role;
 
-	//bi-directional many-to-one association to Usersession
-	@OneToMany(mappedBy="user")
-	private List<Usersession> usersessions;
 
-	public EmhcUser() {
+	public User() {
 	}
 
 	public int getUserid() {
@@ -238,28 +235,6 @@ public class EmhcUser implements Serializable {
 
 	public void setRole(Role role) {
 		this.role = role;
-	}
-
-	public List<Usersession> getUsersessions() {
-		return this.usersessions;
-	}
-
-	public void setUsersessions(List<Usersession> usersessions) {
-		this.usersessions = usersessions;
-	}
-
-	public Usersession addUsersession(Usersession usersession) {
-		getUsersessions().add(usersession);
-		usersession.setUser(this);
-
-		return usersession;
-	}
-
-	public Usersession removeUsersession(Usersession usersession) {
-		getUsersessions().remove(usersession);
-		usersession.setUser(null);
-
-		return usersession;
 	}
 
 	public String[] getRoles() {
