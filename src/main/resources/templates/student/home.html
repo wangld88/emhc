@@ -2,8 +2,12 @@
 <html layout:decorator="student/template/layout">
 	<div layout:fragment="content">
 
-		Student Home Page<br><br>
-		<form th:action="@{/student/profile}" method="get">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<h3>Welcome to EMH Consulting!!!</h3><br><br>
+		
+		Please complete your Health Assessment, and select your Fit Test schedule.  A confirmation email will send to your account once all tasks completed.
+		<!-- <form th:action="@{/student/profile}" method="get">
 			<button class="btn btn-md btn-warning btn-block" type="Submit">Go To Profile updatet!</button>
 		</form>	
 		<br><br>
@@ -23,6 +27,8 @@
 		<form id="logout" th:action="@{/student/logout}" method="post" >
 		  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		  <button class="btn btn-md btn-warning btn-block" type="Submit">Log Out</button>
-		</form>
+		</form> -->
+			</div>
+		</div>
 	</div>
 </html>

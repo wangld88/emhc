@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.emhc.dto.AnswerDTO;
+import com.emhc.dto.SessionForm;
 import com.emhc.error.Message;
 import com.emhc.model.Answer;
 import com.emhc.model.User;
@@ -44,19 +45,25 @@ public class AssessmentController {
 	private AnswerService answerService;
 
 	@Autowired
-	private AssessmentValidator assessentValidator;
+	private AssessmentValidator assessmentValidator;
 
 	@InitBinder("answerDTO")
 	public void initAssessmentBinder(WebDataBinder binder) {
-		binder.addValidators(assessentValidator);
+		binder.addValidators(assessmentValidator);
 	}
 
-	@RequestMapping(value = { "/assessment" }, method = RequestMethod.GET)
+    @ModelAttribute("answerDTO")
+    public AnswerDTO createDTO() {
+    	return new AnswerDTO();
+    }
+
+	@RequestMapping(value = "/assessment", method = RequestMethod.GET)
 	public String assessment(Model model) {
 
 		String rtn = "student/assessment";
 		AnswerDTO form = new AnswerDTO();
 
+		model.addAttribute("loginUser", getPrincipal());
 		model.addAttribute("answerDTO", form);
 
 		return rtn;
@@ -88,6 +95,7 @@ public class AssessmentController {
 			}
 			message.setStatus(Message.ERROR);
 			message.setMessage(msg);
+			model.addAttribute("loginUser", getPrincipal());
 			model.addAttribute("message", message);
 
 			return rtn;
@@ -107,6 +115,7 @@ public class AssessmentController {
 
 			}
 		}
+		model.addAttribute("loginUser", getPrincipal());
 		model.addAttribute("message", message);
 		return rtn;
 	}

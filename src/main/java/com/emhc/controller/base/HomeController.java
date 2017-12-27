@@ -42,6 +42,48 @@ public class HomeController {
 		return "/whychoose";
 	}
 	
+	@RequestMapping(value="/fitmodel")
+	public String dspFitmodel() {
+		System.out.println("whychoose home is called");
+		return "/fitmodel";
+	}
+
+	@RequestMapping(value="/corporatemodel")
+	public String dspCorporatemodel() {
+		System.out.println("whychoose home is called");
+		return "/corporatemodel";
+	}
+
+	@RequestMapping(value="/employeracct")
+	public String dspEmployeracct() {
+		System.out.println("employeracct home is called");
+		return "/employeracct";
+	}
+
+	@RequestMapping(value="/employeracctnext")
+	public String dspEmployeracctnext() {
+		System.out.println("employeracct home is called");
+		return "/employeracctnext";
+	}
+
+	@RequestMapping(value="/post")
+	public String dspPost() {
+		System.out.println("whychoose home is called");
+		return "/post";
+	}
+
+	@RequestMapping(value="/links")
+	public String dspLinks() {
+		System.out.println("whychoose home is called");
+		return "/links";
+	}
+
+	@RequestMapping(value="/faqs")
+	public String dspFaqs() {
+		System.out.println("whychoose home is called");
+		return "/faqs";
+	}
+
 	@RequestMapping(value="/layout")
 	public String dspLayout() {
 		

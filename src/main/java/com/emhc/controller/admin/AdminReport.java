@@ -10,4 +10,10 @@ import com.emhc.controller.base.BaseController;
 @RequestMapping({"/admin"})
 public class AdminReport extends BaseController {
 
+	@RequestMapping("/report")
+	public String dspReport() {
+		String rtn = "/admin/report";
+		
+		return rtn;
+	}
 }

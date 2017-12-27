@@ -30,9 +30,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     @Override
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException {
-        System.out.println("CustomSuccessHandler is called");
-    	LOGGER.debug("CustomSuccessHandler is called");
-    	String targetUrl = determineTargetUrl(authentication);
+        System.out.println("CustomSuccessHandler is called: " + request.getServletPath());
+    	LOGGER.debug("CustomSuccessHandler is called: " + request.getRemoteHost());
+    	String targetUrl = determineTargetUrl(authentication, request.getServletPath());
         System.out.println("CustomSuccessHandler is called, targetUrl: "+targetUrl);
     	LOGGER.debug("CustomSuccessHandler is called, targetUrl: " + targetUrl);
  
@@ -48,7 +48,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
      * This method extracts the roles of currently logged-in user and returns
      * appropriate URL according to his/her role.
      */
-    protected String determineTargetUrl(Authentication authentication) {
+    protected String determineTargetUrl(Authentication authentication, String path) {
         String url = "";
  
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
@@ -63,15 +63,19 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         if (isPractice(roles)) {
             url = "/practice";
         } else if (isAdmin(roles)) {
-            url = "/admin";
+            url = "/admin/home";
         } else if (isSuper(roles)) {
-            url = "/home";
+            url = "/admin/home";
         } else if (isStudent(roles)) {
-        	url = "/student/greeting";
+        	url = "/student/home";
         } else if (isClient(roles)) {
         	url = "/student/home";
         } else {
-            url = "/Access_Denied";
+        	if(path.contains("admin")) {
+        		url = "/admin/login";
+        	} else {
+        		url = "/student/home";
+        	}
         }
  
         return url;
@@ -85,7 +89,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     }
  
     private boolean isAdmin(List<String> roles) {
-        if (roles.contains("SITE_ADMIN")) {
+        if (roles.contains("ADMIN")) {
             return true;
         }
         return false;

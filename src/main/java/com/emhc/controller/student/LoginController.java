@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -48,7 +51,7 @@ public class LoginController extends BaseController {
 		System.out.println("-------run to here login of student--------");
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		System.out.println("auth.getName = " + auth.getName());
+		System.out.println("login auth.getName = " + auth.getName());
 
 		ModelAndView modelAndView = new ModelAndView();
 		UserDTO userDTO = new UserDTO();
@@ -150,17 +153,31 @@ public class LoginController extends BaseController {
 	}
 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public ModelAndView home() {
-		ModelAndView modelAndView = new ModelAndView();
+	public String home(ModelMap model, HttpSession httpSession) {
+		String rtn = "student/home";
+		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User emhcuser = userService.getByUsername(auth.getName());
-		System.out.println("auth.getName = " + auth.getName());
-		System.out.println("userName = " + emhcuser.getUsername());
-		modelAndView.addObject("userName", "Welcome " + emhcuser.getUsername() + " " + emhcuser.getLastname() + " ("
+		
+		System.out.println("!!auth.getName = " + auth.getName());
+		System.out.println("!!userName = " + emhcuser.getUsername());
+		
+		model.addAttribute("loginUser", emhcuser);
+		model.addAttribute("userName", "Welcome " + emhcuser.getUsername() + " " + emhcuser.getLastname() + " ("
 				+ emhcuser.getUsername() + ")");
-		modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
-		modelAndView.setViewName("student/home");
-		return modelAndView;
+		model.addAttribute("adminMessage", "Content Available Only for Users with Admin Role");
+		
+		return rtn;
+	}
+
+	@RequestMapping(value="/logout", method = RequestMethod.GET)
+	public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    if (auth != null){    
+	        new SecurityContextLogoutHandler().logout(request, response, auth);
+	    }
+	    return "redirect:/student/login?logout";//You can redirect wherever you want, but generally it's a good practice to show login screen again.
 	}
 
 }

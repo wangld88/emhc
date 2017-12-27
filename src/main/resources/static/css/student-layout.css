@@ -73,10 +73,10 @@ body {
 
 #logo a {
   color: #D8D8D8;
-font-family: "Righteous",cursive;
-display: block;
-font-size: 20px;
-line-height: 50px;
+  font-family: "Righteous",cursive;
+  display: block;
+  font-size: 20px;
+  line-height: 60px;
   /* background: url(../images/emh_logo.gif) right 42px no-repeat; */
   -webkit-transition: 0.5s;
   -moz-transition: 0.5s;
@@ -90,8 +90,8 @@ line-height: 50px;
 }
 
 #top-panel {
-  line-height: 50px;
-  height: 50px;
+  line-height: 60px;
+  height: 60px;
   background:#AA0000;
 }
 
@@ -195,7 +195,8 @@ line-height: 50px;
   transition: 0.05s;
 }
 .nav .open > a, .nav .open > a:hover, .nav .open > a:focus, .nav > li > a:hover, .nav > li > a:focus {
-  background:rgba(0, 0, 0, 0.1);
+  background:rgba(100,100,255,0.1);
+  color: #337ab7;
 }
 .nav.main-menu > li > a:hover, .nav.main-menu > li > a:focus, .nav.main-menu > li.active > a, .nav.main-menu .open > a, .nav.main-menu .open > a:hover, .nav.main-menu .open > a:focus, .dropdown-menu > li > a:focus, .dropdown-menu > li > a:hover, .dropdown-menu > li.active > a,
 .nav.msg-menu > li > a:hover, .nav.msg-menu > li > a:focus, .nav.msg-menu > li.active > a, .nav.msg-menu .open > a, .nav.msg-menu .open > a:hover, .nav.msg-menu .open > a:focus {
@@ -341,6 +342,7 @@ line-height: 50px;
 @media (max-width: 620px) {
   .user-mini {
     display: none;
+    color: #f0f0f0
   }
 }
 @media (max-width: 400px) {

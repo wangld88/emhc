@@ -8,9 +8,10 @@
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
 				<form autocomplete="off" th:action="@{/student/profile}"
-					th:object="${studentProfileUpdate}" method="post" class="form-horizontal"
-					role="form">
-					<h3>Update Your Profile</h3>
+					th:object="${studentProfileUpdate}" method="post" class="form-horizontal">
+					
+					<h3>Update Your Profile</h3><hr>
+					
 					<h5>Please fill in all fields below to update your profile. All fields with * are mandatory.</h5>
 
 					
@@ -20,32 +21,28 @@
 
    					<div class="form-group">
 						<div class="col-sm-9">
-						<label>UserName*:</label>
-						<input type="text" name="username" th:field="*{username}" placeholder="User Name*" 
-									class="form-control" />
+							<label>UserName*:</label>
+							<input type="text" class="form-control" name="username" th:field="*{username}" placeholder="User Name*" style="height:36px;" />
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="col-sm-9">
-						<label>FirstName*:</label>
-						<input type="text" th:field="*{firstname}" placeholder="First Name*"
-								class="form-control" /> 
+							<label>FirstName*:</label>
+							<input type="text" class="form-control" th:field="*{firstname}" placeholder="First Name*" style="height:36px;" /> 
 						</div>
 					</div>
 	
 					<div class="form-group">
 						<div class="col-sm-9">
 							<label>LastName*:</label>
-							<input type="text" th:field="*{lastname}" placeholder="Last Name*" 
-								class="form-control" /> 
+							<input type="text" class="form-control" th:field="*{lastname}" placeholder="Last Name*" style="height:36px;" /> 
 						</div>
 					</div>
 
 					<div class="form-group">
 						<div class="col-sm-9">
 							<label>Email*:</label>
-							<input type="text" th:field="*{email}" placeholder="Email*"
-								class="form-control" /> 
+							<input type="text" class="form-control" th:field="*{email}" placeholder="Email*" style="height:36px;" /> 
 						</div>
 					</div>
 				

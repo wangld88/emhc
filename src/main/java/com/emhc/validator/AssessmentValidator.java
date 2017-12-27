@@ -13,12 +13,13 @@ import com.emhc.dto.AnswerDTO;
 @Component
 public class AssessmentValidator implements Validator {
 
+	Class<?> noparams[] = {};
     private static final Logger LOGGER = LoggerFactory.getLogger(AssessmentValidator.class);
 
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return clazz.equals(AssessmentValidator.class);
+        return clazz.equals(AnswerDTO.class);
     }
 
     @Override
@@ -33,6 +34,28 @@ public class AssessmentValidator implements Validator {
     
     private void validateAnswerDTO(Errors errors, AnswerDTO form) {
     
+		try {
+			
+			Class<?> c = Class.forName(getClassName());
+
+			for(int i = 1; i < 15; i++){
+				String mtn = String.format("getButton%1$02d" , i);
+				System.out.println(mtn);
+				if(c.getDeclaredMethod(mtn, noparams).invoke(form) !=null){
+					System.out.println(" name is "+ mtn);
+				
+				}
+
+			}
+		}catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
+	private String getClassName() {
+
+		// Do appropriate stuff here to find out the classname
+
+		return "com.emhc.dto.AnswerDTO";
+	}
 }

@@ -71,6 +71,7 @@ public class ScheduleController {
 			List<Session> sessions = sessionService.getByProgram(user.getProgram());
 			form.setSession(session);
 			form.setSessions(sessions);
+			model.addAttribute("loginUser", user);
 			model.addAttribute("studentScheduleTest", form);
 			return rtn;
 
@@ -107,6 +108,7 @@ public class ScheduleController {
 
 			form.setSession(session);
 			form.setSessions(sessions);
+			model.addAttribute("loginUser", user);
 			model.addAttribute("studentScheduleTest", form);
 			return rtn;
 
@@ -196,6 +198,7 @@ public class ScheduleController {
 
 		attrs.addFlashAttribute("message", message);
 		attrs.addFlashAttribute("studentScheduleTest", form);
+		model.addAttribute("loginUser", getPrincipal());
 		return rtn;
 	}
 

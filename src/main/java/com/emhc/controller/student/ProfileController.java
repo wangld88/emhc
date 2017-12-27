@@ -88,6 +88,8 @@ public class ProfileController {
 			form.setProgram(emhcuser.getProgram());
 			List<Program> programs = programService.findAll();
 			form.setPrograms(programs);
+			
+			model.addAttribute("loginUser", getPrincipal());
 			model.addAttribute("studentProfileUpdate", form);
 
 		} catch (Exception e) {
@@ -171,6 +173,7 @@ public class ProfileController {
 					LocaleContextHolder.getLocale()));
 		}
 
+		model.addAttribute("loginUser", getPrincipal());
 		model.addAttribute("message", message);
 
 		return rtn;
@@ -185,8 +188,8 @@ public class ProfileController {
 		try {
 
 			ResetPassword form = new ResetPassword();
-			User emhcuser = getPrincipal();
-			LOGGER.info("$$$$ SP status: " + emhcuser.getUserid());
+			
+			model.addAttribute("loginUser", getPrincipal());
 			model.addAttribute("resetPassword", form);
 
 		} catch (Exception e) {

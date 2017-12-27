@@ -15,8 +15,16 @@
 			function loadOrgs(elmt) {
 				form = document.getElementById("orgForm");
 				form.action=form.action+"/"+elmt.value;
-				alert("login action: "+form.action);
+				
 				form.submit();
+			}
+			
+			function setPage() {
+				var urlstr = window.location.href;
+				
+				if(location.search.split('login=')[1] == 1) {
+					document.getElementById("loginbtn").click();
+				}
 			}
 		</script>
 	</head>
@@ -34,13 +42,12 @@
 						<!-- navigation -->
 						<nav class="pull-right nav-collapse collapse">
 							<ul id="menu-main" class="nav">
-								<li><a title="team" href="#about">About</a></li>
-								<li><a title="services" href="#services">Services</a></li>
-								<li><a title="works" href="#works">Works</a></li>
-								<li><a title="blog" href="#blog">Blog</a></li>
-								<li><a title="contact" href="#contact">Contact</a></li>
-								<li><a href="/student/login">Login</a></li>
-							</ul>
+							<li><a title="works" href="home">Home</a></li>
+							<li><a title="team" href="aboutus">About</a></li>
+							<li><a title="services" href="fit">Fit Testing</a></li>
+							<li><a title="blog" href="whychoose">Why EMH</a></li>
+							<li><a title="contact" href="contact">Contact</a></li>
+							<li><a href="student/login">Login</a></li>
 						</nav>
 					</div>
 				</div>
@@ -49,8 +56,8 @@
 		<div class="form">
       
 			<ul class="tab-group">
-				<li class="tab active"><a href="#signup">Sign Up</a></li>
-				<li class="tab"><a href="#login">Log In</a></li>
+				<li class="tab active"><a href="#signup" id="signbtn">Sign Up</a></li>
+				<li class="tab"><a href="#login" id="loginbtn">Log In</a></li>
 			</ul>
 
 			<div class="tab-content">
@@ -61,9 +68,6 @@
     
 						<div th:if="${message != null and #strings.length(message.message) != 0}" th:class="${message.status}">
 							<font th:text="${message.message}" style="font-size: 12px;"></font>
-						</div>
-						<div th:if="${param.error}" class="alert alert-danger">
-							<font style="font-size: 12px;">Invalid username and password.</font>
 						</div>
 						<div class="top-row">				
 	 						<div class="field-wrap">
@@ -160,11 +164,14 @@
 	
 				</div>
 	  
-				<div id="login">   
+				<div id="login">
 					<!-- <h1>Welcome Back!</h1> -->
 				    
 					<form name="loginForm" id="loginFor" th:action="@{/student/login}" method="post">
 				    
+						<div th:if="${param.error}" class="alert alert-danger">
+							<font style="font-size: 12px;">Invalid username and password.</font>
+						</div>
 						<div class="field-wrap">
 							<label>
 								<span th:text="#{student.login.username}"></span><span class="req">*</span>
@@ -233,12 +240,14 @@
 		<script th:src="@{/js/animate.js}"></script>
 		<script th:src="@{/js/custom.js}"></script>
 		<script th:src="@{/js/contactform.js}"></script>
-		<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 		    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 		    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 		    ga('create', 'UA-55234356-4', 'auto');
 		    ga('send', 'pageview');
+		    setPage();
 		</script>
 
 	</body>

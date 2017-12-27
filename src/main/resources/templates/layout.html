@@ -1,11 +1,14 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 	<head>
 		<meta charset="utf-8">
 		<title>Maxim - Modern One Page Bootstrap Template</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="description" content="" />
 		<meta name="author" content="" />
+ 		<meta name="_csrf" th:content="${_csrf.token}"/>
+		<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 		<link href="css/bootstrap-responsive.css" rel="stylesheet" />
 		<link href="css/style.css" rel="stylesheet" />
 		<link href="color/default.css" rel="stylesheet" />
@@ -21,29 +24,31 @@
 						<!-- Responsive navbar -->
 						<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
 						</a>
-						<a href="index.html"><img src="images/emh_logo.gif" alt="emh INC." style="width:178px;height:78%;"/></a>
+						<!-- <div> -->
+						<a href="index.html"><img src="images/emh_logo.gif" alt="emh INC." style="position:relative;bottom:-9px;width:178px;height:78%;z-index:20"/></a>
+						<!-- </div> -->
 						<!-- navigation -->
 						<nav class="pull-right nav-collapse collapse">
 						<ul id="menu-main" class="nav">
-							<li><a title="team" href="#about">About</a></li>
-							<li><a title="services" href="#services">Services</a></li>
-							<li><a title="works" href="#works">Works</a></li>
-							<li><a title="blog" href="#blog">Blog</a></li>
-							<li><a title="contact" href="#contact">Contact</a></li>
-							<li><a href="/student/login">Login</a></li>
+							<li><a title="works" href="home">Home</a></li>
+							<li><a title="team" href="aboutus">About</a></li>
+							<li><a title="services" href="fit">Fit Testing</a></li>
+							<li><a title="blog" href="whychoose">Why EMH</a></li>
+							<li><a title="contact" href="contact">Contact</a></li>
+							<li><a href="student/login">Login</a></li>
 						</ul>
 						</nav>
+					</div>
+					<div style="background: #B2CDEB; height: 20px;">
 					</div>
 				</div>
 			</div>
 		</div>
 		<!-- Header area -->
-		<div id="header-wrapper" class="header-slider">
+		<!-- <div id="header-wrapper" class="header-slider" style="border: solid blue 1px;">
 			<header class="clearfix">
-			<!-- <div class="logo">
-				<img src="images/emh_logo.gif" alt="" />
-			</div> -->
 			<div class="container">
+			
 				<div class="row">
 					<div class="span12">
 						<div id="main-flexslider" class="flexslider">
@@ -65,28 +70,33 @@
 								</li>
 							</ul>
 						</div>
-						<!-- end slider -->
+						end slider
 					</div>
 				</div>
 			</div>
 			</header>
-		</div>
+		</div> -->
 		
-		<!-- spacer section -->
-		<section class="spacer green">
 		<div class="container">
-			<div class="row">
-				<div class="span6 alignright flyLeft">
-					<blockquote class="large">
-						 There's huge space beetween creativity and imagination <cite>Mark Simmons, Nett Media</cite>
-					</blockquote>
-				</div>
-				<div class="span6 aligncenter flyRight">
-					<i class="icon-coffee icon-10x"></i>
-				</div>
+			<div class="container-fluid" layout:fragment="content">
+				Real Content
 			</div>
 		</div>
-		</section>
+		<!-- spacer section -->
+		<!-- <section class="spacer green">
+			<div class="container">
+				<div class="row">
+					<div class="span6 alignright flyLeft">
+						<blockquote class="large">
+							 There's huge space beetween creativity and imagination <cite>Mark Simmons, Nett Media</cite>
+						</blockquote>
+					</div>
+					<div class="span6 aligncenter flyRight">
+						<i class="icon-coffee icon-10x"></i>
+					</div>
+				</div>
+			</div>
+		</section> -->
 		<!-- end spacer section -->
 
 		<footer>
@@ -108,7 +118,7 @@
 			                        Licensing information: https://bootstrapmade.com/license/
 			                        Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Maxim
 			                    -->
-			                    <a href="https://bootstrapmade.com/">Designed By KJ</a> by K&J Consulting.
+			                    <a href="https://bootstrapmade.com/">Designed By K&J Consulting</a>
 			                </div>
 						</p>
 					</div>
