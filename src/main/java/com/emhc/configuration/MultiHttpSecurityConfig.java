@@ -33,7 +33,7 @@ public class MultiHttpSecurityConfig {
 		
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
-			System.out.println("/student/login/ configure");
+			
 			http.
 				authorizeRequests()
 	            .antMatchers("/", "/*", "/student/login/**").permitAll()
@@ -70,7 +70,6 @@ public class MultiHttpSecurityConfig {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 			
-			System.out.println("/admin/login/ configure");
 			http
 				.antMatcher("/admin/**")
 				.authorizeRequests()

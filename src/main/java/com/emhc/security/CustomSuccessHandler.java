@@ -23,21 +23,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
  
-	private static final Logger LOGGER = LoggerFactory.getLogger(CustomSuccessHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(CustomSuccessHandler.class);
 
 	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
  
     @Override
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException {
-        System.out.println("CustomSuccessHandler is called: " + request.getServletPath());
-    	LOGGER.debug("CustomSuccessHandler is called: " + request.getRemoteHost());
+        
+        logger.debug("CustomSuccessHandler is called: " + request.getRemoteHost());
     	String targetUrl = determineTargetUrl(authentication, request.getServletPath());
-        System.out.println("CustomSuccessHandler is called, targetUrl: "+targetUrl);
-    	LOGGER.debug("CustomSuccessHandler is called, targetUrl: " + targetUrl);
+        
+        logger.debug("CustomSuccessHandler is called, targetUrl: " + targetUrl);
  
         if (response.isCommitted()) {
-        	LOGGER.debug("Can't redirect");
+        	logger.debug("Can't redirect");
             return;
         }
  
@@ -49,32 +49,60 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
      * appropriate URL according to his/her role.
      */
     protected String determineTargetUrl(Authentication authentication, String path) {
-        String url = "";
+		String url = "";
+		 
+		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+		 
+		List<String> roles = new ArrayList<String>();
+		logger.debug("current authenticated user's role: "+authorities.toString());
+		
+		for(GrantedAuthority a : authorities) {
+			roles.add(a.getAuthority());
+		}
  
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
- 
-        List<String> roles = new ArrayList<String>();
-        System.out.println("--------------------"+authorities.toString());
-        for (GrantedAuthority a : authorities) {
-            roles.add(a.getAuthority());
-            System.out.println("--------------------"+a.getAuthority().toString()+"------------------");
-       }
- 
-        if (isPractice(roles)) {
-            url = "/practice";
-        } else if (isAdmin(roles)) {
-            url = "/admin/home";
-        } else if (isSuper(roles)) {
-            url = "/admin/home";
-        } else if (isStudent(roles)) {
-        	url = "/student/home";
-        } else if (isClient(roles)) {
-        	url = "/student/home";
+        if(isModerator(roles)) {
+            url = "/moderator/home";
+        } else if(isAdmin(roles)) {
+        	if(path.contains("admin")) {
+        		url = "/admin/home";
+        	} else if(path.contains("student")) {
+        		url = "/student/login";
+        	} else {
+        		url = "/admin/login";
+        	}
+        } else if(isSuper(roles)) {
+        	if(path.contains("admin")) {
+        		url = "/admin/home";
+        	} else if(path.contains("student")) {
+        		url = "/student/login";
+        	} else {
+        		url = "/admin/login";
+        	}
+        } else if(isStudent(roles)) {
+        	if(path.contains("student")) {
+        		url = "/student/home";
+        	} else if(path.contains("admin")) {
+        		url = "/admin/login";
+        	} else {
+        		url = "/student/login";
+        	}
+        } else if(isClient(roles)) {
+        	if(path.contains("student")) {
+        		url = "/student/home";
+        	} else if(path.contains("admin")) {
+        		url = "/admin/login";
+        	} else {
+        		url = "/student/login";
+        	}
         } else {
         	if(path.contains("admin")) {
         		url = "/admin/login";
+        	} else if(path.contains("student")) {
+        		url = "/student/login";
+        	} else if(path.contains("moderator")) {
+        		url = "/moderator/login";
         	} else {
-        		url = "/student/home";
+        		url = "/home";
         	}
         }
  
@@ -95,8 +123,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         return false;
     }
  
-    private boolean isPractice(List<String> roles) {
-        if (roles.contains("PRACTICE_ADMIN")) {
+    private boolean isModerator(List<String> roles) {
+        if (roles.contains("MODERATOR")) {
             return true;
         }
         return false;
