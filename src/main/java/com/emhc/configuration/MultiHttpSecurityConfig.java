@@ -41,7 +41,7 @@ public class MultiHttpSecurityConfig {
 	        	.antMatchers("/error/**").permitAll()
 	        	.antMatchers("/image/**").permitAll()
 	        	.antMatchers("/css/**").permitAll()
-	         	.antMatchers("/student/login/**").permitAll()
+	        	.antMatchers("/student/registration/**").permitAll()
 	        	.antMatchers("/student/**").hasAuthority("CLIENT")
 	            .anyRequest().authenticated()
 	        .and()//.csrf().disable()

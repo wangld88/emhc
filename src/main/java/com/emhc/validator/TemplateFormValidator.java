@@ -17,9 +17,6 @@ public class TemplateFormValidator implements Validator {
     private static final String EMAIL_REGEX = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
     private static final Logger logger = LoggerFactory.getLogger(TemplateFormValidator.class);
     
-	//@Autowired
-	//private UserService userService;
-	
 	@Override
 	public boolean supports(Class<?> clazz) {
 		
@@ -30,21 +27,18 @@ public class TemplateFormValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		TemplateForm form = (TemplateForm) target;
 
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subject", "error.subject", "Subject is required.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "sender", "error.sender", "Sender is required.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "recipient", "error.recipient", "Recipient is required.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "content", "error.content", "Content is required.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subject", "NotEmpty.templateForm.subject");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "sender", "NotEmpty.templateForm.sender");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "recipient", "NotEmpty.templateForm.recipient");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "content", "NotEmpty.templateForm.content");
 
-		//validateEmail(form, errors);
+		validateEmail(form.getSender(), errors);
 	}
 
-    /*private void validateEmail(TemplateForm userForm, Errors errors) {
-    	User userExists  = userService.findUserByEmail(userForm.getEmail());
-        if (userExists != null) {
-            errors.reject("email.exists", "User with this email already exists");
-        } else if (!userForm.getEmail().matches(EMAIL_REGEX)) {
-        	logger.debug("email not in right format");
-            errors.rejectValue("email", "WrongFormat.studentProfileForm.email");
+    private void validateEmail(String email, Errors errors) {
+    	
+        if (!email.matches(EMAIL_REGEX)) {
+            errors.rejectValue("sender", "WrongFormat.templateForm.sender");
         }
-    }*/
+    }
 }
