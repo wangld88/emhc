@@ -10,32 +10,44 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.emhc.controller.base.BaseController;
+import com.emhc.dto.StudentPasswordForm;
 import com.emhc.dto.UserDTO;
-import com.emhc.model.User;
+import com.emhc.error.Message;
 import com.emhc.model.Organization;
 import com.emhc.model.Program;
 import com.emhc.model.Role;
+import com.emhc.model.User;
 import com.emhc.service.OrganizationService;
 import com.emhc.service.ProgramService;
 import com.emhc.service.UserService;
+import com.emhc.validator.StudentPasswordFormValidator;
 import com.emhc.validator.UserDTOValidator;
 
 @Controller
 @RequestMapping("/student")
 public class LoginController extends BaseController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ScheduleController.class);
 
 	@Autowired
 	private UserService userService;
@@ -45,7 +57,23 @@ public class LoginController extends BaseController {
 	private ProgramService programService;
 	@Autowired
 	UserDTOValidator validator;
+    @Autowired
+    private MessageSource messageSource;
+    @Autowired
+    private StudentPasswordFormValidator passwordValidator;
 
+    @InitBinder("passwordForm")
+    public void initPasswordBinder(WebDataBinder binder) {
+        binder.addValidators(passwordValidator);
+    }
+
+	
+    @ModelAttribute("passwordForm")
+	public StudentPasswordForm createPasswordModel() {
+		return new StudentPasswordForm();
+	}
+   
+    
 	@RequestMapping(value = { "/", "/login" }, method = RequestMethod.GET)
 	public ModelAndView login() {
 		System.out.println("-------run to here login of student--------");
@@ -169,7 +197,62 @@ public class LoginController extends BaseController {
 		
 		return rtn;
 	}
-
+	
+	
+	@RequestMapping(value="/student/login/forgetPassword", method=RequestMethod.GET)
+	public String dspForgetPassword() {
+		LOGGER.debug("Call forgetPassword");
+		return "/student/login/forgetPassword";
+	}
+	
+    @RequestMapping(value="/student/login/forgetPassword", method=RequestMethod.POST)
+	public String doForgetPassword(@Valid @ModelAttribute("passwordForm") StudentPasswordForm form, BindingResult bindingResult, Model model, final HttpServletRequest request) {
+    	Message message = new Message();
+    	String rtn = "/student/login/forgetPassword";
+		String studentnumber = form.getStudentNumber();
+		LOGGER.debug("Call doForgetPassword POST " + studentnumber);
+    	
+		try {
+	    	if (bindingResult.hasErrors()) {
+	            // failed validation
+				message.setStatus(Message.ERROR);
+				message.setMessage(messageSource.getMessage("StudentLogin.forgetPassword.validation", new Object[] {}, LocaleContextHolder.getLocale()));
+				model.addAttribute("message", message);
+	            return "/student/login/forgetPassword";
+	        }
+			
+/*			final String token = UUID.randomUUID().toString();
+			Student std = studentService.getStudentByNumber(studentnumber);
+			
+			if (std.getStudentid() > 0) {
+				String url = getAppUrl(request);
+				String tokenURL = url + "/student/login/resetPassword?id=" + std.getStudentid() + "&token=" + token;
+				
+				passwordtokenService.createPasswrodtokenForStudent(std, token);
+				
+				emailService.sendEmail(9, "" + std.getStudentid(), tokenURL);
+				rtn = "/student/login/sendPasswordSuccess";
+				
+				message.setStatus(Message.SUCCESS);
+				message.setMessage(messageSource.getMessage("StudentLogin.forgetPassword.success", new Object[] {}, LocaleContextHolder.getLocale()));
+			} else {
+				rtn = "/student/login/forgetPassword";
+				
+				LOGGER.debug("Could not find the student based on provided information - studentnumber: " + studentnumber);
+				message.setStatus(Message.ERROR);
+				message.setMessage(messageSource.getMessage("StudentLogin.forgetPassword.failure", new Object[] {}, LocaleContextHolder.getLocale()));
+			}
+*/
+		} catch(Exception e) {
+			LOGGER.debug("Error in /student/login/forgetPassword of StudentLogin.  Error: " + e.getMessage());
+			message.setStatus(Message.ERROR);
+			message.setMessage(messageSource.getMessage("StudentLogin.forgetPassword.error", new Object[] {}, LocaleContextHolder.getLocale()));
+		}
+		
+		model.addAttribute("message", message);
+		
+		return rtn;
+    }
 	@RequestMapping(value="/logout", method = RequestMethod.GET)
 	public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
 
