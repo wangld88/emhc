@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="emhc">
+		<class>com.emhc.model.Answer</class>
+		<class>com.emhc.model.Funcrole</class>
+		<class>com.emhc.model.Function</class>
+		<class>com.emhc.model.Location</class>
+		<class>com.emhc.model.Organization</class>
+		<class>com.emhc.model.Passwordtoken</class>
+		<class>com.emhc.model.Payment</class>
+		<class>com.emhc.model.Program</class>
+		<class>com.emhc.model.Question</class>
+		<class>com.emhc.model.Registration</class>
+		<class>com.emhc.model.Role</class>
+		<class>com.emhc.model.Schedule</class>
+		<class>com.emhc.model.Secret</class>
+		<class>com.emhc.model.Session</class>
+		<class>com.emhc.model.Template</class>
+		<class>com.emhc.model.User</class>
 	</persistence-unit>
 </persistence>

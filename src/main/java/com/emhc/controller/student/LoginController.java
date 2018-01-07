@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,7 +39,9 @@ import com.emhc.model.Organization;
 import com.emhc.model.Program;
 import com.emhc.model.Role;
 import com.emhc.model.User;
+import com.emhc.service.EmailService;
 import com.emhc.service.OrganizationService;
+import com.emhc.service.PasswordtokenService;
 import com.emhc.service.ProgramService;
 import com.emhc.service.UserService;
 import com.emhc.validator.StudentPasswordFormValidator;
@@ -49,6 +52,8 @@ import com.emhc.validator.UserDTOValidator;
 public class LoginController extends BaseController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScheduleController.class);
 
+	@Autowired
+	private EmailService emailService;
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -61,6 +66,8 @@ public class LoginController extends BaseController {
     private MessageSource messageSource;
     @Autowired
     private StudentPasswordFormValidator passwordValidator;
+    @Autowired
+    private PasswordtokenService passwordtokenService;
 
     @InitBinder("passwordForm")
     public void initPasswordBinder(WebDataBinder binder) {
@@ -199,18 +206,18 @@ public class LoginController extends BaseController {
 	}
 	
 	
-	@RequestMapping(value="/student/login/forgetPassword", method=RequestMethod.GET)
+	@RequestMapping(value="/login/forgetPassword", method=RequestMethod.GET)
 	public String dspForgetPassword() {
 		LOGGER.debug("Call forgetPassword");
 		return "/student/login/forgetPassword";
 	}
 	
-    @RequestMapping(value="/student/login/forgetPassword", method=RequestMethod.POST)
+    @RequestMapping(value="/login/forgetPassword", method=RequestMethod.POST)
 	public String doForgetPassword(@Valid @ModelAttribute("passwordForm") StudentPasswordForm form, BindingResult bindingResult, Model model, final HttpServletRequest request) {
     	Message message = new Message();
     	String rtn = "/student/login/forgetPassword";
-		String studentnumber = form.getStudentNumber();
-		LOGGER.debug("Call doForgetPassword POST " + studentnumber);
+		String username = form.getusername();
+		LOGGER.debug("Call doForgetPassword POST " + username);
     	
 		try {
 	    	if (bindingResult.hasErrors()) {
@@ -221,16 +228,22 @@ public class LoginController extends BaseController {
 	            return "/student/login/forgetPassword";
 	        }
 			
-/*			final String token = UUID.randomUUID().toString();
-			Student std = studentService.getStudentByNumber(studentnumber);
+			final String token = UUID.randomUUID().toString();
+			User emhcuser = userService.getByUsername(username);
 			
-			if (std.getStudentid() > 0) {
+			if (emhcuser.getUserid() > 0) {
 				String url = getAppUrl(request);
-				String tokenURL = url + "/student/login/resetPassword?id=" + std.getStudentid() + "&token=" + token;
+				String tokenURL = url + "/student/login/resetPassword?id=" + emhcuser.getUserid() + "&token=" + token;
 				
-				passwordtokenService.createPasswrodtokenForStudent(std, token);
+				passwordtokenService.createPasswrodtokenForUser(emhcuser, token);
 				
-				emailService.sendEmail(9, "" + std.getStudentid(), tokenURL);
+				String from = "scjimcc@gmail.com";
+				String to = emhcuser.getEmail();
+				String subject = "Reset your Password!";
+				String body = tokenURL;
+
+				emailService.sendMail(from, to, subject, body);
+
 				rtn = "/student/login/sendPasswordSuccess";
 				
 				message.setStatus(Message.SUCCESS);
@@ -238,11 +251,11 @@ public class LoginController extends BaseController {
 			} else {
 				rtn = "/student/login/forgetPassword";
 				
-				LOGGER.debug("Could not find the student based on provided information - studentnumber: " + studentnumber);
+				LOGGER.debug("Could not find the student based on provided information - studentnumber: " + username);
 				message.setStatus(Message.ERROR);
 				message.setMessage(messageSource.getMessage("StudentLogin.forgetPassword.failure", new Object[] {}, LocaleContextHolder.getLocale()));
 			}
-*/
+
 		} catch(Exception e) {
 			LOGGER.debug("Error in /student/login/forgetPassword of StudentLogin.  Error: " + e.getMessage());
 			message.setStatus(Message.ERROR);
@@ -263,4 +276,11 @@ public class LoginController extends BaseController {
 	    return "redirect:/student/login?logout";//You can redirect wherever you want, but generally it's a good practice to show login screen again.
 	}
 
+    private String getAppUrl(HttpServletRequest request) {
+    	if(request.isSecure()) {
+    		return "https://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+    	} else {
+    		return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+    	}
+    }
 }

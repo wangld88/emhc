@@ -13,7 +13,7 @@ public class StudentPasswordForm {
 
     @NotEmpty
     @Size(min=0, max=50)
-    private String studentNumber = "";
+    private String username = "";
 
     public String getEmail() {
         return email;
@@ -23,19 +23,19 @@ public class StudentPasswordForm {
         this.email = email.trim();
     }
 
-    public String getStudentNumber() {
-        return studentNumber;
+    public String getusername() {
+        return username;
     }
 
-    public void setStudentNumber(String studentNumber) {
-        this.studentNumber = studentNumber.trim();
+    public void setusername(String username) {
+        this.username = username.trim();
     }
 
     @Override
     public String toString() {
         return "UserCreateForm{" +
                 "email='" + email.replaceFirst("@.+", "@***") + '\'' +
-                ", studentNumber=" + studentNumber +
+                ", username=" + username +
                 '}';
     }
 

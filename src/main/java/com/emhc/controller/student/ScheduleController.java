@@ -173,7 +173,7 @@ public class ScheduleController {
 				String subject = "JavaMailSender";
 				String body = "Just-Testing222222222222222222222222!";
 
-			//	emailService.sendMail(from, to, subject, body);
+				emailService.sendMail(from, to, subject, body);
 
 				msg = messageSource.getMessage("StudentSchedule.scheduleTest.success", new Object[] {},
 						LocaleContextHolder.getLocale());

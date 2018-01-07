@@ -16,12 +16,13 @@ import com.emhc.service.UserService;
 @Component
 public class StudentPasswordFormValidator implements Validator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(StudentPasswordFormValidator.class);
-    private final UserService UserService;
+    private static final String EMAIL_REGEX = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+    private static final Logger logger = LoggerFactory.getLogger(StudentPasswordFormValidator.class);
+    private final UserService userService;
 
     @Autowired
     public StudentPasswordFormValidator(UserService UserService) {
-        this.UserService = UserService;
+        this.userService = UserService;
     }
 
     @Override
@@ -31,43 +32,29 @@ public class StudentPasswordFormValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        LOGGER.debug("Validating {}", target);
+    	logger.debug("Validating {}", target);
         StudentPasswordForm form = (StudentPasswordForm) target;
         validateStudentNumber(errors, form);
         validateEmail(errors, form);
     }
 
     private void validateStudentNumber(Errors errors, StudentPasswordForm form) {
-    	String stdnum = form.getStudentNumber();
+    	String username = form.getusername();
     	
-    	if(stdnum != null && stdnum.length() > 0 && stdnum.trim().length() == 0) {
-    		errors.rejectValue("studentNumber", "NotProvide.studentActivationForm.studentNumber");
+    	if(username != null && username.length() > 0 && username.trim().length() == 0) {
+    		errors.rejectValue("username", "NotProvide.studentActivationForm.username");
     	}
     }
     
-    private void validateEmail(Errors errors, StudentPasswordForm form) {
-/*    	User emhcuser = UserService.getStudentByNumber(form.getStudentNumber());
-    	//LOGGER.debug("student password: "+std.getPwd()+", student Num: "+std.getStudentnumber());
-        //if (UserService.getStudentByNumber(form.getStudentNumber()).isPresent()) {
-    	//try {
-        if (std == null) {
-        	LOGGER.debug("student.notexists");
-            errors.rejectValue("studentNumber", "NotExist.passwordForm.studentNumber");
+    private void validateEmail(Errors errors, StudentPasswordForm userForm) {
+    	User userExists  = userService.findUserByEmail(userForm.getEmail());
+        if (userExists == null) {
+            errors.reject("email.notexist", "User with this email not exist");
+        } else if (!userForm.getEmail().matches(EMAIL_REGEX)) {
+        	logger.debug("email not in right format");
+            errors.rejectValue("email", "WrongFormat.studentProfileForm.email");
         }
-        else if (std.getPwd() != null && "N".equals(std.getActive())) {
-        	LOGGER.debug("student.notactivated");
-        	errors.rejectValue("studentNumber", "NotActivated.passwordForm.studentNumber");
-        }
-        else if (std.getLearnlinkemail() == null) {
-        	errors.rejectValue("email", "NotExist.passwordForm.email");
-        }
-        else if (!std.getLearnlinkemail().equals(form.getEmail())) {
-        	LOGGER.debug("email.no_match");
-        	errors.rejectValue("email", "NotMatch.passwordForm.email");
-        }
-*/    		
-    	/*} catch (Exception e) {
-    		e.printStackTrace();
-    	}*/
     }
+
+    
 }
