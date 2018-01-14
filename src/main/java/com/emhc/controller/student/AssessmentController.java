@@ -34,7 +34,7 @@ import com.emhc.validator.AssessmentValidator;
 @Controller
 @RequestMapping("/student")
 public class AssessmentController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ProfileController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ProfileController.class);
 
 	@Autowired
 	private MessageSource messageSource;
@@ -83,7 +83,7 @@ public class AssessmentController {
 
 		if (bindingResult.hasErrors()) {
 
-			LOGGER.debug("Assessment form validation failed!!!!!!!!");
+			logger.info("Assessment form validation failed!!!!!!!!");
 			List<ObjectError> errors = bindingResult.getAllErrors();
 			String msg = messageSource.getMessage("Assessment.validation", new Object[] {},
 					LocaleContextHolder.getLocale()) + "<br />";
@@ -106,7 +106,7 @@ public class AssessmentController {
 				Answer answer = form.getAnswer();
 				answer.setUser(getPrincipal());
 				answerService.saveAnswer(answer);
-				System.out.println("------run to assessment saved answer-----");
+
 				message.setStatus(Message.SUCCESS);
 				message.setMessage(messageSource.getMessage("Assessment.success", new Object[] {},
 						LocaleContextHolder.getLocale()));

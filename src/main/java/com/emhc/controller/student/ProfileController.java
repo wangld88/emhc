@@ -42,7 +42,7 @@ import com.emhc.validator.StudentProfileUpdateValidator;
 @Controller
 @RequestMapping("/student")
 public class ProfileController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ProfileController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ProfileController.class);
 
 	@Autowired
 	private UserService userService;
@@ -70,16 +70,14 @@ public class ProfileController {
 	@RequestMapping(value = { "/profile" }, method = RequestMethod.GET)
 	public String profile(Model model) {
 
-		System.out.println("-------run to profile here-------");
 		String rtn = "/student/updateProfile";
 
 		try {
 
 			StudentProfileUpdate form = new StudentProfileUpdate();
 			User emhcuser = getPrincipal();
-			LOGGER.info("$$$$ SP status: " + emhcuser.getUserid());
+			
 			form.setUsername(emhcuser.getUsername());
-			System.out.println("------userid is " + emhcuser.getUserid());
 			form.setUserid(emhcuser.getUserid());
 			form.setFirstname(emhcuser.getFirstname());
 			form.setLastname(emhcuser.getLastname());
@@ -108,7 +106,7 @@ public class ProfileController {
 
 		Message message = new Message();
 
-		LOGGER.debug("Processing updateProfile form={}, bindingResult={}", form, bindingResult);
+		logger.info("Processing updateProfile form={}, bindingResult={}", form, bindingResult);
 
 		String username = form.getUsername();
 		String firstname = form.getFirstname();
@@ -132,8 +130,7 @@ public class ProfileController {
 			// Form validation
 			if (bindingResult.hasErrors()) {
 				// failed validation
-				System.out.println("-------run to here --------");
-				LOGGER.debug("Profile form validation failed!!!!!!!!");
+				logger.info("Profile form validation failed!!!!!!!!");
 				List<ObjectError> errors = bindingResult.getAllErrors();
 				String msg = messageSource.getMessage("StudentProfile.updateProfile.validation", new Object[] {},
 						LocaleContextHolder.getLocale()) + "<br />";
@@ -150,10 +147,6 @@ public class ProfileController {
 				return rtn;
 			}
 
-			// Required fields
-			System.out.println("------userid is form------" + form.getUserid());
-			System.out.println("------password is form------" + emhcuser.getPassword());
-
 			emhcuser.setUsername(username);
 			emhcuser.setFirstname(form.getFirstname());
 			emhcuser.setLastname(form.getLastname());
@@ -167,7 +160,7 @@ public class ProfileController {
 			message.setMessage(messageSource.getMessage("StudentProfile.updateProfile.success", new Object[] {},
 					LocaleContextHolder.getLocale()));
 		} catch (Exception e) {
-			LOGGER.debug("Error in /student/profile POST of StudentProfile.  Error: " + e.getMessage());
+			logger.info("Error in /student/profile POST of StudentProfile.  Error: " + e.getMessage());
 			message.setStatus(Message.ERROR);
 			message.setMessage(messageSource.getMessage("StudentProfile.updateProfile.error", new Object[] {},
 					LocaleContextHolder.getLocale()));
@@ -182,7 +175,6 @@ public class ProfileController {
 	@RequestMapping(value = { "/reset" }, method = RequestMethod.GET)
 	public String reset(Model model) {
 
-		System.out.println("-------run to reset here-------");
 		String rtn = "/student/resetPassword";
 
 		try {
@@ -219,7 +211,7 @@ public class ProfileController {
 
 		model.addAttribute("resetPassword", newForm);
 
-		LOGGER.debug("Processing resetPassword form={}, bindingResult={}", form, bindingResult);
+		logger.info("Processing resetPassword form={}, bindingResult={}", form, bindingResult);
 
 		try {
 
@@ -227,7 +219,7 @@ public class ProfileController {
 			if (bindingResult.hasErrors()) {
 				// failed validation
 				model.addAttribute("ResetPassword", form);
-				LOGGER.debug("Profile form validation failed!!!!!!!!");
+				logger.info("Profile form validation failed!!!!!!!!");
 				List<ObjectError> errors = bindingResult.getAllErrors();
 				msg = messageSource.getMessage("StudentProfile.updatePassword.validation", new Object[] {},
 						LocaleContextHolder.getLocale()) + "<br />";
@@ -244,21 +236,17 @@ public class ProfileController {
 				return rtn;
 			}
 
-			// Required fields
-			System.out.println("------userid is form------" + form.getUserid());
-			System.out.println("------password is form------" + emhcuser.getPassword());
-
 			emhcuser.setPassword(bCryptPasswordEncoder.encode(newpassword));
 			emhcuser = userService.saveUser(emhcuser);
 
 			msg = messageSource.getMessage("StudentProfile.updatePassword.success", new Object[] {},
 					LocaleContextHolder.getLocale());
-			System.out.println("------msg is ------" + msg);
+
 			message.setStatus(Message.SUCCESS);
 			message.setMessage(msg);
 
 		} catch (Exception e) {
-			LOGGER.debug("Error in /student/profile POST of StudentProfile.  Error: " + e.getMessage());
+			logger.info("Error in /student/profile POST of StudentProfile.  Error: " + e.getMessage());
 			message.setStatus(Message.ERROR);
 			message.setMessage(messageSource.getMessage("StudentProfile.updatePassword.error", new Object[] {},
 					LocaleContextHolder.getLocale()));

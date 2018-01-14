@@ -14,12 +14,18 @@ public class TemplateForm {
 
 	private String cc;
 
-	private String content;
-
+	private String textcontent;
+	
+	private String htmlcontent;
+	
 	private String recipient;
 
 	private String sender;
 
+	private String servicename;
+	
+	private String methodname;
+	
 	
 	public TemplateForm() {
 		
@@ -28,6 +34,15 @@ public class TemplateForm {
 	public TemplateForm(Template template) {
 		this.templateid = template.getTemplateid();
 		this.subject = template.getSubject();
+		this.description = template.getDescription();
+		this.sender = template.getSender();
+		this.recipient = template.getRecipient();
+		this.cc = template.getCc();
+		this.bcc = template.getBcc();
+		this.textcontent = template.getTextcontent();
+		this.htmlcontent = template.getHtmlcontent();
+		this.servicename = template.getServicename();
+		this.methodname = template.getMethodname();
 	}
 	
 	
@@ -71,12 +86,20 @@ public class TemplateForm {
 		this.cc = cc;
 	}
 
-	public String getContent() {
-		return content;
+	public String getTextcontent() {
+		return textcontent;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setTextcontent(String textcontent) {
+		this.textcontent = textcontent;
+	}
+
+	public String getHtmlcontent() {
+		return htmlcontent;
+	}
+
+	public void setHtmlcontent(String htmlcontent) {
+		this.htmlcontent = htmlcontent;
 	}
 
 	public String getRecipient() {
@@ -95,6 +118,22 @@ public class TemplateForm {
 		this.sender = sender;
 	}
 	
+	public String getServicename() {
+		return servicename;
+	}
+
+	public void setServicename(String servicename) {
+		this.servicename = servicename;
+	}
+
+	public String getMethodname() {
+		return methodname;
+	}
+
+	public void setMethodname(String methodname) {
+		this.methodname = methodname;
+	}
+
 	public Template getTemplate() {
 		Template template = new Template();
 		
@@ -105,7 +144,10 @@ public class TemplateForm {
 		template.setRecipient(recipient);
 		template.setCc(cc);
 		template.setBcc(bcc);
-		template.setContent(content);
+		template.setTextcontent(textcontent);
+		template.setHtmlcontent(htmlcontent);
+		template.setServicename(servicename);
+		template.setMethodname(methodname);
 		
 		return template;
 	}

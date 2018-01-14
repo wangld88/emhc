@@ -18,19 +18,19 @@ public class AuthUserService implements UserDetailsService 	{
 	@Autowired
 	UserService userService;
 	
-	private final Logger LOGGER = LoggerFactory.getLogger(AuthUserService.class);
+	private final Logger logger = LoggerFactory.getLogger(AuthUserService.class);
 	
 
     @Override
     public UserDetails loadUserByUsername(String username) 
     		throws UsernameNotFoundException {
     	
-    	LOGGER.debug("Student Auth Begins. Locating User in DB {}", username);
+    	logger.info("Student Auth Begins. Locating User in DB {}", username);
 		
         User emhcuser = userService.getByUsername(username);
         
         if(emhcuser == null) {
-        	LOGGER.debug("Client is not found!!!!!!!!!!!!!!");
+        	logger.info("Client is not found!!!!!!!!!!!!!!");
         	throw new UsernameNotFoundException(String.format("User with stdnum=%s was not found", username));
         }
                 //.orElseThrow(() -> new UsernameNotFoundException(String.format("User with stdnum=%s was not found", stdnum))); //1.8

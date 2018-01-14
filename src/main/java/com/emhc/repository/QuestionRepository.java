@@ -9,9 +9,10 @@ import com.emhc.model.Question;
 
 
 @Repository
-public interface QuestionRepository extends JpaRepository<Question, Long> {
+public interface QuestionRepository extends JpaRepository<Question, Integer> {
 
 	Question findByQuestionid(int id);
 	List<Question> findAll();
 	List<Question> findByName(String name);
+	
 }

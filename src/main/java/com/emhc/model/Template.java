@@ -25,12 +25,19 @@ public class Template implements Serializable {
 
 	private String cc;
 
-	private String content;
+	private String textcontent;
+
+	private String htmlcontent;
 
 	private String recipient;
 
 	private String sender;
 
+	private String servicename;
+
+	private String methodname;
+
+	
 	public Template() {
 	}
 
@@ -58,12 +65,20 @@ public class Template implements Serializable {
 		this.cc = cc;
 	}
 
-	public String getContent() {
-		return this.content;
+	public String getTextcontent() {
+		return this.textcontent;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setTextcontent(String textcontent) {
+		this.textcontent = textcontent;
+	}
+
+	public String getHtmlcontent() {
+		return htmlcontent;
+	}
+
+	public void setHtmlcontent(String htmlcontent) {
+		this.htmlcontent = htmlcontent;
 	}
 
 	public String getDescription() {
@@ -96,6 +111,22 @@ public class Template implements Serializable {
 
 	public void setRecipient(String recipient) {
 		this.recipient = recipient;
+	}
+
+	public String getServicename() {
+		return servicename;
+	}
+
+	public void setServicename(String servicename) {
+		this.servicename = servicename;
+	}
+
+	public String getMethodname() {
+		return methodname;
+	}
+
+	public void setMethodname(String methodname) {
+		this.methodname = methodname;
 	}
 
 }

@@ -5,7 +5,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<title>Sign-Up/Login Form</title>
-		<link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css' />
+		<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' type='text/css' />
 		<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" /> -->
   
 		<link rel="stylesheet" th:href="@{/css/student-login.css}" />
@@ -42,11 +42,11 @@
 						<!-- navigation -->
 						<nav class="pull-right nav-collapse collapse">
 							<ul id="menu-main" class="nav">
-							<li><a title="works" href="home">Home</a></li>
-							<li><a title="team" href="aboutus">About</a></li>
-							<li><a title="services" href="fit">Fit Testing</a></li>
-							<li><a title="blog" href="whychoose">Why EMH</a></li>
-							<li><a title="contact" href="contact">Contact</a></li>
+							<li><a title="works" th:href="@{/home}">Home</a></li>
+							<li><a title="team" th:href="@{/aboutus}">About</a></li>
+							<li><a title="services" th:href="@{/fit}">Fit Testing</a></li>
+							<li><a title="blog" th:href="@{/whychoose}">Why EMH</a></li>
+							<li><a title="contact" th:href="@{/contact}">Contact</a></li>
 							<li><a href="student/login">Login</a></li>
 						</nav>
 					</div>
@@ -153,7 +153,7 @@
 								<label>
 									Program Year<span class="req">*</span>
 								</label>
-								<input type="text" th:field="*{programyear}" class="input" /> 
+								<input type="text" th:field="*{programyear}" class="input" required autocomplete="off" /> 
 							</div>
 						</div>
 						<button type="submit" class="button button-block" value="" th:if="${userDTO.programs!=null}" />Register User</button>

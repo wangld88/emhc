@@ -18,12 +18,6 @@ public class LoginUser extends User {
 
 		super(emhc.getUsername(), emhc.getPassword(), AuthorityUtils.createAuthorityList(emhc.getRoles()));
 
-		for (String i: emhc.getRoles()){
-			
-			System.out.println("i:"+ i +" is "+ i.equals("CLIENT"));
-		}
-		System.out.println(emhc.getRoles());
-    	
     	this.emhc = emhc;
     }
 

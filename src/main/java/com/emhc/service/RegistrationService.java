@@ -1,5 +1,7 @@
 package com.emhc.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,14 @@ public class RegistrationService {
 	public Registration findByUser(User user) {
 
 		return registrationRepository.findByUser(user);
+	}
+
+	public List<Registration> getByProgramid(int programid) {
+		return registrationRepository.findBySchedule_session_program_programid(programid);
+	}
+	
+	public List<Registration> getByOrganizationid(long organizationid) {
+		return registrationRepository.findBySchedule_session_program_organization_organizationid(organizationid);
 	}
 
 	public Registration saveRegistration(Registration register) {

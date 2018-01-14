@@ -80,8 +80,6 @@ public class StudentWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     	
     	try{
     		
-			System.out.println("------run to StudentWebSecurityConfigurer-----");
-    		
         http.authorizeRequests()
         	.antMatchers("/").permitAll()
         	.antMatchers("/service/runlottery/**").permitAll()

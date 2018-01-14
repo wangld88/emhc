@@ -40,7 +40,8 @@ public class CommonErrorController implements ErrorController {
         // Appropriate HTTP response code (e.g. 404 or 500) is automatically set by Spring. 
         // Here we just define response body.
     	Map<String, Object> att = getErrorAttributes(request, debug);
-    	logger.debug("There is an error in CommonErrorController: "+response.getStatus());
+    	logger.info("There is an error in CommonErrorController: "+response.getStatus());
+
     	return setErrorView(request, response, att, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -59,23 +60,31 @@ public class CommonErrorController implements ErrorController {
     
     private ModelAndView setErrorView(HttpServletRequest request, HttpServletResponse response, Map<String, Object> att, HttpStatus httpStatus) {
         
-    	response.setStatus(httpStatus.value());
-
         ModelAndView mav = new ModelAndView();
         
         Message message = new Message();
         message.setStatus(Message.ERROR);
         
         StringBuffer url = request.getRequestURL();
-
+        
         String view = "";
+     
         if(att != null) {
         	String path = (String) att.get("path");
-        	if(path.indexOf("/admin") > 0) {
-        		view = "/admin" + PATH;
-	        } else {
-	        	view = "/student" + PATH;
-	        }
+        	
+            if(response.getStatus() == HttpStatus.FORBIDDEN.value()) {
+            	if(path.indexOf("/admin") > 0) {
+            		view = "/admin/login/login";
+    	        } else {
+    	        	view = "/student/login/login";
+    	        }
+            } else {
+	        	if(path.indexOf("/admin") > 0) {
+	        		view = "/admin" + PATH;
+		        } else {
+		        	view = "/student" + PATH;
+		        }
+            }
         } else {
 	        if(url.indexOf("/admin") > 0) {
 	        	view = "/admin" + PATH;
@@ -83,7 +92,7 @@ public class CommonErrorController implements ErrorController {
 	        	view = "/student" + PATH;
 	        }
         }
-        System.out.println("IN COMMON Error view: "+view+", URL: "+url);
+        
     	mav.setViewName(view);
 
     	if (att != null) {
@@ -98,7 +107,7 @@ public class CommonErrorController implements ErrorController {
             
             mav.addObject("error", att.get("error"));
             for(String o: att.keySet()) {
-            	System.out.println(o+": " +att.get(o));
+            	logger.info(o+": " +att.get(o));
             }
             logger.info("ERROR found in Controller");
         } else {
@@ -116,6 +125,8 @@ public class CommonErrorController implements ErrorController {
         mav.addObject("url", url);
         mav.addObject("message", message);
         
+    	response.setStatus(httpStatus.value());
+
         return mav;
     }
 

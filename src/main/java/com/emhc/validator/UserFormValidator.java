@@ -45,7 +45,7 @@ public class UserFormValidator implements Validator {
         if (userExists != null) {
             errors.reject("email.exists", "User with this email already exists");
         } else if (!userForm.getEmail().matches(EMAIL_REGEX)) {
-        	logger.debug("email not in right format");
+        	logger.info("email not in right format");
             errors.rejectValue("email", "WrongFormat.studentProfileForm.email");
         }
     }

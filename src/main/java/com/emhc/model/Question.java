@@ -15,11 +15,11 @@ public class Question implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="id")
+	@Column(name="questionid")
 	private int questionid;
 
 	@Column(name = "isprimary")
-	private byte isprimary;
+	private String isprimary;
 
 	@Column(name = "name")
 	private String name;
@@ -38,11 +38,11 @@ public class Question implements Serializable {
 		this.questionid = questionid;
 	}
 
-	public byte getIsprimary() {
+	public String getIsprimary() {
 		return this.isprimary;
 	}
 
-	public void setIsprimary(byte isprimary) {
+	public void setIsprimary(String isprimary) {
 		this.isprimary = isprimary;
 	}
 

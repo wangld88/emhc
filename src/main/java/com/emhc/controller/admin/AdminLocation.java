@@ -85,7 +85,6 @@ public class AdminLocation extends BaseController {
 			form = new LocationForm(location);
 		}
 		if(errMessage != null) {
-			System.out.println("MESSAGE: "+errMessage.getMessage());
 			model.addAttribute("message", errMessage);
 		}
 		List<Organization> orgs = organizationService.findAll();
@@ -100,7 +99,7 @@ public class AdminLocation extends BaseController {
 	public String doLocation(@Valid @ModelAttribute("locationForm") LocationForm form, 
 		BindingResult bindingResult, Model model, HttpSession httpSession, final RedirectAttributes ra) {
 		
-		//logger.debug("Processing updateProfile form={}, bindingResult={}", form, bindingResult);		
+		//logger.info("Processing updateProfile form={}, bindingResult={}", form, bindingResult);		
 		String rtn = "/admin/locations";
 		
 		User user = getPrincipal();
@@ -136,7 +135,7 @@ public class AdminLocation extends BaseController {
 			}
 			
 			Location location = form.getLocation();
-			System.out.println("Location ID: "+form.getLocationid());
+
 			locationService.save(location);
 			List<Location> locations = locationService.getAll();
 			
@@ -168,7 +167,7 @@ public class AdminLocation extends BaseController {
     private User getPrincipal(){
     	User user = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //System.out.println("Role is : "+((LoginStudent)principal).toString());
+        
         if (principal instanceof LoginUser) {
             user = ((LoginUser)principal).getUser();
         } else {

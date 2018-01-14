@@ -91,7 +91,6 @@ public class AdminScheduleController extends BaseController {
 			sessions = sessionService.getByOrganization(schedule.getSession().getProgram().getOrganization());
 		}
 		if(errMessage != null) {
-			System.out.println("MESSAGE: "+errMessage.getMessage());
 			model.addAttribute("message", errMessage);
 		}
 		List<Organization> orgs = organizationService.findAll();
@@ -118,7 +117,6 @@ public class AdminScheduleController extends BaseController {
 			sessions = sessionService.getByOrganizationid(orgid);
 		}
 		if(errMessage != null) {
-			System.out.println("MESSAGE: "+errMessage.getMessage());
 			model.addAttribute("message", errMessage);
 		}
 		
@@ -138,7 +136,7 @@ public class AdminScheduleController extends BaseController {
 	public String doSchedule(@Valid @ModelAttribute("scheduleForm") ScheduleForm form, 
 		BindingResult bindingResult, Model model, HttpSession httpSession, final RedirectAttributes ra) {
 		
-		//logger.debug("Processing updateProfile form={}, bindingResult={}", form, bindingResult);		
+		//logger.info("Processing updateProfile form={}, bindingResult={}", form, bindingResult);		
 		String rtn = "/admin/schedules";
 		
 		User user = getPrincipal();
@@ -186,9 +184,7 @@ public class AdminScheduleController extends BaseController {
 				schedule.setSession(sessionService.getById(form.getSessionid()));
 			}
 			
-			System.out.println("Schedule ID: "+form.getScheduleid());
 			schedule = scheduleService.save(schedule);
-			System.out.println("Schedule ID: "+schedule.getScheduleid());
 			
 			List<Schedule> schedules = scheduleService.getAll();
 			
@@ -220,7 +216,7 @@ public class AdminScheduleController extends BaseController {
 	private User getPrincipal(){
     	User user = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //System.out.println("Role is : "+((LoginStudent)principal).toString());
+        
         if (principal instanceof LoginUser) {
             user = ((LoginUser)principal).getUser();
         } else {

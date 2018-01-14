@@ -14,7 +14,7 @@ import com.emhc.dto.AnswerDTO;
 public class AssessmentValidator implements Validator {
 
 	Class<?> noparams[] = {};
-    private static final Logger LOGGER = LoggerFactory.getLogger(AssessmentValidator.class);
+    private static final Logger logger = LoggerFactory.getLogger(AssessmentValidator.class);
 
 
     @Override
@@ -24,7 +24,7 @@ public class AssessmentValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        LOGGER.debug("Assessment Validating {} started", target);
+        logger.info("Assessment Validating {} started", target);
         AnswerDTO form = (AnswerDTO) target;
 		validateAnswerDTO(errors, form);
 			  
@@ -40,10 +40,8 @@ public class AssessmentValidator implements Validator {
 
 			for(int i = 1; i < 15; i++){
 				String mtn = String.format("getButton%1$02d" , i);
-				System.out.println(mtn);
 				if(c.getDeclaredMethod(mtn, noparams).invoke(form) !=null){
-					System.out.println(" name is "+ mtn);
-				
+					//TO_DO???
 				}
 
 			}

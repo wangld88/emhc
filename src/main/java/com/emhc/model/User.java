@@ -33,6 +33,7 @@ public class User implements Serializable {
 	@Id
 	private int userid;
 
+	@Column(name = "createdby")
 	private int createdby;
 
 	@Temporal(TemporalType.DATE)
@@ -47,24 +48,26 @@ public class User implements Serializable {
 	private String lastname;
 
 	@Column(name = "email")
-//	@Email(message = "*Please provide a valid Email")
 	@NotEmpty(message = "*Please provide an email")
 	private String email;
+	
 	@Column(name = "password")
 	@Length(min = 3, message = "*Your password must have at least 3 characters")
 	@NotEmpty(message = "*Please provide your password")
 	//@Transient
 	private String password;
 	
-
+	@Column(name = "programyear")
 	private int programyear;
 
+	@Column(name = "status")
 	private String status;
 
 	@Column(name = "username")
 	@NotEmpty(message = "*Please provide your user name")
 	private String username;
 
+	@Column(name = "viewer")
 	private byte viewer;
 
 	//bi-directional many-to-one association to Answer

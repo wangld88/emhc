@@ -3,73 +3,74 @@
 	<div layout:fragment="content" class="container">
 
 		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a th:href="@{/admin/user}">Users</a></li>
+			<li class="breadcrumb-item"><a th:href="@{/admin/users}">Users</a></li>
 			<!-- <li class="breadcrumb-item"><a href="#">Forms</a></li> -->
-			<li class="breadcrumb-item active"><span th:text="${userForm==null?'New User':'Edit User'}"></span></li>
+			<li class="breadcrumb-item active"><span th:text="${userForm==null or userForm.userid==0?'New User':'Edit User'}"></span></li>
 		</ol>
 		
-		<div class="col-xs-12 col-sm-12">
+		<div class="col-lg-12 col-xs-12 col-sm-12">
 			<div class="box">
 				<div class="box-content">
-					<h4 class="page-header">User form</h4>
+					<!-- <h4 class="page-header">User form</h4> -->
 					<p>The field with (*) is mandatory.</p>
 					
-					<div th:if="${message != null and #strings.length(message.message) != 0}" th:class="${message.status}">
+					<div class="col-lg-8 col-sm-4" th:if="${message != null and #strings.length(message.message) != 0}" th:class="${message.status}">
 						<font style="font-size: 12px;"><span th:utext="${message.message}" th:remove="tag" /></font>
 					</div>
 					
 					<form class="form-horizontal" id="org" th:action="@{/admin/user}" method="post" th:object="${userForm}">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">Organization*</label>
-							<div class="col-sm-4">
+							<label class="col-lg-8 col-sm-4 control-label">Organization*</label>
+							<div class="col-lg-8 col-sm-4">
 								<select th:field="*{organization.organizationid}" class="form-control" placeholder="Organization" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Organization" onchange="loadOrgs(this)">
 									<option th:each="org:${userForm.organizations}" th:value="${org.organizationid}" th:text="${org.name}" th:selected="${org.organizationid==userForm.organization.organizationid?'selected':''}" />
 								</select>
 							</div>
-							<label class="col-sm-4 control-label">Program*</label>
-							<div class="col-sm-4">
+							<label class="col-lg-8 col-sm-4 control-label">Program*</label>
+							<div class="col-lg-8 col-sm-4">
 								<select th:field="*{program.programid}" class="form-control" placeholder="Program" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Program">
 									<option th:each="program:${userForm.programs}" th:value="${program.programid}" th:text="${program.name}" th:selected="${program.programid==userForm.program.programid?'selected':''}" />
 								</select>
 							</div>
-							<label class="col-sm-4 control-label">User name*</label>
-							<div class="col-sm-4">
+							<label class="col-lg-8 col-sm-4 control-label">User name*</label>
+							<div class="col-lg-8 col-sm-4">
 								<input type="text" th:field="*{username}" class="form-control" placeholder="User name" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Username" autocomplete="off" />
 							</div>
-							<label class="col-sm-4 control-label">First name*</label>
-							<div class="col-sm-4">
+							<label class="col-lg-8 col-sm-4 control-label">First name*</label>
+							<div class="col-lg-8 col-sm-4">
 								<input type="text" th:field="*{firstname}" class="form-control" placeholder="First name" data-toggle="tooltip" data-placement="bottom" title="Tooltip for First name" autocomplete="off" />
 							</div>
-							<label class="col-sm-4 control-label">Last name*</label>
-							<div class="col-sm-4">
+							<label class="col-lg-8 col-sm-4 control-label">Last name*</label>
+							<div class="col-lg-8 col-sm-4">
 								<input type="text" th:field="*{lastname}" class="form-control" placeholder="Last name" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Last name" autocomplete="off" />
 							</div>
-							<label class="col-sm-4 control-label">Password*</label>
-							<div class="col-sm-4">
+							<label class="col-lg-8 col-sm-4 control-label">Password*</label>
+							<div class="col-lg-8 col-sm-4">
 								<input type="password" th:field="*{password}" class="form-control" placeholder="Password" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Password" autocomplete="off" />
 							</div>
-							<label class="col-sm-4 control-label">Email Address*</label>
-							<div class="col-sm-4">
+							<label class="col-lg-8 col-sm-4 control-label">Email Address*</label>
+							<div class="col-lg-8 col-sm-4">
 								<input type="text" th:field="*{email}" class="form-control" placeholder="Email Address" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Email Address">
 							</div>
-							<label class="col-sm-4 control-label">Program Year*</label>
-							<div class="col-sm-4">
+							<label class="col-lg-8 col-sm-4 control-label">Program Year*</label>
+							<div class="col-lg-8 col-sm-4">
 								<input type="text" th:field="*{programyear}" class="form-control" placeholder="Program Year" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Program Year" />
 							</div>
-							<label class="col-sm-4 control-label">Role*</label>
-							<div class="col-sm-4">
+							<label class="col-lg-8 col-sm-4 control-label">Role*</label>
+							<div class="col-lg-8 col-sm-4">
 								<select th:field="*{role.roleid}" class="form-control" placeholder="Role" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Role">
 									<option th:each="rol:${userForm.roles}" th:value="${rol.roleid}" th:text="${rol.name}" />
 								</select>
 							</div>
-							<div class="col-sm-4" style="height: 20px;">
+							<div class="col-lg-8 col-sm-4" style="height: 20px;">
 								<input type="hidden" th:field="*{userid}" />
 							</div>
-							<div class="col-sm-4">
+							<div class="col-lg-8 col-sm-4">
 								<button type="submit" class="btn btn-primary btn-label-left">
 									<span><i class="fa fa-clock-o"></i></span>
 									Submit
 								</button>
+								<a th:href="@{/admin/users}" class="btn btn-primary btn-label-left"><span><i class="fa fa-remove"></i></span> Cancel</a>
 							</div>
 						</div>
 						

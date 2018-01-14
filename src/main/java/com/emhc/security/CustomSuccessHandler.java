@@ -31,13 +31,13 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException {
         
-        logger.debug("CustomSuccessHandler is called: " + request.getRemoteHost());
+        logger.info("CustomSuccessHandler is called: " + request.getRemoteHost());
     	String targetUrl = determineTargetUrl(authentication, request.getServletPath());
         
-        logger.debug("CustomSuccessHandler is called, targetUrl: " + targetUrl);
+        logger.info("CustomSuccessHandler is called, targetUrl: " + targetUrl);
  
         if (response.isCommitted()) {
-        	logger.debug("Can't redirect");
+        	logger.info("Can't redirect");
             return;
         }
  
@@ -54,7 +54,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		 
 		List<String> roles = new ArrayList<String>();
-		logger.debug("current authenticated user's role: "+authorities.toString());
+		logger.info("current authenticated user's role: "+authorities.toString());
 		
 		for(GrantedAuthority a : authorities) {
 			roles.add(a.getAuthority());

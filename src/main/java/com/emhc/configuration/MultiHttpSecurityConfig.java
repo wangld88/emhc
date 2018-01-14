@@ -36,6 +36,7 @@ public class MultiHttpSecurityConfig {
 			
 			http.
 				authorizeRequests()
+	            .antMatchers("/*").permitAll()
 	            .antMatchers("/", "/*", "/student/login/**").permitAll()
 	            .antMatchers("/EMH_Flash/*").permitAll()
 	        	.antMatchers("/error/**").permitAll()

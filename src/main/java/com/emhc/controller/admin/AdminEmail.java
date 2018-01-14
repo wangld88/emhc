@@ -1,6 +1,5 @@
 package com.emhc.controller.admin;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -25,13 +24,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.emhc.controller.base.BaseController;
 import com.emhc.dto.TemplateForm;
-import com.emhc.dto.TemplateForm;
 import com.emhc.error.Message;
-import com.emhc.model.Location;
-import com.emhc.model.Organization;
-import com.emhc.model.Program;
 import com.emhc.model.Template;
-import com.emhc.model.Session;
 import com.emhc.model.User;
 import com.emhc.security.LoginUser;
 import com.emhc.validator.TemplateFormValidator;
@@ -62,7 +56,7 @@ public class AdminEmail extends BaseController {
 		
 		User user = getPrincipal();
 	
-		List<Organization> orgs = organizationService.findAll();
+		//List<Organization> orgs = organizationService.findAll();
 		
 		if(user == null) {
 			rtn = "/admin/login";
@@ -75,7 +69,10 @@ public class AdminEmail extends BaseController {
 
 	
 	@RequestMapping(value="/template/{templateid}", method=RequestMethod.GET)
-	public String dspOrganization(@PathVariable("templateid") Integer templateid, @ModelAttribute("errMessage") Message errMessage, Model model) {
+	public String dspTemplate(@PathVariable("templateid") Integer templateid, 
+							@ModelAttribute("errMessage") Message errMessage, 
+							Model model) {
+		
 		String rtn = "/admin/template";
 		
 		User user = getPrincipal();
@@ -90,7 +87,6 @@ public class AdminEmail extends BaseController {
 			form = new TemplateForm(template);
 		}
 		if(errMessage != null) {
-			System.out.println("MESSAGE: "+errMessage.getMessage());
 			model.addAttribute("message", errMessage);
 		}
 		
@@ -103,14 +99,17 @@ public class AdminEmail extends BaseController {
 	
 	@RequestMapping(value="/template", method=RequestMethod.POST)
 	public String doTemplate(@Valid @ModelAttribute("templateForm") TemplateForm form, 
-		BindingResult bindingResult, Model model, HttpSession httpSession, final RedirectAttributes ra) {
+							BindingResult bindingResult, 
+							Model model, 
+							HttpSession httpSession, 
+							RedirectAttributes ra) {
 		
-		//logger.debug("Processing updateProfile form={}, bindingResult={}", form, bindingResult);		
+		//logger.info("Processing updateProfile form={}, bindingResult={}", form, bindingResult);		
 		String rtn = "/admin/templates";
 		
 		User user = getPrincipal();
 		Message message = new Message();
-		
+
 		if(user == null) {
 			rtn = "/admin/login";
 		} else {
@@ -132,6 +131,7 @@ public class AdminEmail extends BaseController {
 				message.setMessage(msg);
 				int templateid = form.getTemplateid();
 				model.addAttribute("message", message);
+
 				if(templateid == 0) {
 					return "/admin/template";
 				} else {
@@ -144,9 +144,7 @@ public class AdminEmail extends BaseController {
 			
 			Template template = form.getTemplate();
 			
-			System.out.println("Template ID: "+form.getTemplateid());
 			template = templateService.save(template);
-			System.out.println("Template ID: "+template.getTemplateid());
 			
 			List<Template> templates = templateService.getAll();
 			
@@ -179,7 +177,7 @@ public class AdminEmail extends BaseController {
 	private User getPrincipal(){
     	User user = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //System.out.println("Role is : "+((LoginStudent)principal).toString());
+        
         if (principal instanceof LoginUser) {
             user = ((LoginUser)principal).getUser();
         } else {

@@ -1,37 +1,5 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org" 
-	layout:decorator="student/template/layout">
-<head>
-	<script th:inline="javascript">
-		function loadSessions(elmt) {
-			form = document.getElementById("sessionForm");
-			form.action=form.action+"/"+elmt.value;
-/*  			alert("schedule action: "+ form.action);
- */ 			form.submit();
-		}
-		function validateRadioButtons(){ 
-	        //Make groups
-	        var names = []
-	        $('input:radio').each(function () {
-	            var rname = $(this).attr('name');
-	            if ($.inArray(rname, names) == -1) names.push(rname);
-	        });
-	        var radioError = false;
-	        $.each(names, function (i, name) {
-	            if ($('input[name="' + name + '"]:checked').length == 0) {
-	                radioError = true;
-	            }
-	        });
-	        
-	        //check for error
-	        if(radioError) {
-	            alert('You need to select 1 option from each group.');
-	            return false;
-	        }
-		}	
-	</script>
-</head>
-	
+<html layout:decorator="student/template/layout">
+
 	<div layout:fragment="content">
 	
 		<div class="row">
@@ -42,45 +10,75 @@
 				<h4>Please pick up the time slot you want</h4>
 				<h6>Student from University of Toronto will have the mask test at Toronto </h6>
 	
-					<div th:if="${message != null and #strings.length(message.message) != 0}" th:class="${message.status}">
-						<font style="font-size: 12px;"><span th:utext="${message.message}" th:remove="tag"></span></font>
-					</div>	
+				<div th:if="${message != null and #strings.length(message.message) != 0}" th:class="${message.status}">
+					<font style="font-size: 12px;"><span th:utext="${message.message}" th:remove="tag"></span></font>
+				</div>	
 
-					<div class="form-group">
-						<div class="col-sm-9">
-			   				<label class="active">Available session(choose your session):</label>
-			  			    <select class="select" th:field="${studentScheduleTest.session.sessionid}" id="sessionid" name="sessionid" onchange="loadSessions(this)">
-						        <option value="0">Select First</option>
-						        <option th:each="ses : ${studentScheduleTest.sessions}"
-						                th:value="${ses.sessionid}"
-						                th:text="${ses.name}"></option>
-						    </select>
-						</div>
+				<div class="form-group">
+					<div class="col-sm-9">
+		   				<label class="active">Available session(choose your session):</label>
+		  			    <select class="form-control" th:field="${studentScheduleTest.session.sessionid}" id="sessionid" name="sessionid" onchange="loadSessions(this)">
+					        <option value="0">Select First</option>
+					        <option th:each="ses : ${studentScheduleTest.sessions}"
+					                th:value="${ses.sessionid}"
+					                th:text="${ses.name + ' (' + ses.sessiondate + ')'}"></option>
+					    </select>
 					</div>
-
- 		  			<div class="form-group" th:if="${studentScheduleTest.schedules!=null}">
-		  				<div class="col-sm-9">
-			                <label th:each="schedule : ${studentScheduleTest.schedules}" >
-			                    <input type="radio" th:field="*{scheduleid}"                      
-			                        th:text="${schedule.scheduletime}" th:value="${schedule.scheduleid}" th:checked="${schedule.scheduleid==scheduleid?'checked':''}"></input>
-							</label>
-							<input type="hidden" th:field="*{registrationid}" class="form-control"></input> 
-						</div>
-					</div>
-	 
-	 				<div class="form-group">
-						<div class="col-sm-9">
-	 					<button class="btn btn-primary btn-block" type="Submit">Submit</button>
-						</div>
-					</div>		
-
-				</form>	
-
-				<form id="sessionForm" th:action="@{/student/schedule}" method="get"></form>
- 		
 				</div>
+
+		  		<div class="form-group" th:if="${studentScheduleTest.schedules!=null}">
+	  				<div class="col-sm-3">
+		                <label th:each="schedule : ${studentScheduleTest.schedules}" >
+		                    <input type="radio" th:field="*{scheduleid}"                      
+		                        th:text="${#dates.format(schedule.scheduletime, 'HH:mm a')}" th:value="${schedule.scheduleid}" th:checked="${schedule.scheduleid==scheduleid?'checked':''}"></input>
+						</label>
+						<input type="hidden" th:field="*{registrationid}" class="form-control"></input> 
+					</div>
+				</div>
+ 
+ 				<div class="form-group" th:if="${studentScheduleTest.schedules!=null}">
+					<div class="col-sm-9">
+ 						<button class="btn btn-primary btn-block" type="Submit">Submit</button>
+					</div>
+				</div>		
+
+			</form>	
+
+			<form id="sessionForm" th:action="@{/student/schedule}" method="get"></form>
+		
 			</div>
 		</div>
 
+		<script th:inline="javascript">
+		/*<![CDATA[*/
+			function loadSessions(elmt) {
+				form = document.getElementById("sessionForm");
+				form.action=form.action+"/"+elmt.value;
+	 			form.submit();
+			}
+			function validateRadioButtons(){ 
+		        //Make groups
+		        var names = []
+		        $('input:radio').each(function () {
+		            var rname = $(this).attr('name');
+		            if ($.inArray(rname, names) == -1) names.push(rname);
+		        });
+		        var radioError = false;
+		        $.each(names, function (i, name) {
+		            if ($('input[name="' + name + '"]:checked').length == 0) {
+		                radioError = true;
+		            }
+		        });
+		        
+		        //check for error
+		        if(radioError) {
+		            alert('You need to select 1 option from each group.');
+		            return false;
+		        }
+			}	
+			/*]]>*/
+		</script>
 
+	</div>
+	
 </html>

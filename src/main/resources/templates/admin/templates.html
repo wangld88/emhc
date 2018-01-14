@@ -26,8 +26,8 @@
 											<th>Description</th>
 											<th>Sender</th>
 											<th><i class="fa fa-mail"></i>Recipient</th>
-											<th><i class="fa fa-calendar"></i>CC</th>
-											<th><i class="fa fa-cog"></i>BCC</th>
+											<!-- <th><i class="fa fa-calendar"></i>CC</th>
+											<th><i class="fa fa-cog"></i>BCC</th> -->
 											<th><i class="fa fa-map-marker"></i>Content</th>
 											<th>Action</th>
 										</tr>
@@ -38,8 +38,8 @@
 											<th>Description</th>
 											<th>Sender</th>
 											<th><i class="fa fa-mail"></i>Recipient</th>
-											<th><i class="fa fa-calendar"></i>CC</th>
-											<th><i class="fa fa-cog"></i>BCC</th>
+											<!-- <th><i class="fa fa-calendar"></i>CC</th>
+											<th><i class="fa fa-cog"></i>BCC</th> -->
 											<th><i class="fa fa-map-marker"></i>Content</th>
 											<th>Action</th>
 										</tr>
@@ -50,9 +50,9 @@
 											<td><span th:text="${template.description}"></span></td>
 											<td><span th:text="${template.sender}"></span></td>
 											<td><span th:text="${template.recipient}"></span></td>
-											<td><span th:text="${template.cc}"></span></td>
-											<td><span th:text="${template.bcc}"></span></td>
-											<td><span th:text="${template.content}"></span></td>
+											<!-- <td><span th:text="${template.cc}"></span></td>
+											<td><span th:text="${template.bcc}"></span></td> -->
+											<td><span th:text="${template.textcontent}"></span></td>
 											<td><a th:href="@{'/admin/template/'}+${template.templateid}" title="Edit"><i class="fa fa-edit"></i></a></td>
 										</tr>
 									</tbody>

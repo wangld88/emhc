@@ -30,7 +30,7 @@ public class TemplateFormValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subject", "NotEmpty.templateForm.subject");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "sender", "NotEmpty.templateForm.sender");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "recipient", "NotEmpty.templateForm.recipient");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "content", "NotEmpty.templateForm.content");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "textcontent", "NotEmpty.templateForm.content");
 
 		validateEmail(form.getSender(), errors);
 	}

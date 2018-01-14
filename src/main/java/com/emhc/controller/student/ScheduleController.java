@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.emhc.dto.StudentScheduleTest;
 import com.emhc.error.Message;
+import com.emhc.error.MessageHandler;
 import com.emhc.model.User;
 import com.emhc.model.Registration;
 import com.emhc.model.Schedule;
@@ -43,41 +44,56 @@ import com.emhc.service.UserService;
 @Controller
 @RequestMapping("/student")
 public class ScheduleController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ScheduleController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ScheduleController.class);
 
 	@Autowired
 	private EmailService emailService;
+	
 	@Autowired
 	private UserService userService;
+	
 	@Autowired
 	private RegistrationService registrationService;
+	
 	@Autowired
 	private ScheduleService scheduleService;
+	
 	@Autowired
 	private SessionService sessionService;
+	
 	@Autowired
-	private MessageSource messageSource;
+	private MessageHandler messageHandler;
 
+	
 	@RequestMapping(value = { "/schedule" }, method = RequestMethod.GET)
 	public String schedule(Model model) {
 		String rtn = "/student/scheduleTest";
 
-		try {
-			StudentScheduleTest form = new StudentScheduleTest();
-			User user = getPrincipal();
-			LOGGER.info("$$$$ SP status: " + user.getUserid());
+		StudentScheduleTest form = new StudentScheduleTest();
+		User user = getPrincipal();
 
-			Session session = sessionService.getById(1);
+		try {
+			logger.info("$$$$ SP status: " + user.getUserid());
+			Session session = new Session();
+			Registration regist = registrationService.findByUser(user);
+			if(regist != null) {
+				form.setRegistrationid(regist.getRegistrationid());
+				form.setScheduleid(regist.getSchedule().getScheduleid());
+				session = regist.getSchedule().getSession();
+				List<Schedule> schedules = scheduleService.getBySession(session);
+				form.setSchedules(schedules);
+			}
 			List<Session> sessions = sessionService.getByProgram(user.getProgram());
 			form.setSession(session);
 			form.setSessions(sessions);
-			model.addAttribute("loginUser", user);
-			model.addAttribute("studentScheduleTest", form);
-			return rtn;
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		model.addAttribute("loginUser", user);
+		model.addAttribute("studentScheduleTest", form);
+		
 		return rtn;
 	}
 
@@ -88,7 +104,7 @@ public class ScheduleController {
 		try {
 			StudentScheduleTest form = new StudentScheduleTest();
 			User user = getPrincipal();
-			LOGGER.info("$$$$ SP status: " + user.getUserid());
+			logger.info("$$$$ SP status: " + user.getUserid());
 
 			Session session = sessionService.getById(sesid);
 			List<Session> sessions = sessionService.getByProgram(user.getProgram());
@@ -97,7 +113,6 @@ public class ScheduleController {
 
 			Registration registration = registrationService.findByUser(user);
 			if (registration != null) {
-				System.out.println("registration ID = " + registration.getRegistrationid());
 				form.setRegistrationid(registration.getRegistrationid());
 				form.setScheduleid(registration.getSchedule().getScheduleid());
 			} else {
@@ -110,6 +125,7 @@ public class ScheduleController {
 			form.setSessions(sessions);
 			model.addAttribute("loginUser", user);
 			model.addAttribute("studentScheduleTest", form);
+			
 			return rtn;
 
 		} catch (Exception e) {
@@ -123,12 +139,7 @@ public class ScheduleController {
 	public String createschedule(@Valid StudentScheduleTest form, BindingResult bindingResult, Model model,
 			RedirectAttributes attrs) {
 
-		String rtn = "";
-
-		int scheduleid = form.getScheduleid();
-		Schedule schedule = scheduleService.getById(scheduleid);
-		int sessionid = schedule.getSession().getSessionid();
-		rtn = "redirect:/student/schedule/" + sessionid;
+		String rtn = "/student/schedule";
 		Message message = new Message();
 		String msg;
 
@@ -136,14 +147,13 @@ public class ScheduleController {
 			// Form validation
 			if (bindingResult.hasErrors()) {
 				// failed validation
-				LOGGER.debug("Profile form validation failed!!!!!!!!");
+				logger.info("Profile form validation failed!!!!!!!!");
 				List<ObjectError> errors = bindingResult.getAllErrors();
-				msg = messageSource.getMessage("StudentProfile.updatePassword.validation", new Object[] {},
-						LocaleContextHolder.getLocale()) + "<br />";
+				msg = messageHandler.get("Header.scheduleForm.validation") + "<br />";
 				for (ObjectError i : errors) {
 					if (i instanceof FieldError) {
 						FieldError fieldError = (FieldError) i;
-						msg += messageSource.getMessage(fieldError, LocaleContextHolder.getLocale()) + "<br />";
+						msg += messageHandler.get(fieldError.getCode()) + "<br />";
 					}
 				}
 				message.setStatus(Message.ERROR);
@@ -153,6 +163,10 @@ public class ScheduleController {
 			}
 
 			User currentUser = getPrincipal();
+
+			int scheduleid = form.getScheduleid();
+			Schedule schedule = scheduleService.getById(scheduleid);
+			int sessionid = schedule.getSession().getSessionid();
 
 			if ((registrationService.findByUser(currentUser) == null) || (form.getRegistrationid() != 0)) {
 
@@ -174,31 +188,32 @@ public class ScheduleController {
 				String body = "Just-Testing222222222222222222222222!";
 
 				emailService.sendMail(from, to, subject, body);
-
-				msg = messageSource.getMessage("StudentSchedule.scheduleTest.success", new Object[] {},
-						LocaleContextHolder.getLocale());
+				String param = "" + currentUser.getUserid();
+				emailService.sendEmail(1, param, "");
+				
+				msg = messageHandler.get("StudentSchedule.scheduleTest.success");
 				message.setStatus(Message.SUCCESS);
 				message.setMessage(msg);
-				System.out.println("----msg is -------" + msg);
 
 			} else {
 				message.setStatus(Message.ERROR);
-				message.setMessage(messageSource.getMessage("StudentSchedule.scheduleTest.error", new Object[] {},
-						LocaleContextHolder.getLocale()));
+				message.setMessage(messageHandler.get("StudentSchedule.scheduleTest.error"));
 
 			}
+			
+			rtn = "redirect:/student/schedule/" + sessionid;
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			LOGGER.debug("Error in /student/profile POST of StudentProfile.  Error: " + e.getMessage());
+			logger.info("Error in /student/profile POST of StudentProfile.  Error: " + e.getMessage());
 			message.setStatus(Message.ERROR);
-			message.setMessage(messageSource.getMessage("StudentSchedule.scheduleTest.error", new Object[] {},
-					LocaleContextHolder.getLocale()));
+			message.setMessage(messageHandler.get("StudentSchedule.scheduleTest.error"));
 		}
 
 		attrs.addFlashAttribute("message", message);
 		attrs.addFlashAttribute("studentScheduleTest", form);
 		model.addAttribute("loginUser", getPrincipal());
+		
 		return rtn;
 	}
 

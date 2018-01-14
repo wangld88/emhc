@@ -17,7 +17,7 @@ import com.emhc.dto.StudentProfileUpdate;
 @Component
 public class StudentProfileUpdateValidator implements Validator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(StudentProfileUpdateValidator.class);
+    private static final Logger logger = LoggerFactory.getLogger(StudentProfileUpdateValidator.class);
 
     private Pattern pattern;  
     private Matcher matcher;  
@@ -40,7 +40,7 @@ public class StudentProfileUpdateValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        LOGGER.debug("StudentProfileUpdate Validating {} started", target);
+        logger.info("StudentProfileUpdate Validating {} started", target);
         StudentProfileUpdate form = (StudentProfileUpdate) target;
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "error.username", "User name is required.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstname", "error.firstname", "First name is required.");
@@ -57,10 +57,10 @@ public class StudentProfileUpdateValidator implements Validator {
     	String email = form.getEmail();
 
         if (email == null || email.length() == 0) {
-        	LOGGER.debug("email.no_provide :" + email);
+        	logger.info("email.no_provide :" + email);
             errors.rejectValue("email", "NotProvide.StudentProfileUpdate.email");
         } else if (!email.matches(EMAIL_REGEX)) {
-        	LOGGER.debug("email not in right format");
+        	logger.info("email not in right format");
             errors.rejectValue("email", "WrongFormat.StudentProfileUpdate.email");
         }
     		

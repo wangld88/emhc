@@ -27,7 +27,6 @@ public class UserAuthenticationProvider extends DaoAuthenticationProvider {
         
         final Authentication result = super.authenticate(auth);
         
-        //System.out.println("result.getCredentials(): " + result.getCredentials().toString());
         return new UsernamePasswordAuthenticationToken(new LoginUser(emhcuser), result.getCredentials(), result.getAuthorities());
 
     }

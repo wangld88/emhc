@@ -93,7 +93,6 @@ public class AdminOrganizationController extends BaseController {
 			form = new OrganizationForm(organization);
 		}
 		if(errMessage != null) {
-			System.out.println("MESSAGE: "+errMessage.getMessage());
 			model.addAttribute("message", errMessage);
 		}
 		model.addAttribute("organizationForm", form);
@@ -106,7 +105,7 @@ public class AdminOrganizationController extends BaseController {
 	public String doOrganization(@Valid @ModelAttribute("organizationForm") OrganizationForm form, 
 		BindingResult bindingResult, Model model, HttpSession httpSession, final RedirectAttributes ra) {
 		
-		//logger.debug("Processing updateProfile form={}, bindingResult={}", form, bindingResult);		
+		//logger.info("Processing updateProfile form={}, bindingResult={}", form, bindingResult);		
 		String rtn = "/admin/organizations";
 		
 		User user = getPrincipal();
@@ -140,9 +139,9 @@ public class AdminOrganizationController extends BaseController {
 			} else {
 				logger.info("Errors: "+bindingResult.getErrorCount());;
 			}
-			
+
 			Organization org = form.getOrganization();
-			System.out.println("OrgID: "+form.getOrganizationid());
+			
 			organizationService.saveOrganization(org);
 			List<Organization> orgs = organizationService.findAll();
 			
@@ -174,7 +173,7 @@ public class AdminOrganizationController extends BaseController {
 	private User getPrincipal(){
     	User user = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //System.out.println("Role is : "+((LoginStudent)principal).toString());
+        
         if (principal instanceof LoginUser) {
             user = ((LoginUser)principal).getUser();
         } else {

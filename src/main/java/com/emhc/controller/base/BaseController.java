@@ -68,7 +68,6 @@ public class BaseController {
     
 	@ExceptionHandler( TemplateInputException.class )
 	public ModelAndView templateInputExceptionHandler (TemplateInputException e, HttpServletResponse httpresponse) {
-		System.out.println("!!!!!!!templateInputExceptionHandler is called");
 		ModelAndView mv = new ModelAndView("/admin/organization");
 		
 		Message message = new Message();
