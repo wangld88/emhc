@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,10 +30,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.emhc.controller.base.BaseController;
 import com.emhc.dto.StudentPasswordForm;
+import com.emhc.dto.StudentPasswordUpdateForm;
 import com.emhc.dto.UserDTO;
 import com.emhc.error.Message;
 import com.emhc.model.Organization;
@@ -45,6 +48,7 @@ import com.emhc.service.PasswordtokenService;
 import com.emhc.service.ProgramService;
 import com.emhc.service.UserService;
 import com.emhc.validator.StudentPasswordFormValidator;
+import com.emhc.validator.StudentPasswordUpdateFormValidator;
 import com.emhc.validator.UserDTOValidator;
 
 @Controller
@@ -67,6 +71,8 @@ public class LoginController extends BaseController {
     @Autowired
     private StudentPasswordFormValidator passwordValidator;
     @Autowired
+    private StudentPasswordUpdateFormValidator passwordUpdateValidator;
+    @Autowired
     private PasswordtokenService passwordtokenService;
 
     @InitBinder("passwordForm")
@@ -80,6 +86,17 @@ public class LoginController extends BaseController {
 		return new StudentPasswordForm();
 	}
    
+    @InitBinder("passwordUpdateForm")
+    public void initPasswordUpdateBinder(WebDataBinder binder) {
+        binder.addValidators(passwordUpdateValidator);
+    }
+
+	
+    @ModelAttribute("passwordUpdateForm")
+	public StudentPasswordUpdateForm createPasswordUpdateModel() {
+		return new StudentPasswordUpdateForm();
+	}
+
     
 	@RequestMapping(value = { "/", "/login" }, method = RequestMethod.GET)
 	public ModelAndView login() {
@@ -266,15 +283,105 @@ public class LoginController extends BaseController {
 		
 		return rtn;
     }
-	@RequestMapping(value="/logout", method = RequestMethod.GET)
-	public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
 
-	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	    if (auth != null){    
-	        new SecurityContextLogoutHandler().logout(request, response, auth);
-	    }
-	    return "redirect:/student/login?logout";//You can redirect wherever you want, but generally it's a good practice to show login screen again.
-	}
+    
+    @RequestMapping(value = "/login/resetPassword", method = RequestMethod.GET)
+    public String dspChangePasswordPage(final Locale locale, final Model model, @RequestParam("id") final int id, @RequestParam("token") final String token) {
+        
+    	LOGGER.debug("/student/login/resetPassword is the method");
+    	//Clear all expired token before any operation.
+    	passwordtokenService.deleteExpiredToken();
+    	
+    	String result = null;
+    	
+    	Message message = new Message();
+    	
+    	User emhcuser = new User();
+
+    	try {
+    		result = passwordtokenService.validatePasswordResetToken(id, token);
+	    	
+    		if (result != null) {
+    			LOGGER.debug("Invalid password token: " + token);
+				message.setStatus(Message.ERROR);
+				message.setMessage(messageSource.getMessage("student.forget.failed", null, LocaleContextHolder.getLocale()));
+	            model.addAttribute("message", message);
+
+	            return "/student/login/login";
+	        }
+	    	
+    		emhcuser = userService.getById(id);
+	    	
+    	} catch(Exception e) {
+			LOGGER.debug("Error in /student/login/resetPassword of StudentLogin.  Error: " + e.getMessage());
+			message.setStatus(Message.ERROR);
+			message.setMessage(messageSource.getMessage("StudentLogin.forgetPassword.error", new Object[] {}, LocaleContextHolder.getLocale()));
+            model.addAttribute("message", message);
+    	}
+    	model.addAttribute("userid", emhcuser.getUserid());
+    	model.addAttribute("username", emhcuser.getUsername());
+    	model.addAttribute("token", token);
+    	
+    	//return "/student/login/index";
+    	return "/student/login/resetPassword";
+        
+    }
+	
+    
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
+    //@PreAuthorize("hasRole('READ_PRIVILEGE')")
+    //@ResponseBody
+    public String updateUserPassword(@Valid @ModelAttribute("passwordUpdateForm") StudentPasswordUpdateForm passwordForm, 
+			BindingResult bindingResult, 
+			Model model) {
+  	LOGGER.debug("/student/updatePassword is the method");
+    	Message message = new Message();
+    	User emhcuser = null;
+        /*//If need to enter the old password
+        final Student std = studentService.getStudentByNumber(SecurityContextHolder.getContext().getAuthentication().getName());
+        if (!studentService.checkIfValidOldPassword(std, passwordForm.getOldPassword())) {
+            throw new InvalidOldPasswordException();
+        }
+        */
+    	try {
+    		
+	    	if (bindingResult.hasErrors()) {
+	            // failed validation
+	    		emhcuser = userService.getByUsername(passwordForm.getUsername());
+	    		model.addAttribute("username", passwordForm.getUsername());
+	    		model.addAttribute("user", emhcuser);
+	    		model.addAttribute("token", passwordForm.getToken());
+	    		
+				message.setStatus(Message.ERROR);
+				message.setMessage(messageSource.getMessage("StudentLogin.updateUserPassword.validation", new Object[] {}, LocaleContextHolder.getLocale()));
+				model.addAttribute("message", message);
+				model.addAttribute("passwordUpdateForm", passwordForm);
+				
+	            return "/student/login/resetPassword";
+	        }
+	
+	    	emhcuser = userService.updatePassword(passwordForm.getUserid(), passwordForm.getPassword());
+	    	
+	    	//Delete the token after password reset
+	    	if(emhcuser != null && emhcuser.getUserid() >0 && emhcuser.getPassword().length() > 0) {
+	    		passwordtokenService.deleteUsedToken(emhcuser, passwordForm.getToken());
+	    		LOGGER.debug("The used token has been deleted");
+	    	}
+	    	
+	    	message.setStatus(Message.SUCCESS);
+	    	message.setMessage(messageSource.getMessage("StudentLogin.resetPassword.success", new Object[] {}, LocaleContextHolder.getLocale()));
+    	} catch(Exception e) {
+    		
+			LOGGER.debug("Error in /student/updatePassword of StudentLogin.  Error: " + e.getMessage());
+			message.setStatus(Message.ERROR);
+			message.setMessage(messageSource.getMessage("StudentLogin.resetPassword.error", new Object[] {}, LocaleContextHolder.getLocale()));
+    	}
+    	model.addAttribute("message", message);
+    	//model.addAttribute("student", std);
+    	
+        return "/student/login/login";
+    }
+    
 
     private String getAppUrl(HttpServletRequest request) {
     	if(request.isSecure()) {
@@ -283,4 +390,14 @@ public class LoginController extends BaseController {
     		return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
     	}
     }
+    
+    @RequestMapping(value="/logout", method = RequestMethod.GET)
+	public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    if (auth != null){    
+	        new SecurityContextLogoutHandler().logout(request, response, auth);
+	    }
+	    return "redirect:/student/login?logout";//You can redirect wherever you want, but generally it's a good practice to show login screen again.
+	}
 }

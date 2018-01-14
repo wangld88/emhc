@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.emhc.dto.UserDTO;
 import com.emhc.model.User;
 import com.emhc.repository.UserRepository;
 
@@ -43,6 +42,14 @@ public class UserService{
 		return userRepository.save(user);
 	}
 
+    public User updatePassword(int userid, String password) {
+    	User user = userRepository.findOne(userid);
+    	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    	user.setPassword(passwordEncoder.encode(password));
+    	
+    	return saveUser(user);
+    }
+	
 /*	@Override
 	public User findUserByUsernameAndRole(User user, Role role) {
 		List<Role> roles = new ArrayList<Role>();

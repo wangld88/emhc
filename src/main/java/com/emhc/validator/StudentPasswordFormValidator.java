@@ -34,11 +34,11 @@ public class StudentPasswordFormValidator implements Validator {
     public void validate(Object target, Errors errors) {
     	logger.debug("Validating {}", target);
         StudentPasswordForm form = (StudentPasswordForm) target;
-        validateStudentNumber(errors, form);
+        validateUsername(errors, form);
         validateEmail(errors, form);
     }
 
-    private void validateStudentNumber(Errors errors, StudentPasswordForm form) {
+    private void validateUsername(Errors errors, StudentPasswordForm form) {
     	String username = form.getusername();
     	
     	if(username != null && username.length() > 0 && username.trim().length() == 0) {
