@@ -379,7 +379,7 @@ public class LoginController extends BaseController {
     	model.addAttribute("message", message);
     	//model.addAttribute("student", std);
     	
-        return "/student/login/login";
+        return "redirect:login";
     }
     
 

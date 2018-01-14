@@ -81,7 +81,7 @@
 											<i class="fa fa-angle-down pull-right"></i>
 											<div class="user-mini pull-right">
 												<span class="welcome">Welcome,</span>
-												<span th:text="${loginUser.firstname+' '+loginUser.lastname}">Jane emhc</span>
+												<span th:text="${loginUser!=null?loginUser.firstname:''+' '+loginUser!=null?loginUser.lastname:''}">Jane emhc</span>
 											</div>
 										</a>
 										<ul class="dropdown-menu">
