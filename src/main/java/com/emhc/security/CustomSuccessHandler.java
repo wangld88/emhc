@@ -65,40 +65,40 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         } else if(isAdmin(roles)) {
         	if(path.contains("admin")) {
         		url = "/admin/home";
-        	} else if(path.contains("student")) {
-        		url = "/student/login";
+        	} else if(path.contains("client")) {
+        		url = "/client/login";
         	} else {
         		url = "/admin/login";
         	}
         } else if(isSuper(roles)) {
         	if(path.contains("admin")) {
         		url = "/admin/home";
-        	} else if(path.contains("student")) {
-        		url = "/student/login";
+        	} else if(path.contains("client")) {
+        		url = "/client/login";
         	} else {
         		url = "/admin/login";
         	}
         } else if(isStudent(roles)) {
-        	if(path.contains("student")) {
-        		url = "/student/home";
+        	if(path.contains("client")) {
+        		url = "/client/home";
         	} else if(path.contains("admin")) {
         		url = "/admin/login";
         	} else {
-        		url = "/student/login";
+        		url = "/client/login";
         	}
         } else if(isClient(roles)) {
-        	if(path.contains("student")) {
-        		url = "/student/home";
+        	if(path.contains("client")) {
+        		url = "/client/home";
         	} else if(path.contains("admin")) {
         		url = "/admin/login";
         	} else {
-        		url = "/student/login";
+        		url = "/client/login";
         	}
         } else {
         	if(path.contains("admin")) {
         		url = "/admin/login";
-        	} else if(path.contains("student")) {
-        		url = "/student/login";
+        	} else if(path.contains("client")) {
+        		url = "/client/login";
         	} else if(path.contains("moderator")) {
         		url = "/moderator/login";
         	} else {

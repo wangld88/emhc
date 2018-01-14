@@ -1,4 +1,4 @@
-package com.emhc.controller.student;
+package com.emhc.controller.client;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ import com.emhc.service.UserService;
 import com.emhc.validator.AssessmentValidator;
 
 @Controller
-@RequestMapping("/student")
+@RequestMapping("/client")
 public class AssessmentController {
 	private static final Logger logger = LoggerFactory.getLogger(ProfileController.class);
 
@@ -60,7 +60,7 @@ public class AssessmentController {
 	@RequestMapping(value = "/assessment", method = RequestMethod.GET)
 	public String assessment(Model model) {
 
-		String rtn = "student/assessment";
+		String rtn = "client/assessment";
 		AnswerDTO form = new AnswerDTO();
 
 		model.addAttribute("loginUser", getPrincipal());
@@ -73,7 +73,7 @@ public class AssessmentController {
 	public String createNewAssessment(@Valid @ModelAttribute("answerDTO") AnswerDTO form, BindingResult bindingResult,
 			Model model) {
 
-		String rtn = "student/assessment";
+		String rtn = "client/assessment";
 
 		Message message = new Message();
 

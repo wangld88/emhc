@@ -1,4 +1,4 @@
-package com.emhc.controller.student;
+package com.emhc.controller.client;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ import com.emhc.validator.StudentPasswordUpdateFormValidator;
 import com.emhc.validator.UserDTOValidator;
 
 @Controller
-@RequestMapping("/student")
+@RequestMapping("/client")
 public class LoginController extends BaseController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScheduleController.class);
 
@@ -114,19 +114,19 @@ public class LoginController extends BaseController {
 		// userDTO.setProgram(programs.get(0));
 		userDTO.setOrganizations(organizations);
 		modelAndView.addObject("userDTO", userDTO);
-		modelAndView.setViewName("student/login/login");
+		modelAndView.setViewName("client/login/login");
 		return modelAndView;
 	}
 
 	@RequestMapping(value = { "/login_emhc" }, method = RequestMethod.GET)
 	public ModelAndView login_emhc() {
-		System.out.println("-------run to here login of student--------");
+		System.out.println("-------run to here login of client--------");
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		System.out.println("auth.getName = " + auth.getName());
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("student/login/login_emhc");
+		modelAndView.setViewName("client/login/login_emhc");
 		return modelAndView;
 	}
 
@@ -140,7 +140,7 @@ public class LoginController extends BaseController {
 	 * organizations = organizationService.findAll();
 	 * //userDTO.setPrograms(programs); userDTO.setOrganizations(organizations);
 	 * modelAndView.addObject("userDTO", userDTO);
-	 * modelAndView.setViewName("student/login/registration"); return
+	 * modelAndView.setViewName("client/login/registration"); return
 	 * modelAndView; }
 	 */
 
@@ -159,7 +159,7 @@ public class LoginController extends BaseController {
 		userDTO.setOrganization(organization);
 		userDTO.setOrganizations(organizations);
 		modelAndView.addObject("userDTO", userDTO);
-		modelAndView.setViewName("student/login/login");
+		modelAndView.setViewName("client/login/login");
 		return modelAndView;
 	}
 
@@ -175,7 +175,7 @@ public class LoginController extends BaseController {
 		if (bindingResult.hasErrors()) {
 			System.out.println("------run to has error-----");
 
-			modelAndView.setViewName("/student/login/registration");
+			modelAndView.setViewName("/client/login/registration");
 		} else {
 
 			try {
@@ -183,7 +183,7 @@ public class LoginController extends BaseController {
 				validator.validate(userDTO, bindingResult);
 
 				if (bindingResult.hasErrors()) {
-					modelAndView.setViewName("/student/login/registration");
+					modelAndView.setViewName("/client/login/registration");
 					return modelAndView;
 				}
 				Role role = new Role();
@@ -195,7 +195,7 @@ public class LoginController extends BaseController {
 
 				userService.saveUser(userDTO.getUser());
 				modelAndView.addObject("successMessage", "User has been registered successfully");
-				modelAndView.setViewName("/student/login/registration");
+				modelAndView.setViewName("/client/login/registration");
 			} catch (Exception e) {
 				e.printStackTrace();
 
@@ -206,7 +206,7 @@ public class LoginController extends BaseController {
 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String home(ModelMap model, HttpSession httpSession) {
-		String rtn = "student/home";
+		String rtn = "client/home";
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User emhcuser = userService.getByUsername(auth.getName());
@@ -226,13 +226,13 @@ public class LoginController extends BaseController {
 	@RequestMapping(value="/login/forgetPassword", method=RequestMethod.GET)
 	public String dspForgetPassword() {
 		LOGGER.debug("Call forgetPassword");
-		return "/student/login/forgetPassword";
+		return "/client/login/forgetPassword";
 	}
 	
     @RequestMapping(value="/login/forgetPassword", method=RequestMethod.POST)
 	public String doForgetPassword(@Valid @ModelAttribute("passwordForm") StudentPasswordForm form, BindingResult bindingResult, Model model, final HttpServletRequest request) {
     	Message message = new Message();
-    	String rtn = "/student/login/forgetPassword";
+    	String rtn = "/client/login/forgetPassword";
 		String username = form.getusername();
 		LOGGER.debug("Call doForgetPassword POST " + username);
     	
@@ -242,7 +242,7 @@ public class LoginController extends BaseController {
 				message.setStatus(Message.ERROR);
 				message.setMessage(messageSource.getMessage("StudentLogin.forgetPassword.validation", new Object[] {}, LocaleContextHolder.getLocale()));
 				model.addAttribute("message", message);
-	            return "/student/login/forgetPassword";
+	            return "/client/login/forgetPassword";
 	        }
 			
 			final String token = UUID.randomUUID().toString();
@@ -250,7 +250,7 @@ public class LoginController extends BaseController {
 			
 			if (emhcuser.getUserid() > 0) {
 				String url = getAppUrl(request);
-				String tokenURL = url + "/student/login/resetPassword?id=" + emhcuser.getUserid() + "&token=" + token;
+				String tokenURL = url + "/client/login/resetPassword?id=" + emhcuser.getUserid() + "&token=" + token;
 				
 				passwordtokenService.createPasswrodtokenForUser(emhcuser, token);
 				
@@ -261,20 +261,20 @@ public class LoginController extends BaseController {
 
 				emailService.sendMail(from, to, subject, body);
 
-				rtn = "/student/login/sendPasswordSuccess";
+				rtn = "/client/login/sendPasswordSuccess";
 				
 				message.setStatus(Message.SUCCESS);
 				message.setMessage(messageSource.getMessage("StudentLogin.forgetPassword.success", new Object[] {}, LocaleContextHolder.getLocale()));
 			} else {
-				rtn = "/student/login/forgetPassword";
+				rtn = "/client/login/forgetPassword";
 				
-				LOGGER.debug("Could not find the student based on provided information - studentnumber: " + username);
+				LOGGER.debug("Could not find the client based on provided information - studentnumber: " + username);
 				message.setStatus(Message.ERROR);
 				message.setMessage(messageSource.getMessage("StudentLogin.forgetPassword.failure", new Object[] {}, LocaleContextHolder.getLocale()));
 			}
 
 		} catch(Exception e) {
-			LOGGER.debug("Error in /student/login/forgetPassword of StudentLogin.  Error: " + e.getMessage());
+			LOGGER.debug("Error in /client/login/forgetPassword of StudentLogin.  Error: " + e.getMessage());
 			message.setStatus(Message.ERROR);
 			message.setMessage(messageSource.getMessage("StudentLogin.forgetPassword.error", new Object[] {}, LocaleContextHolder.getLocale()));
 		}
@@ -288,7 +288,7 @@ public class LoginController extends BaseController {
     @RequestMapping(value = "/login/resetPassword", method = RequestMethod.GET)
     public String dspChangePasswordPage(final Locale locale, final Model model, @RequestParam("id") final int id, @RequestParam("token") final String token) {
         
-    	LOGGER.debug("/student/login/resetPassword is the method");
+    	LOGGER.debug("/client/login/resetPassword is the method");
     	//Clear all expired token before any operation.
     	passwordtokenService.deleteExpiredToken();
     	
@@ -307,13 +307,13 @@ public class LoginController extends BaseController {
 				message.setMessage(messageSource.getMessage("student.forget.failed", null, LocaleContextHolder.getLocale()));
 	            model.addAttribute("message", message);
 
-	            return "/student/login/login";
+	            return "/client/login/login";
 	        }
 	    	
     		emhcuser = userService.getById(id);
 	    	
     	} catch(Exception e) {
-			LOGGER.debug("Error in /student/login/resetPassword of StudentLogin.  Error: " + e.getMessage());
+			LOGGER.debug("Error in /client/login/resetPassword of StudentLogin.  Error: " + e.getMessage());
 			message.setStatus(Message.ERROR);
 			message.setMessage(messageSource.getMessage("StudentLogin.forgetPassword.error", new Object[] {}, LocaleContextHolder.getLocale()));
             model.addAttribute("message", message);
@@ -322,8 +322,8 @@ public class LoginController extends BaseController {
     	model.addAttribute("username", emhcuser.getUsername());
     	model.addAttribute("token", token);
     	
-    	//return "/student/login/index";
-    	return "/student/login/resetPassword";
+    	//return "/client/login/index";
+    	return "/client/login/resetPassword";
         
     }
 	
@@ -334,7 +334,7 @@ public class LoginController extends BaseController {
     public String updateUserPassword(@Valid @ModelAttribute("passwordUpdateForm") StudentPasswordUpdateForm passwordForm, 
 			BindingResult bindingResult, 
 			Model model) {
-  	LOGGER.debug("/student/updatePassword is the method");
+  	LOGGER.debug("/client/updatePassword is the method");
     	Message message = new Message();
     	User emhcuser = null;
         /*//If need to enter the old password
@@ -357,7 +357,7 @@ public class LoginController extends BaseController {
 				model.addAttribute("message", message);
 				model.addAttribute("passwordUpdateForm", passwordForm);
 				
-	            return "/student/login/resetPassword";
+	            return "/client/login/resetPassword";
 	        }
 	
 	    	emhcuser = userService.updatePassword(passwordForm.getUserid(), passwordForm.getPassword());
@@ -372,7 +372,7 @@ public class LoginController extends BaseController {
 	    	message.setMessage(messageSource.getMessage("StudentLogin.resetPassword.success", new Object[] {}, LocaleContextHolder.getLocale()));
     	} catch(Exception e) {
     		
-			LOGGER.debug("Error in /student/updatePassword of StudentLogin.  Error: " + e.getMessage());
+			LOGGER.debug("Error in /client/updatePassword of StudentLogin.  Error: " + e.getMessage());
 			message.setStatus(Message.ERROR);
 			message.setMessage(messageSource.getMessage("StudentLogin.resetPassword.error", new Object[] {}, LocaleContextHolder.getLocale()));
     	}
@@ -398,6 +398,6 @@ public class LoginController extends BaseController {
 	    if (auth != null){    
 	        new SecurityContextLogoutHandler().logout(request, response, auth);
 	    }
-	    return "redirect:/student/login?logout";//You can redirect wherever you want, but generally it's a good practice to show login screen again.
+	    return "redirect:/client/login?logout";//You can redirect wherever you want, but generally it's a good practice to show login screen again.
 	}
 }

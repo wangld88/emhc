@@ -1,4 +1,4 @@
-package com.emhc.controller.student;
+package com.emhc.controller.client;
 
 import java.util.List;
 
@@ -40,7 +40,7 @@ import com.emhc.validator.StudentProfileUpdateValidator;
  *
  */
 @Controller
-@RequestMapping("/student")
+@RequestMapping("/client")
 public class ProfileController {
 	private static final Logger logger = LoggerFactory.getLogger(ProfileController.class);
 
@@ -70,7 +70,7 @@ public class ProfileController {
 	@RequestMapping(value = { "/profile" }, method = RequestMethod.GET)
 	public String profile(Model model) {
 
-		String rtn = "/student/updateProfile";
+		String rtn = "/client/updateProfile";
 
 		try {
 
@@ -100,7 +100,7 @@ public class ProfileController {
 	public String profile(@Valid @ModelAttribute("studentProfileUpdate") StudentProfileUpdate form,
 			BindingResult bindingResult, Model model) {
 
-		String rtn = "/student/updateProfile";
+		String rtn = "/client/updateProfile";
 
 		User emhcuser = getPrincipal();
 
@@ -160,7 +160,7 @@ public class ProfileController {
 			message.setMessage(messageSource.getMessage("StudentProfile.updateProfile.success", new Object[] {},
 					LocaleContextHolder.getLocale()));
 		} catch (Exception e) {
-			logger.info("Error in /student/profile POST of StudentProfile.  Error: " + e.getMessage());
+			logger.info("Error in /client/profile POST of StudentProfile.  Error: " + e.getMessage());
 			message.setStatus(Message.ERROR);
 			message.setMessage(messageSource.getMessage("StudentProfile.updateProfile.error", new Object[] {},
 					LocaleContextHolder.getLocale()));
@@ -175,7 +175,7 @@ public class ProfileController {
 	@RequestMapping(value = { "/reset" }, method = RequestMethod.GET)
 	public String reset(Model model) {
 
-		String rtn = "/student/resetPassword";
+		String rtn = "/client/resetPassword";
 
 		try {
 
@@ -194,7 +194,7 @@ public class ProfileController {
 	public String reset(@Valid @ModelAttribute("resetPassword") ResetPassword form, BindingResult bindingResult,
 			Model model) {
 
-		String rtn = "/student/resetPassword";
+		String rtn = "/client/resetPassword";
 
 		User emhcuser = getPrincipal();
 
@@ -246,7 +246,7 @@ public class ProfileController {
 			message.setMessage(msg);
 
 		} catch (Exception e) {
-			logger.info("Error in /student/profile POST of StudentProfile.  Error: " + e.getMessage());
+			logger.info("Error in /client/profile POST of StudentProfile.  Error: " + e.getMessage());
 			message.setStatus(Message.ERROR);
 			message.setMessage(messageSource.getMessage("StudentProfile.updatePassword.error", new Object[] {},
 					LocaleContextHolder.getLocale()));

@@ -1,4 +1,4 @@
-package com.emhc.controller.student;
+package com.emhc.controller.client;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -9,8 +9,6 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,10 +23,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.emhc.dto.StudentScheduleTest;
 import com.emhc.error.Message;
 import com.emhc.error.MessageHandler;
-import com.emhc.model.User;
 import com.emhc.model.Registration;
 import com.emhc.model.Schedule;
 import com.emhc.model.Session;
+import com.emhc.model.User;
 import com.emhc.security.LoginUser;
 import com.emhc.service.EmailService;
 import com.emhc.service.RegistrationService;
@@ -42,7 +40,7 @@ import com.emhc.service.UserService;
  *
  */
 @Controller
-@RequestMapping("/student")
+@RequestMapping("/client")
 public class ScheduleController {
 	private static final Logger logger = LoggerFactory.getLogger(ScheduleController.class);
 
@@ -67,7 +65,7 @@ public class ScheduleController {
 	
 	@RequestMapping(value = { "/schedule" }, method = RequestMethod.GET)
 	public String schedule(Model model) {
-		String rtn = "/student/scheduleTest";
+		String rtn = "/client/scheduleTest";
 
 		StudentScheduleTest form = new StudentScheduleTest();
 		User user = getPrincipal();
@@ -99,7 +97,7 @@ public class ScheduleController {
 
 	@RequestMapping(value = { "/schedule/{sesid}" }, method = RequestMethod.GET)
 	public String schedule(Model model, @PathVariable("sesid") int sesid) {
-		String rtn = "/student/scheduleTest";
+		String rtn = "/client/scheduleTest";
 
 		try {
 			StudentScheduleTest form = new StudentScheduleTest();
@@ -139,7 +137,7 @@ public class ScheduleController {
 	public String createschedule(@Valid StudentScheduleTest form, BindingResult bindingResult, Model model,
 			RedirectAttributes attrs) {
 
-		String rtn = "/student/schedule";
+		String rtn = "/client/schedule";
 		Message message = new Message();
 		String msg;
 
@@ -201,11 +199,11 @@ public class ScheduleController {
 
 			}
 			
-			rtn = "redirect:/student/schedule/" + sessionid;
+			rtn = "redirect:/client/schedule/" + sessionid;
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.info("Error in /student/profile POST of StudentProfile.  Error: " + e.getMessage());
+			logger.info("Error in /client/profile POST of StudentProfile.  Error: " + e.getMessage());
 			message.setStatus(Message.ERROR);
 			message.setMessage(messageHandler.get("StudentSchedule.scheduleTest.error"));
 		}

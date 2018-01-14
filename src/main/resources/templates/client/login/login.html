@@ -47,7 +47,7 @@
 							<li><a title="services" th:href="@{/fit}">Fit Testing</a></li>
 							<li><a title="blog" th:href="@{/whychoose}">Why EMH</a></li>
 							<li><a title="contact" th:href="@{/contact}">Contact</a></li>
-							<li><a href="student/login">Login</a></li>
+							<li><a href="client/login">Login</a></li>
 						</nav>
 					</div>
 				</div>
@@ -64,7 +64,7 @@
 				<div id="signup">   
 					<!-- <h1>Sign Up for Free</h1> -->
 					
-					<form th:object="${userDTO}" th:action="@{/student/registration}" method="post" role="form">
+					<form th:object="${userDTO}" th:action="@{/client/registration}" method="post" role="form">
     
 						<div th:if="${message != null and #strings.length(message.message) != 0}" th:class="${message.status}">
 							<font th:text="${message.message}" style="font-size: 12px;"></font>
@@ -159,7 +159,7 @@
 						<button type="submit" class="button button-block" value="" th:if="${userDTO.programs!=null}" />Register User</button>
 					
 					</form>
-					<form id="orgForm" th:action="@{/student/registration}" method="get">
+					<form id="orgForm" th:action="@{/client/registration}" method="get">
 					</form>
 	
 				</div>
@@ -167,7 +167,7 @@
 				<div id="login">
 					<!-- <h1>Welcome Back!</h1> -->
 				    
-					<form name="loginForm" id="loginFor" th:action="@{/student/login}" method="post">
+					<form name="loginForm" id="loginFor" th:action="@{/client/login}" method="post">
 				    
 						<div th:if="${param.error}" class="alert alert-danger">
 							<font style="font-size: 12px;">Invalid username and password.</font>
@@ -186,9 +186,9 @@
 							<input type="password" class="input" name="password" id="password" required autocomplete="off"/>
 						</div>
 						
- 						<li><a th:href="@{/student/login/forgetPassword}">Forgot Password?</a></li>
+ 						<li><a th:href="@{/client/login/forgetPassword}">Forgot Password?</a></li>
  						
-<!-- 						<form th:action="@{/student/login/forgetPassword}" method="get">
+<!-- 						<form th:action="@{/client/login/forgetPassword}" method="get">
 							<button class="btn btn-md btn-warning btn-block" type="Submit">Forgot Password?</button>
 						</form>	
  -->						

@@ -1,11 +1,11 @@
-<html layout:decorator="student/template/layout">
+<html layout:decorator="client/template/layout">
 
 	<div layout:fragment="content">
 	
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
 
- 				<form autocomplete="off" th:object="${studentScheduleTest}" th:action="@{/student/schedule}" onsubmit="return validateRadioButtons()" method="post"  class="form-horizontal" role="form">
+ 				<form autocomplete="off" th:object="${studentScheduleTest}" th:action="@{/client/schedule}" onsubmit="return validateRadioButtons()" method="post"  class="form-horizontal" role="form">
  				<h3>Primary Assessment</h3><hr>
 				<h4>Please pick up the time slot you want</h4>
 				<h6>Student from University of Toronto will have the mask test at Toronto </h6>
@@ -44,7 +44,7 @@
 
 			</form>	
 
-			<form id="sessionForm" th:action="@{/student/schedule}" method="get"></form>
+			<form id="sessionForm" th:action="@{/client/schedule}" method="get"></form>
 		
 			</div>
 		</div>

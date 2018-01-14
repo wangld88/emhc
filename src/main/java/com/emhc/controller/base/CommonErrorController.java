@@ -76,20 +76,20 @@ public class CommonErrorController implements ErrorController {
             	if(path.indexOf("/admin") > 0) {
             		view = "/admin/login/login";
     	        } else {
-    	        	view = "/student/login/login";
+    	        	view = "/client/login/login";
     	        }
             } else {
 	        	if(path.indexOf("/admin") > 0) {
 	        		view = "/admin" + PATH;
 		        } else {
-		        	view = "/student" + PATH;
+		        	view = "/client" + PATH;
 		        }
             }
         } else {
 	        if(url.indexOf("/admin") > 0) {
 	        	view = "/admin" + PATH;
 	        } else {
-	        	view = "/student" + PATH;
+	        	view = "/client" + PATH;
 	        }
         }
         
