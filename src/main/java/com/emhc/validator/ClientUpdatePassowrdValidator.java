@@ -37,6 +37,13 @@ public class ClientUpdatePassowrdValidator implements Validator {
 
     
     private void validatePasswords(Errors errors, ClientUpdatePassword form) {
+        /*//If need to enter the old password
+        final Student std = studentService.getStudentByNumber(SecurityContextHolder.getContext().getAuthentication().getName());
+        if (!studentService.checkIfValidOldPassword(std, passwordForm.getOldPassword())) {
+            throw new InvalidOldPasswordException();
+        }
+        */
+    	
         if (!form.getPassword().equals(form.getConfirmpassword())) {
         	logger.info("password.no_match :" + form.getPassword() + ", " + form.getConfirmpassword());
             errors.rejectValue("password", "NotMatch.resetPassword.newPasswordConfirm");
