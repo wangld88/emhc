@@ -7,38 +7,38 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.emhc.dto.StudentPasswordUpdateForm;
+import com.emhc.dto.ClientResetPassword;
 import com.emhc.model.User;
 import com.emhc.service.UserService;
 
 
 @Component
-public class StudentPasswordUpdateFormValidator implements Validator {
+public class ClientResetPasswordValidator implements Validator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(StudentPasswordUpdateFormValidator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClientResetPasswordValidator.class);
     
     private final UserService userService;
 
     
     @Autowired
-    public StudentPasswordUpdateFormValidator(UserService studentService) {
+    public ClientResetPasswordValidator(UserService studentService) {
         this.userService = studentService;
     }
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return clazz.equals(StudentPasswordUpdateForm.class);
+        return clazz.equals(ClientResetPassword.class);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
         LOGGER.debug("Validating {}", target);
-        StudentPasswordUpdateForm form = (StudentPasswordUpdateForm) target;
+        ClientResetPassword form = (ClientResetPassword) target;
         validateStudentNumber(errors, form);
         validatePasswords(errors, form);
     }
 
-    private void validateStudentNumber(Errors errors, StudentPasswordUpdateForm form) {
+    private void validateStudentNumber(Errors errors, ClientResetPassword form) {
     	String username = form.getUsername();
     	
     	LOGGER.debug("Should not come to here");
@@ -58,7 +58,7 @@ public class StudentPasswordUpdateFormValidator implements Validator {
         }    	
     }
     
-    private void validatePasswords(Errors errors, StudentPasswordUpdateForm form) {
+    private void validatePasswords(Errors errors, ClientResetPassword form) {
         if (!form.getPassword().equals(form.getPasswordRepeated())) {
         	LOGGER.debug("password.no_match :" + form.getPassword() + ", " + form.getPasswordRepeated());
             errors.rejectValue("password", "NotMatch.studentActivationForm.passwordRepeated");

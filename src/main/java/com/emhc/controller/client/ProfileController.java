@@ -22,16 +22,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.emhc.dto.ResetPassword;
-import com.emhc.dto.StudentProfileUpdate;
+import com.emhc.dto.ClientUpdatePassword;
+import com.emhc.dto.ClientProfileUpdate;
 import com.emhc.error.Message;
-import com.emhc.model.User;
 import com.emhc.model.Program;
+import com.emhc.model.User;
 import com.emhc.security.LoginUser;
 import com.emhc.service.ProgramService;
 import com.emhc.service.UserService;
-import com.emhc.validator.ResetPassowrdValidator;
-import com.emhc.validator.StudentProfileUpdateValidator;
+import com.emhc.validator.ClientUpdatePassowrdValidator;
+import com.emhc.validator.ClientProfileUpdateValidator;
 
 
 /**
@@ -51,9 +51,9 @@ public class ProfileController {
 	@Autowired
 	private MessageSource messageSource;
 	@Autowired
-	private StudentProfileUpdateValidator profileValidator;
+	private ClientProfileUpdateValidator profileValidator;
 	@Autowired
-	private ResetPassowrdValidator resetValidator;
+	private ClientUpdatePassowrdValidator resetValidator;
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -62,9 +62,14 @@ public class ProfileController {
 		binder.addValidators(profileValidator);
 	}
 
-	@InitBinder("resetPassword")
+	@InitBinder("resetPasswordForm")
 	public void initResetPasswordeBinder(WebDataBinder binder) {
 		binder.addValidators(resetValidator);
+	}
+
+	@ModelAttribute("resetPasswordForm")
+	public ClientUpdatePassword createPasswordResetModel() {
+		return new ClientUpdatePassword();
 	}
 
 	@RequestMapping(value = { "/profile" }, method = RequestMethod.GET)
@@ -74,7 +79,7 @@ public class ProfileController {
 
 		try {
 
-			StudentProfileUpdate form = new StudentProfileUpdate();
+			ClientProfileUpdate form = new ClientProfileUpdate();
 			User emhcuser = getPrincipal();
 			
 			form.setUsername(emhcuser.getUsername());
@@ -97,7 +102,7 @@ public class ProfileController {
 	}
 
 	@RequestMapping(value = "/profile", method = RequestMethod.POST)
-	public String profile(@Valid @ModelAttribute("studentProfileUpdate") StudentProfileUpdate form,
+	public String profile(@Valid @ModelAttribute("studentProfileUpdate") ClientProfileUpdate form,
 			BindingResult bindingResult, Model model) {
 
 		String rtn = "/client/updateProfile";
@@ -115,7 +120,7 @@ public class ProfileController {
 		Integer programyear = form.getProgramyear();
 		Program program = form.getProgram();
 
-		StudentProfileUpdate newForm = new StudentProfileUpdate();
+		ClientProfileUpdate newForm = new ClientProfileUpdate();
 		newForm.setUsername(username);
 		newForm.setFirstname(firstname);
 		newForm.setLastname(lastname);
@@ -125,6 +130,7 @@ public class ProfileController {
 		List<Program> programs = programService.findAll();
 		newForm.setPrograms(programs);
 		model.addAttribute("studentProfileUpdate", newForm);
+		model.addAttribute("loginUser", getPrincipal());
 
 		try {
 			// Form validation
@@ -179,7 +185,7 @@ public class ProfileController {
 
 		try {
 
-			ResetPassword form = new ResetPassword();
+			ClientUpdatePassword form = new ClientUpdatePassword();
 			
 			model.addAttribute("loginUser", getPrincipal());
 			model.addAttribute("resetPassword", form);
@@ -191,7 +197,7 @@ public class ProfileController {
 	}
 
 	@RequestMapping(value = "/reset", method = RequestMethod.POST)
-	public String reset(@Valid @ModelAttribute("resetPassword") ResetPassword form, BindingResult bindingResult,
+	public String reset(@Valid @ModelAttribute("resetPasswordForm") ClientUpdatePassword form, BindingResult bindingResult,
 			Model model) {
 
 		String rtn = "/client/updatePassword";
@@ -204,24 +210,25 @@ public class ProfileController {
 		String newpassword = form.getPassword();
 		String confirmpassword = form.getConfirmpassword();
 
-		ResetPassword newForm = new ResetPassword();
+		ClientUpdatePassword newForm = new ClientUpdatePassword();
 		newForm.setOldpassword(oldpassword);
 		newForm.setPassword(newpassword);
 		newForm.setConfirmpassword(confirmpassword);
+		model.addAttribute("loginUser", getPrincipal());
 
-		model.addAttribute("resetPassword", newForm);
+		model.addAttribute("resetPasswordForm", newForm);
 
-		logger.info("Processing resetPassword form={}, bindingResult={}", form, bindingResult);
+		logger.info("Processing resetPasswordForm form={}, bindingResult={}", form, bindingResult);
 
 		try {
 
 			// Form validation
 			if (bindingResult.hasErrors()) {
 				// failed validation
-				model.addAttribute("ResetPassword", form);
+				model.addAttribute("resetPasswordForm", form);
 				logger.info("Profile form validation failed!!!!!!!!");
 				List<ObjectError> errors = bindingResult.getAllErrors();
-				msg = messageSource.getMessage("StudentProfile.updatePassword.validation", new Object[] {},
+				msg = messageSource.getMessage("StudentProfile.updateProfile.validation", new Object[] {},
 						LocaleContextHolder.getLocale()) + "<br />";
 				for (ObjectError i : errors) {
 					if (i instanceof FieldError) {
@@ -254,8 +261,7 @@ public class ProfileController {
 
 		model.addAttribute("message", message);
 
-		return "/client/login/login";
-		//return rtn;
+		return "redirect:login";
 	}
 
 	private User getPrincipal() {

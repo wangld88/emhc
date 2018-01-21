@@ -7,7 +7,7 @@ import com.emhc.model.User;
 import com.emhc.model.Program;
 import com.emhc.model.Role;
 
-public class StudentProfileUpdate {
+public class ClientProfileUpdate {
 	public int getUserid() {
 		return userid;
 	}
@@ -135,11 +135,11 @@ public class StudentProfileUpdate {
 	private Role role;
 	private List<Program> programs;
 
-	public StudentProfileUpdate() {
+	public ClientProfileUpdate() {
 
 	}
 
-	public StudentProfileUpdate(User user) {
+	public ClientProfileUpdate(User user) {
 		this.userid = user.getUserid();
 		this.username = user.getUsername();
 		this.firstname = user.getFirstname();

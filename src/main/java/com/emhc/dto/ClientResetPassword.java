@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotEmpty;
 
 
-public class StudentPasswordUpdateForm {
+public class ClientResetPassword {
 
     
     private String token = "";

@@ -5,7 +5,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotEmpty;
 
 
-public class StudentPasswordForm {
+public class ClientForgetPassword {
 
     @NotEmpty
     @Size(min=0, max=80)

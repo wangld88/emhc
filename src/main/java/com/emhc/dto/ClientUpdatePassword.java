@@ -1,6 +1,6 @@
 package com.emhc.dto;
 
-public class ResetPassword {
+public class ClientUpdatePassword {
 	public int getUserid() {
 		return userid;
 	}

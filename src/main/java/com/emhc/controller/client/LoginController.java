@@ -34,8 +34,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.emhc.controller.base.BaseController;
-import com.emhc.dto.StudentPasswordForm;
-import com.emhc.dto.StudentPasswordUpdateForm;
+import com.emhc.dto.ClientForgetPassword;
+import com.emhc.dto.ClientResetPassword;
 import com.emhc.dto.UserDTO;
 import com.emhc.error.Message;
 import com.emhc.model.Organization;
@@ -47,8 +47,8 @@ import com.emhc.service.OrganizationService;
 import com.emhc.service.PasswordtokenService;
 import com.emhc.service.ProgramService;
 import com.emhc.service.UserService;
-import com.emhc.validator.StudentPasswordFormValidator;
-import com.emhc.validator.StudentPasswordUpdateFormValidator;
+import com.emhc.validator.ClientForgetPasswordValidator;
+import com.emhc.validator.ClientResetPasswordValidator;
 import com.emhc.validator.UserDTOValidator;
 
 @Controller
@@ -69,21 +69,21 @@ public class LoginController extends BaseController {
     @Autowired
     private MessageSource messageSource;
     @Autowired
-    private StudentPasswordFormValidator passwordValidator;
+    private ClientForgetPasswordValidator passwordValidator;
     @Autowired
-    private StudentPasswordUpdateFormValidator passwordUpdateValidator;
+    private ClientResetPasswordValidator passwordUpdateValidator;
     @Autowired
     private PasswordtokenService passwordtokenService;
 
-    @InitBinder("passwordForm")
+    @InitBinder("forgetpasswordForm")
     public void initPasswordBinder(WebDataBinder binder) {
         binder.addValidators(passwordValidator);
     }
 
 	
-    @ModelAttribute("passwordForm")
-	public StudentPasswordForm createPasswordModel() {
-		return new StudentPasswordForm();
+    @ModelAttribute("forgetpasswordForm")
+	public ClientForgetPassword createPasswordModel() {
+		return new ClientForgetPassword();
 	}
    
     @InitBinder("passwordUpdateForm")
@@ -93,8 +93,8 @@ public class LoginController extends BaseController {
 
 	
     @ModelAttribute("passwordUpdateForm")
-	public StudentPasswordUpdateForm createPasswordUpdateModel() {
-		return new StudentPasswordUpdateForm();
+	public ClientResetPassword createPasswordUpdateModel() {
+		return new ClientResetPassword();
 	}
 
     
@@ -230,7 +230,7 @@ public class LoginController extends BaseController {
 	}
 	
     @RequestMapping(value="/login/forgetPassword", method=RequestMethod.POST)
-	public String doForgetPassword(@Valid @ModelAttribute("passwordForm") StudentPasswordForm form, BindingResult bindingResult, Model model, final HttpServletRequest request) {
+	public String doForgetPassword(@Valid @ModelAttribute("forgetpasswordForm") ClientForgetPassword form, BindingResult bindingResult, Model model, final HttpServletRequest request) {
     	Message message = new Message();
     	String rtn = "/client/login/forgetPassword";
 		String username = form.getusername();
@@ -331,7 +331,7 @@ public class LoginController extends BaseController {
     @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
     //@PreAuthorize("hasRole('READ_PRIVILEGE')")
     //@ResponseBody
-    public String updateUserPassword(@Valid @ModelAttribute("passwordUpdateForm") StudentPasswordUpdateForm passwordForm, 
+    public String updateUserPassword(@Valid @ModelAttribute("passwordUpdateForm") ClientResetPassword resetpasswordForm, 
 			BindingResult bindingResult, 
 			Model model) {
   	LOGGER.debug("/client/updatePassword is the method");
@@ -347,24 +347,24 @@ public class LoginController extends BaseController {
     		
 	    	if (bindingResult.hasErrors()) {
 	            // failed validation
-	    		emhcuser = userService.getByUsername(passwordForm.getUsername());
-	    		model.addAttribute("username", passwordForm.getUsername());
+	    		emhcuser = userService.getByUsername(resetpasswordForm.getUsername());
+	    		model.addAttribute("username", resetpasswordForm.getUsername());
 	    		model.addAttribute("user", emhcuser);
-	    		model.addAttribute("token", passwordForm.getToken());
+	    		model.addAttribute("token", resetpasswordForm.getToken());
 	    		
 				message.setStatus(Message.ERROR);
 				message.setMessage(messageSource.getMessage("StudentLogin.updateUserPassword.validation", new Object[] {}, LocaleContextHolder.getLocale()));
 				model.addAttribute("message", message);
-				model.addAttribute("passwordUpdateForm", passwordForm);
+				model.addAttribute("passwordUpdateForm", resetpasswordForm);
 				
 	            return "/client/login/resetPassword";
 	        }
 	
-	    	emhcuser = userService.updatePassword(passwordForm.getUserid(), passwordForm.getPassword());
+	    	emhcuser = userService.updatePassword(resetpasswordForm.getUserid(), resetpasswordForm.getPassword());
 	    	
 	    	//Delete the token after password reset
 	    	if(emhcuser != null && emhcuser.getUserid() >0 && emhcuser.getPassword().length() > 0) {
-	    		passwordtokenService.deleteUsedToken(emhcuser, passwordForm.getToken());
+	    		passwordtokenService.deleteUsedToken(emhcuser, resetpasswordForm.getToken());
 	    		LOGGER.debug("The used token has been deleted");
 	    	}
 	    	

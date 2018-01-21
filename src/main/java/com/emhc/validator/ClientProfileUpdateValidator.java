@@ -11,13 +11,13 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import com.emhc.dto.StudentProfileUpdate;
+import com.emhc.dto.ClientProfileUpdate;
 
 
 @Component
-public class StudentProfileUpdateValidator implements Validator {
+public class ClientProfileUpdateValidator implements Validator {
 
-    private static final Logger logger = LoggerFactory.getLogger(StudentProfileUpdateValidator.class);
+    private static final Logger logger = LoggerFactory.getLogger(ClientProfileUpdateValidator.class);
 
     private Pattern pattern;  
     private Matcher matcher;  
@@ -35,13 +35,13 @@ public class StudentProfileUpdateValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return clazz.equals(StudentProfileUpdate.class);
+        return clazz.equals(ClientProfileUpdate.class);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
         logger.info("StudentProfileUpdate Validating {} started", target);
-        StudentProfileUpdate form = (StudentProfileUpdate) target;
+        ClientProfileUpdate form = (ClientProfileUpdate) target;
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "error.username", "User name is required.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstname", "error.firstname", "First name is required.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastname", "error.lastname", "Last name is required.");
@@ -53,7 +53,7 @@ public class StudentProfileUpdateValidator implements Validator {
     }
 
     
-    private void validateEmail(Errors errors, StudentProfileUpdate form) {
+    private void validateEmail(Errors errors, ClientProfileUpdate form) {
     	String email = form.getEmail();
 
         if (email == null || email.length() == 0) {
@@ -67,7 +67,7 @@ public class StudentProfileUpdateValidator implements Validator {
     }
     
     
-    private void validateProgramYear(Errors errors, StudentProfileUpdate form) {
+    private void validateProgramYear(Errors errors, ClientProfileUpdate form) {
     
     
 	  if (Integer.toString(form.getProgramyear()) != null) {  
