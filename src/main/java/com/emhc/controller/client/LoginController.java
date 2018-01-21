@@ -175,7 +175,7 @@ public class LoginController extends BaseController {
 		if (bindingResult.hasErrors()) {
 			System.out.println("------run to has error-----");
 
-			modelAndView.setViewName("/client/login/registration");
+			modelAndView.setViewName("/client/login/login");
 		} else {
 
 			try {
@@ -183,11 +183,11 @@ public class LoginController extends BaseController {
 				validator.validate(userDTO, bindingResult);
 
 				if (bindingResult.hasErrors()) {
-					modelAndView.setViewName("/client/login/registration");
+					modelAndView.setViewName("/client/login/login");
 					return modelAndView;
 				}
 				Role role = new Role();
-				role.setRoleid(1);
+				role.setRoleid(2);
 				userDTO.setRole(role);
 				LocalDate localDate = LocalDate.now();
 				Date date = java.sql.Date.valueOf(localDate);
@@ -195,7 +195,7 @@ public class LoginController extends BaseController {
 
 				userService.saveUser(userDTO.getUser());
 				modelAndView.addObject("successMessage", "User has been registered successfully");
-				modelAndView.setViewName("/client/login/registration");
+				modelAndView.setViewName("/client/login/login");
 			} catch (Exception e) {
 				e.printStackTrace();
 
