@@ -175,7 +175,7 @@ public class ProfileController {
 	@RequestMapping(value = { "/reset" }, method = RequestMethod.GET)
 	public String reset(Model model) {
 
-		String rtn = "/client/resetPassword";
+		String rtn = "/client/updatePassword";
 
 		try {
 
@@ -194,7 +194,7 @@ public class ProfileController {
 	public String reset(@Valid @ModelAttribute("resetPassword") ResetPassword form, BindingResult bindingResult,
 			Model model) {
 
-		String rtn = "/client/resetPassword";
+		String rtn = "/client/updatePassword";
 
 		User emhcuser = getPrincipal();
 
@@ -254,7 +254,8 @@ public class ProfileController {
 
 		model.addAttribute("message", message);
 
-		return rtn;
+		return "/client/login/login";
+		//return rtn;
 	}
 
 	private User getPrincipal() {
