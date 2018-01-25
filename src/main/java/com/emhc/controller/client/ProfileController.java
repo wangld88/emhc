@@ -163,7 +163,7 @@ public class ProfileController {
 			emhcuser.setFirstname(form.getFirstname());
 			emhcuser.setLastname(form.getLastname());
 			emhcuser.setEmail(form.getEmail());
-			emhcuser.setEmail(form.getPhone());
+			emhcuser.setPhone(form.getPhone());
 			emhcuser.setOrgemail(form.getOrgemail());
 			emhcuser.setProgramyear(form.getProgramyear());
 			emhcuser.setProgram(form.getProgram());
