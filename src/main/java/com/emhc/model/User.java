@@ -51,6 +51,14 @@ public class User implements Serializable {
 	@NotEmpty(message = "*Please provide an email")
 	private String email;
 	
+	@Column(name = "orgemail")
+	@NotEmpty(message = "*Please provide an email")
+	private String orgemail;
+
+	@Column(name = "phone")
+	@NotEmpty(message = "*Please provide phone number")
+	private String phone;
+	
 	@Column(name = "password")
 	@Length(min = 3, message = "*Your password must have at least 3 characters")
 	@NotEmpty(message = "*Please provide your password")
@@ -122,6 +130,21 @@ public class User implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public String getOrgemail() {
+		return orgemail;
+	}
+
+	public void setOrgemail(String orgemail) {
+		this.orgemail = orgemail;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public String getFirstname() {

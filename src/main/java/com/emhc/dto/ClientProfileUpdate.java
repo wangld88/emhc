@@ -8,6 +8,66 @@ import com.emhc.model.Program;
 import com.emhc.model.Role;
 
 public class ClientProfileUpdate {
+
+	private int userid;
+	private int createdby;
+	private Date creationdate;
+	private String firstname;
+	private String lastname;
+	private String email;
+	private String phone;
+	private String orgemail;
+	private String password;
+	private int programyear;
+	private String status;
+	private String username;
+	private byte viewer;
+	private Program program;
+	private Role role;
+	private List<Program> programs;
+
+	public ClientProfileUpdate() {
+
+	}
+
+	public ClientProfileUpdate(User user) {
+		this.userid = user.getUserid();
+		this.username = user.getUsername();
+		this.firstname = user.getFirstname();
+		this.lastname = user.getLastname();
+		this.email = user.getEmail();
+		this.phone = user.getPhone();
+		this.orgemail = user.getOrgemail();
+		this.password = user.getPassword();
+		this.program = user.getProgram();
+		this.createdby = user.getCreatedby();
+		this.creationdate = user.getCreationdate();
+		this.programyear = user.getProgramyear();
+		this.role = user.getRole();
+		this.status = user.getStatus();
+		this.viewer = user.getViewer();
+
+	}
+	public User getUser() {
+		User user = new User();
+		user.setUserid(this.userid);
+		user.setUsername(this.username);
+		user.setFirstname(this.firstname);
+		user.setLastname(this.lastname);
+		user.setEmail(this.email);
+		user.setPhone(this.phone);
+		user.setOrgemail(this.orgemail);
+		user.setPassword(this.password);
+		user.setProgram(this.program);
+		user.setCreatedby(this.createdby);
+		user.setCreationdate(this.creationdate);
+		user.setProgramyear(this.programyear);
+		user.setRole(this.role);
+		user.setStatus(this.status);
+		user.setViewer(this.viewer);
+		return user;
+	}
+
 	public int getUserid() {
 		return userid;
 	}
@@ -54,6 +114,22 @@ public class ClientProfileUpdate {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getOrgemail() {
+		return orgemail;
+	}
+
+	public void setOrgemail(String orgemail) {
+		this.orgemail = orgemail;
 	}
 
 	public String getPassword() {
@@ -120,58 +196,5 @@ public class ClientProfileUpdate {
 		this.programs = programs;
 	}
 
-	private int userid;
-	private int createdby;
-	private Date creationdate;
-	private String firstname;
-	private String lastname;
-	private String email;
-	private String password;
-	private int programyear;
-	private String status;
-	private String username;
-	private byte viewer;
-	private Program program;
-	private Role role;
-	private List<Program> programs;
-
-	public ClientProfileUpdate() {
-
-	}
-
-	public ClientProfileUpdate(User user) {
-		this.userid = user.getUserid();
-		this.username = user.getUsername();
-		this.firstname = user.getFirstname();
-		this.lastname = user.getLastname();
-		this.email = user.getEmail();
-		this.password = user.getPassword();
-		this.program = user.getProgram();
-		this.createdby = user.getCreatedby();
-		this.creationdate = user.getCreationdate();
-		this.programyear = user.getProgramyear();
-		this.role = user.getRole();
-		this.status = user.getStatus();
-		this.viewer = user.getViewer();
-
-	}
-
-	public User getUser() {
-		User user = new User();
-		user.setUserid(this.userid);
-		user.setUsername(this.username);
-		user.setFirstname(this.firstname);
-		user.setLastname(this.lastname);
-		user.setEmail(this.email);
-		user.setPassword(this.password);
-		user.setProgram(this.program);
-		user.setCreatedby(this.createdby);
-		user.setCreationdate(this.creationdate);
-		user.setProgramyear(this.programyear);
-		user.setRole(this.role);
-		user.setStatus(this.status);
-		user.setViewer(this.viewer);
-		return user;
-	}
 
 }

@@ -87,6 +87,8 @@ public class ProfileController {
 			form.setFirstname(emhcuser.getFirstname());
 			form.setLastname(emhcuser.getLastname());
 			form.setEmail(emhcuser.getEmail());
+			form.setPhone(emhcuser.getPhone());
+			form.setOrgemail(emhcuser.getOrgemail());
 			form.setProgramyear(emhcuser.getProgramyear());
 			form.setProgram(emhcuser.getProgram());
 			List<Program> programs = programService.findAll();
@@ -117,6 +119,8 @@ public class ProfileController {
 		String firstname = form.getFirstname();
 		String lastname = form.getLastname();
 		String email = form.getEmail();
+		String phone = form.getPhone();
+		String orgemail = form.getOrgemail();
 		Integer programyear = form.getProgramyear();
 		Program program = form.getProgram();
 
@@ -125,6 +129,8 @@ public class ProfileController {
 		newForm.setFirstname(firstname);
 		newForm.setLastname(lastname);
 		newForm.setEmail(email);
+		newForm.setPhone(phone);
+		newForm.setOrgemail(orgemail);
 		newForm.setProgramyear(programyear);
 		newForm.setProgram(program);
 		List<Program> programs = programService.findAll();
@@ -157,6 +163,8 @@ public class ProfileController {
 			emhcuser.setFirstname(form.getFirstname());
 			emhcuser.setLastname(form.getLastname());
 			emhcuser.setEmail(form.getEmail());
+			emhcuser.setEmail(form.getPhone());
+			emhcuser.setOrgemail(form.getOrgemail());
 			emhcuser.setProgramyear(form.getProgramyear());
 			emhcuser.setProgram(form.getProgram());
 
