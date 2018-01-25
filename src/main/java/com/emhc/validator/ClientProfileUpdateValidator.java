@@ -25,6 +25,9 @@ public class ClientProfileUpdateValidator implements Validator {
 	String ProgramYear_PATTERN = "[0-9]+";  
 
     private static final String EMAIL_REGEX = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+//    private static final String ID_PATTERN = "[0-9]+";  
+//    private static final String STRING_PATTERN = "[a-zA-Z]+";  
+    private static final String MOBILE_PATTERN = "[0-9]{10}";  
     
     /*private final StudentService studentService;
 
@@ -47,6 +50,7 @@ public class ClientProfileUpdateValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastname", "error.lastname", "Last name is required.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "programyear", "error.programyear", "Program Year is required.");  
 		validateEmail(errors, form);
+		validatePhone(errors, form);
 		validateProgramYear(errors, form);
 			  
 			// input string conatains numeric values only  
@@ -66,7 +70,17 @@ public class ClientProfileUpdateValidator implements Validator {
     		
     }
     
-    
+    private void validatePhone(Errors errors, ClientProfileUpdate form) {
+ // phone number validation  
+    if (!(form.getPhone() != null && form.getPhone().isEmpty())) {  
+     pattern = Pattern.compile(MOBILE_PATTERN);  
+     matcher = pattern.matcher(form.getPhone());  
+     if (!matcher.matches()) {  
+      errors.rejectValue("phone", "phone.incorrect",  
+        "Enter a correct phone number");  
+     }  
+    }
+    }
     private void validateProgramYear(Errors errors, ClientProfileUpdate form) {
     
     
