@@ -51,6 +51,7 @@ public class ClientProfileUpdateValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "programyear", "error.programyear", "Program Year is required.");  
 		validateEmail(errors, form);
 		validatePhone(errors, form);
+		validateOrgemail(errors, form);
 		validateProgramYear(errors, form);
 			  
 			// input string conatains numeric values only  
@@ -62,22 +63,39 @@ public class ClientProfileUpdateValidator implements Validator {
 
         if (email == null || email.length() == 0) {
         	logger.info("email.no_provide :" + email);
-            errors.rejectValue("email", "NotProvide.StudentProfileUpdate.email");
+            errors.rejectValue("email", "NotProvide.ClientProfileUpdate.email");
         } else if (!email.matches(EMAIL_REGEX)) {
         	logger.info("email not in right format");
-            errors.rejectValue("email", "WrongFormat.StudentProfileUpdate.email");
+            errors.rejectValue("email", "WrongFormat.ClientProfileUpdate.email");
+        }
+    		
+    }
+    // orgemail validator
+    private void validateOrgemail(Errors errors, ClientProfileUpdate form) {
+    	String orgemail = form.getOrgemail();
+
+        if (orgemail == null || orgemail.length() == 0) {
+        	logger.info("orgemail.no_provide :" + orgemail);
+            errors.rejectValue("orgemail", "NotProvide.ClientProfileUpdate.orgemail");
+        } else if (!orgemail.matches(EMAIL_REGEX)) {
+        	logger.info("orgemail not in right format");
+            errors.rejectValue("orgemail", "WrongFormat.ClientProfileUpdate.orgemail");
         }
     		
     }
     
     private void validatePhone(Errors errors, ClientProfileUpdate form) {
- // phone number validation  
-    if (!(form.getPhone() != null && form.getPhone().isEmpty())) {  
+ // phone number no provide return
+    	 if ( form.getPhone()== null || form.getPhone().length() == 0) {
+         	logger.info("phone.no_provide :" + form.getPhone());
+             errors.rejectValue("phone", "NotProvide.ClientProfileUpdate.phone");
+    	 }
+    // phone number validation  
+     if (!(form.getPhone() != null && form.getPhone().isEmpty())) {  
      pattern = Pattern.compile(MOBILE_PATTERN);  
      matcher = pattern.matcher(form.getPhone());  
      if (!matcher.matches()) {  
-      errors.rejectValue("phone", "phone.incorrect",  
-        "Enter a correct phone number");  
+      errors.rejectValue("phone", "WrongFormat.ClientProfileUpdate.phone");  
      }  
     }
     }
