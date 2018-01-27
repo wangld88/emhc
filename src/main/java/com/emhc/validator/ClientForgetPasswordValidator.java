@@ -42,7 +42,7 @@ public class ClientForgetPasswordValidator implements Validator {
     	String username = form.getusername();
     	
     	if(username != null && username.length() > 0 && username.trim().length() == 0) {
-    		errors.rejectValue("username", "NotProvide.studentActivationForm.username");
+    		errors.rejectValue("username", "NotProvide.forgetPasswordForm.username");
     	}
     }
     
@@ -52,7 +52,7 @@ public class ClientForgetPasswordValidator implements Validator {
             errors.reject("email.notexist", "User with this email not exist");
         } else if (!userForm.getEmail().matches(EMAIL_REGEX)) {
         	logger.debug("email not in right format");
-            errors.rejectValue("email", "WrongFormat.studentProfileForm.email");
+            errors.rejectValue("email", "WrongFormat.forgetPasswordForm.email");
         }
     }
 

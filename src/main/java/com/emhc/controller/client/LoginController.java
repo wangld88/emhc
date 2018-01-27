@@ -24,6 +24,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -54,7 +56,7 @@ import com.emhc.validator.UserDTOValidator;
 @Controller
 @RequestMapping("/client")
 public class LoginController extends BaseController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ScheduleController.class);
+	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
 	@Autowired
 	private EmailService emailService;
@@ -66,38 +68,35 @@ public class LoginController extends BaseController {
 	private ProgramService programService;
 	@Autowired
 	UserDTOValidator validator;
-    @Autowired
-    private MessageSource messageSource;
-    @Autowired
-    private ClientForgetPasswordValidator passwordValidator;
-    @Autowired
-    private ClientResetPasswordValidator passwordUpdateValidator;
-    @Autowired
-    private PasswordtokenService passwordtokenService;
+	@Autowired
+	private MessageSource messageSource;
+	@Autowired
+	private ClientForgetPasswordValidator passwordValidator;
+	@Autowired
+	private ClientResetPasswordValidator passwordUpdateValidator;
+	@Autowired
+	private PasswordtokenService passwordtokenService;
 
-    @InitBinder("forgetpasswordForm")
-    public void initPasswordBinder(WebDataBinder binder) {
-        binder.addValidators(passwordValidator);
-    }
+	@InitBinder("forgetpasswordForm")
+	public void initPasswordBinder(WebDataBinder binder) {
+		binder.addValidators(passwordValidator);
+	}
 
-	
-    @ModelAttribute("forgetpasswordForm")
+	@ModelAttribute("forgetpasswordForm")
 	public ClientForgetPassword createPasswordModel() {
 		return new ClientForgetPassword();
 	}
-   
-    @InitBinder("passwordUpdateForm")
-    public void initPasswordUpdateBinder(WebDataBinder binder) {
-        binder.addValidators(passwordUpdateValidator);
-    }
 
-	
-    @ModelAttribute("passwordUpdateForm")
+	@InitBinder("passwordUpdateForm")
+	public void initPasswordUpdateBinder(WebDataBinder binder) {
+		binder.addValidators(passwordUpdateValidator);
+	}
+
+	@ModelAttribute("passwordUpdateForm")
 	public ClientResetPassword createPasswordUpdateModel() {
 		return new ClientResetPassword();
 	}
 
-    
 	@RequestMapping(value = { "/", "/login" }, method = RequestMethod.GET)
 	public ModelAndView login() {
 		System.out.println("-------run to here login of student--------");
@@ -207,53 +206,65 @@ public class LoginController extends BaseController {
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String home(ModelMap model, HttpSession httpSession) {
 		String rtn = "client/home";
-		
+
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User emhcuser = userService.getByUsername(auth.getName());
-		
+
 		System.out.println("!!auth.getName = " + auth.getName());
 		System.out.println("!!userName = " + emhcuser.getUsername());
-		
+
 		model.addAttribute("loginUser", emhcuser);
 		model.addAttribute("userName", "Welcome " + emhcuser.getUsername() + " " + emhcuser.getLastname() + " ("
 				+ emhcuser.getUsername() + ")");
 		model.addAttribute("adminMessage", "Content Available Only for Users with Admin Role");
-		
+
 		return rtn;
 	}
-	
-	
-	@RequestMapping(value="/login/forgetPassword", method=RequestMethod.GET)
+
+	@RequestMapping(value = "/login/forgetPassword", method = RequestMethod.GET)
 	public String dspForgetPassword() {
-		LOGGER.debug("Call forgetPassword");
+		logger.debug("Call forgetPassword");
 		return "/client/login/forgetPassword";
 	}
-	
-    @RequestMapping(value="/login/forgetPassword", method=RequestMethod.POST)
-	public String doForgetPassword(@Valid @ModelAttribute("forgetpasswordForm") ClientForgetPassword form, BindingResult bindingResult, Model model, final HttpServletRequest request) {
-    	Message message = new Message();
-    	String rtn = "/client/login/forgetPassword";
+
+	@RequestMapping(value = "/login/forgetPassword", method = RequestMethod.POST)
+	public String doForgetPassword(@Valid @ModelAttribute("forgetpasswordForm") ClientForgetPassword form,
+			BindingResult bindingResult, Model model, final HttpServletRequest request) {
+		Message message = new Message();
+		String rtn = "/client/login/forgetPassword";
 		String username = form.getusername();
-		LOGGER.debug("Call doForgetPassword POST " + username);
-    	
+		logger.debug("Call doForgetPassword POST " + username);
+
 		try {
-	    	if (bindingResult.hasErrors()) {
-	            // failed validation
-				message.setStatus(Message.ERROR);
-				message.setMessage(messageSource.getMessage("StudentLogin.forgetPassword.validation", new Object[] {}, LocaleContextHolder.getLocale()));
-				model.addAttribute("message", message);
-	            return "/client/login/forgetPassword";
-	        }
 			
+			if (bindingResult.hasErrors()) {
+
+				logger.info("Forget Password form validation failed!!!!!!!!");
+				List<ObjectError> errors = bindingResult.getAllErrors();
+				String msg = messageSource.getMessage("Client.forgetPassword.validation", new Object[] {},
+						LocaleContextHolder.getLocale()) + "<br />";
+				for (ObjectError i : errors) {
+					if (i instanceof FieldError) {
+						FieldError fieldError = (FieldError) i;
+						msg += messageSource.getMessage(fieldError, LocaleContextHolder.getLocale()) + "<br />";
+					}
+				}
+				message.setStatus(Message.ERROR);
+				message.setMessage(msg);
+				model.addAttribute("message", message);
+
+				return "/client/login/forgetPassword";
+			}
+
 			final String token = UUID.randomUUID().toString();
 			User emhcuser = userService.getByUsername(username);
-			
+
 			if (emhcuser.getUserid() > 0) {
 				String url = getAppUrl(request);
 				String tokenURL = url + "/client/login/resetPassword?id=" + emhcuser.getUserid() + "&token=" + token;
-				
+
 				passwordtokenService.createPasswrodtokenForUser(emhcuser, token);
-				
+
 				String from = "scjimcc@gmail.com";
 				String to = emhcuser.getEmail();
 				String subject = "Reset your Password!";
@@ -262,142 +273,152 @@ public class LoginController extends BaseController {
 				emailService.sendMail(from, to, subject, body);
 
 				rtn = "/client/login/sendPasswordSuccess";
-				
+
 				message.setStatus(Message.SUCCESS);
-				message.setMessage(messageSource.getMessage("StudentLogin.forgetPassword.success", new Object[] {}, LocaleContextHolder.getLocale()));
+				message.setMessage(messageSource.getMessage("StudentLogin.forgetPassword.success", new Object[] {},
+						LocaleContextHolder.getLocale()));
 			} else {
 				rtn = "/client/login/forgetPassword";
-				
-				LOGGER.debug("Could not find the client based on provided information - studentnumber: " + username);
+
+				logger.debug("Could not find the client based on provided information - studentnumber: " + username);
 				message.setStatus(Message.ERROR);
-				message.setMessage(messageSource.getMessage("StudentLogin.forgetPassword.failure", new Object[] {}, LocaleContextHolder.getLocale()));
+				message.setMessage(messageSource.getMessage("StudentLogin.forgetPassword.failure", new Object[] {},
+						LocaleContextHolder.getLocale()));
 			}
 
-		} catch(Exception e) {
-			LOGGER.debug("Error in /client/login/forgetPassword of StudentLogin.  Error: " + e.getMessage());
+		} catch (Exception e) {
+			logger.debug("Error in /client/login/forgetPassword of StudentLogin.  Error: " + e.getMessage());
 			message.setStatus(Message.ERROR);
-			message.setMessage(messageSource.getMessage("StudentLogin.forgetPassword.error", new Object[] {}, LocaleContextHolder.getLocale()));
+			message.setMessage(messageSource.getMessage("StudentLogin.forgetPassword.error", new Object[] {},
+					LocaleContextHolder.getLocale()));
 		}
-		
+
 		model.addAttribute("message", message);
-		
+
 		return rtn;
-    }
+	}
 
-    
-    @RequestMapping(value = "/login/resetPassword", method = RequestMethod.GET)
-    public String dspChangePasswordPage(final Locale locale, final Model model, @RequestParam("id") final int id, @RequestParam("token") final String token) {
-        
-    	LOGGER.debug("/client/login/resetPassword is the method");
-    	//Clear all expired token before any operation.
-    	passwordtokenService.deleteExpiredToken();
-    	
-    	String result = null;
-    	
-    	Message message = new Message();
-    	
-    	User emhcuser = new User();
+	@RequestMapping(value = "/login/resetPassword", method = RequestMethod.GET)
+	public String dspChangePasswordPage(final Locale locale, final Model model, @RequestParam("id") final int id,
+			@RequestParam("token") final String token) {
 
-    	try {
-    		result = passwordtokenService.validatePasswordResetToken(id, token);
-	    	
-    		if (result != null) {
-    			LOGGER.debug("Invalid password token: " + token);
+		logger.debug("/client/login/resetPassword is the method");
+		// Clear all expired token before any operation.
+		passwordtokenService.deleteExpiredToken();
+
+		String result = null;
+
+		Message message = new Message();
+
+		User emhcuser = new User();
+
+		try {
+			result = passwordtokenService.validatePasswordResetToken(id, token);
+
+			if (result != null) {
+				logger.debug("Invalid password token: " + token);
 				message.setStatus(Message.ERROR);
-				message.setMessage(messageSource.getMessage("student.forget.failed", null, LocaleContextHolder.getLocale()));
-	            model.addAttribute("message", message);
+				message.setMessage(
+						messageSource.getMessage("student.forget.failed", null, LocaleContextHolder.getLocale()));
+				model.addAttribute("message", message);
 
-	            return "/client/login/login";
-	        }
-	    	
-    		emhcuser = userService.getById(id);
-	    	
-    	} catch(Exception e) {
-			LOGGER.debug("Error in /client/login/resetPassword of StudentLogin.  Error: " + e.getMessage());
+				return "/client/login/login";
+			}
+
+			emhcuser = userService.getById(id);
+
+		} catch (Exception e) {
+			logger.debug("Error in /client/login/resetPassword of StudentLogin.  Error: " + e.getMessage());
 			message.setStatus(Message.ERROR);
-			message.setMessage(messageSource.getMessage("StudentLogin.forgetPassword.error", new Object[] {}, LocaleContextHolder.getLocale()));
-            model.addAttribute("message", message);
-    	}
-    	model.addAttribute("userid", emhcuser.getUserid());
-    	model.addAttribute("username", emhcuser.getUsername());
-    	model.addAttribute("token", token);
-    	
-    	//return "/client/login/index";
-    	return "/client/login/resetPassword";
-        
-    }
-	
-    
-    @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
-    //@PreAuthorize("hasRole('READ_PRIVILEGE')")
-    //@ResponseBody
-    public String updateUserPassword(@Valid @ModelAttribute("passwordUpdateForm") ClientResetPassword resetpasswordForm, 
-			BindingResult bindingResult, 
-			Model model) {
-  	LOGGER.debug("/client/updatePassword is the method");
-    	Message message = new Message();
-    	User emhcuser = null;
-        /*//If need to enter the old password
-        final Student std = studentService.getStudentByNumber(SecurityContextHolder.getContext().getAuthentication().getName());
-        if (!studentService.checkIfValidOldPassword(std, passwordForm.getOldPassword())) {
-            throw new InvalidOldPasswordException();
-        }
-        */
-    	try {
-    		
-	    	if (bindingResult.hasErrors()) {
-	            // failed validation
-	    		emhcuser = userService.getByUsername(resetpasswordForm.getUsername());
-	    		model.addAttribute("username", resetpasswordForm.getUsername());
-	    		model.addAttribute("user", emhcuser);
-	    		model.addAttribute("token", resetpasswordForm.getToken());
-	    		
+			message.setMessage(messageSource.getMessage("StudentLogin.forgetPassword.error", new Object[] {},
+					LocaleContextHolder.getLocale()));
+			model.addAttribute("message", message);
+		}
+		model.addAttribute("userid", emhcuser.getUserid());
+		model.addAttribute("username", emhcuser.getUsername());
+		model.addAttribute("token", token);
+
+		// return "/client/login/index";
+		return "/client/login/resetPassword";
+
+	}
+
+	@RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
+	// @PreAuthorize("hasRole('READ_PRIVILEGE')")
+	// @ResponseBody
+	public String updateUserPassword(@Valid @ModelAttribute("passwordUpdateForm") ClientResetPassword resetpasswordForm,
+			BindingResult bindingResult, Model model) {
+		logger.debug("/client/updatePassword is the method");
+		Message message = new Message();
+		User emhcuser = null;
+		/*
+		 * //If need to enter the old password final Student std =
+		 * studentService.getStudentByNumber(SecurityContextHolder.getContext().
+		 * getAuthentication().getName()); if
+		 * (!studentService.checkIfValidOldPassword(std,
+		 * passwordForm.getOldPassword())) { throw new
+		 * InvalidOldPasswordException(); }
+		 */
+		try {
+
+			if (bindingResult.hasErrors()) {
+				// failed validation
+				emhcuser = userService.getByUsername(resetpasswordForm.getUsername());
+				model.addAttribute("username", resetpasswordForm.getUsername());
+				model.addAttribute("user", emhcuser);
+				model.addAttribute("token", resetpasswordForm.getToken());
+
 				message.setStatus(Message.ERROR);
-				message.setMessage(messageSource.getMessage("StudentLogin.updateUserPassword.validation", new Object[] {}, LocaleContextHolder.getLocale()));
+				message.setMessage(messageSource.getMessage("StudentLogin.updateUserPassword.validation",
+						new Object[] {}, LocaleContextHolder.getLocale()));
 				model.addAttribute("message", message);
 				model.addAttribute("passwordUpdateForm", resetpasswordForm);
-				
-	            return "/client/login/resetPassword";
-	        }
-	
-	    	emhcuser = userService.updatePassword(resetpasswordForm.getUserid(), resetpasswordForm.getPassword());
-	    	
-	    	//Delete the token after password reset
-	    	if(emhcuser != null && emhcuser.getUserid() >0 && emhcuser.getPassword().length() > 0) {
-	    		passwordtokenService.deleteUsedToken(emhcuser, resetpasswordForm.getToken());
-	    		LOGGER.debug("The used token has been deleted");
-	    	}
-	    	
-	    	message.setStatus(Message.SUCCESS);
-	    	message.setMessage(messageSource.getMessage("StudentLogin.resetPassword.success", new Object[] {}, LocaleContextHolder.getLocale()));
-    	} catch(Exception e) {
-    		
-			LOGGER.debug("Error in /client/updatePassword of StudentLogin.  Error: " + e.getMessage());
+
+				return "/client/login/resetPassword";
+			}
+
+			emhcuser = userService.updatePassword(resetpasswordForm.getUserid(), resetpasswordForm.getPassword());
+
+			// Delete the token after password reset
+			if (emhcuser != null && emhcuser.getUserid() > 0 && emhcuser.getPassword().length() > 0) {
+				passwordtokenService.deleteUsedToken(emhcuser, resetpasswordForm.getToken());
+				logger.debug("The used token has been deleted");
+			}
+
+			message.setStatus(Message.SUCCESS);
+			message.setMessage(messageSource.getMessage("StudentLogin.resetPassword.success", new Object[] {},
+					LocaleContextHolder.getLocale()));
+		} catch (Exception e) {
+
+			logger.debug("Error in /client/updatePassword of StudentLogin.  Error: " + e.getMessage());
 			message.setStatus(Message.ERROR);
-			message.setMessage(messageSource.getMessage("StudentLogin.resetPassword.error", new Object[] {}, LocaleContextHolder.getLocale()));
-    	}
-    	model.addAttribute("message", message);
-    	//model.addAttribute("student", std);
-    	
-        return "redirect:login";
-    }
-    
+			message.setMessage(messageSource.getMessage("StudentLogin.resetPassword.error", new Object[] {},
+					LocaleContextHolder.getLocale()));
+		}
+		model.addAttribute("message", message);
+		// model.addAttribute("student", std);
 
-    private String getAppUrl(HttpServletRequest request) {
-    	if(request.isSecure()) {
-    		return "https://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-    	} else {
-    		return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-    	}
-    }
-    
-    @RequestMapping(value="/logout", method = RequestMethod.GET)
-	public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+		return "redirect:login";
+	}
 
-	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	    if (auth != null){    
-	        new SecurityContextLogoutHandler().logout(request, response, auth);
-	    }
-	    return "redirect:/client/login?logout";//You can redirect wherever you want, but generally it's a good practice to show login screen again.
+	private String getAppUrl(HttpServletRequest request) {
+		if (request.isSecure()) {
+			return "https://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+		} else {
+			return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+		}
+	}
+
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null) {
+			new SecurityContextLogoutHandler().logout(request, response, auth);
+		}
+		return "redirect:/client/login?logout";// You can redirect wherever you
+												// want, but generally it's a
+												// good practice to show login
+												// screen again.
 	}
 }
