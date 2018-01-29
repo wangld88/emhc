@@ -7,12 +7,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class ClientForgetPassword {
 
-    @NotEmpty
-    @Size(min=0, max=80)
+   /* @NotEmpty
+    @Size(min=0, max=80)*/
     private String email = "";
 
-    @NotEmpty
-    @Size(min=0, max=50)
+    /*@NotEmpty
+    @Size(min=0, max=50)*/
     private String username = "";
 
     public String getEmail() {

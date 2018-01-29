@@ -41,20 +41,32 @@ public class ClientForgetPasswordValidator implements Validator {
     private void validateUsername(Errors errors, ClientForgetPassword form) {
     	String username = form.getusername();
     	
-    	if(username != null && username.length() > 0 && username.trim().length() == 0) {
-    		errors.rejectValue("username", "NotProvide.forgetPasswordForm.username");
+    	//if(username != null && username.length() > 0 && username.trim().length() == 0) {
+    	if(username == null || username.length() == 0) {	
+    	errors.rejectValue("username", "NotProvide.forgetPasswordForm.username");
     	}
     }
     
     private void validateEmail(Errors errors, ClientForgetPassword userForm) {
+    	
+    	String email=userForm.getEmail();
     	User userExists  = userService.findUserByEmail(userForm.getEmail());
-        if (userExists == null) {
+        
+    	//check email blank and format
+    	if (email==null||email.length()==0){
+        	errors.rejectValue("email", "NotProvide.forgetPasswordForm.email");
+         	}    
+    	else if (!email.matches(EMAIL_REGEX)) {
+        errors.rejectValue("email", "WrongFormat.forgetPasswordForm.email");
+    }
+    
+    	if (userExists == null) {
             errors.reject("email.notexist", "User with this email not exist");
-        } else if (!userForm.getEmail().matches(EMAIL_REGEX)) {
+        }/* else if (!userForm.getEmail().matches(EMAIL_REGEX)) {
         	logger.debug("email not in right format");
-            errors.rejectValue("email", "WrongFormat.forgetPasswordForm.email");
+            errors.rejectValue("email", "WrongFormat.forgetPasswordForm.email");*/
         }
     }
 
     
-}
+
