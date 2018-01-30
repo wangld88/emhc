@@ -51,17 +51,18 @@ public class ClientForgetPasswordValidator implements Validator {
     	
     	String email=userForm.getEmail();
     	User userExists  = userService.findUserByEmail(userForm.getEmail());
-        
+    	
     	//check email blank and format
     	if (email==null||email.length()==0){
         	errors.rejectValue("email", "NotProvide.forgetPasswordForm.email");
          	}    
     	else if (!email.matches(EMAIL_REGEX)) {
         errors.rejectValue("email", "WrongFormat.forgetPasswordForm.email");
-    }
-    
-    	if (userExists == null) {
-            errors.reject("email.notexist", "User with this email not exist");
+    }           
+    	//check email exist
+    	else if (userExists == null) {
+            errors.rejectValue("email", "Notexist.forgetPasswordForm.email");
+            
         }/* else if (!userForm.getEmail().matches(EMAIL_REGEX)) {
         	logger.debug("email not in right format");
             errors.rejectValue("email", "WrongFormat.forgetPasswordForm.email");*/
