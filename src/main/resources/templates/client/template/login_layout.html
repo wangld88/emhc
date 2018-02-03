@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>Sign-Up/Login Form</title>
+		<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' type='text/css' />
+		<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" /> -->
+
+		<link rel="stylesheet" th:href="@{/css/student-login.css}" />
+		<link rel="stylesheet" th:href="@{/css/bootstrap-responsive.css}" />
+		<link rel="stylesheet" th:href="@{/color/default.css}" />
+		<script>
+			function loadOrgs(elmt) {
+				form = document.getElementById("orgForm");
+				form.action=form.action+"/"+elmt.value;
+
+				form.submit();
+			}
+
+			function setPage() {
+				var urlstr = window.location.href;
+
+				if(location.search.split('login=')[1] == 1) {
+					document.getElementById("loginbtn").click();
+				}
+			}
+		</script>
+	</head>
+
+	<body>
+		<!-- navbar -->
+		<div class="navbar-wrapper">
+			<div class="navbar navbar-inverse navbar-fixed-top">
+				<div class="navbar-inner">
+					<div class="container">
+						<!-- Responsive navbar -->
+						<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+						</a>
+						<a href="index.html"><img th:src="@{/images/emh_logo.gif}" alt="emh INC." style="width:178px;height:78%;"/></a>
+						<!-- navigation -->
+						<nav class="pull-right nav-collapse collapse">
+							<ul id="menu-main" class="nav">
+							<li><a title="works" th:href="@{/home}">Home</a></li>
+							<li><a title="team" th:href="@{/aboutus}">About</a></li>
+							<li><a title="services" th:href="@{/fit}">Fit Testing</a></li>
+							<li><a title="blog" th:href="@{/whychoose}">Why EMH</a></li>
+							<li><a title="contact" th:href="@{/contact}">Contact</a></li>
+							<li><a href="client/login">Login</a></li>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form" layout:fragment="content">
+
+			Content
+
+		</div> <!-- /form -->
+		<footer>
+			<div class="container">
+				<div class="row">
+					<div class="span6 offset3">
+						<ul class="social-networks">
+							<li><a href="#"><i class="icon-circled icon-bgdark icon-instagram icon-2x"></i></a></li>
+							<li><a href="#"><i class="icon-circled icon-bgdark icon-twitter icon-2x"></i></a></li>
+							<li><a href="#"><i class="icon-circled icon-bgdark icon-dribbble icon-2x"></i></a></li>
+							<li><a href="#"><i class="icon-circled icon-bgdark icon-pinterest icon-2x"></i></a></li>
+						</ul>
+						<p class="copyright">
+							&copy; EMH Consulting. All rights reserved.
+			                <div class="credits">
+			                    <!--
+			                        All the links in the footer should remain intact.
+			                        You can delete the links only if you purchased the pro version.
+			                        Licensing information: https://bootstrapmade.com/license/
+			                        Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Maxim
+			                    -->
+			                    <a href="https://bootstrapmade.com/">Designed By K&J Consulting.</a>
+			                </div>
+						</p>
+					</div>
+				</div>
+			</div>
+			<!-- ./container -->
+		</footer>
+
+		<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
+		<script th:src="@{/js/student-login.js}"></script>
+		<script th:src="@{/js/jquery.js}"></script>
+		<script th:src="@{/js/jquery.scrollTo.js}"></script>
+		<script th:src="@{/js/jquery.nav.js}"></script>
+		<script th:src="@{/js/jquery.localscroll-1.2.7-min.js}"></script>
+		<script th:src="@{/js/bootstrap.js}"></script>
+		<script th:src="@{/js/jquery.prettyPhoto.js}"></script>
+		<script th:src="@{/js/isotope.js}"></script>
+		<script th:src="@{/js/jquery.flexslider.js}"></script>
+		<script th:src="@{/js/inview.js}"></script>
+		<script th:src="@{/js/animate.js}"></script>
+		<script th:src="@{/js/custom.js}"></script>
+		<script th:src="@{/js/contactform.js}"></script>
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		    ga('create', 'UA-55234356-4', 'auto');
+		    ga('send', 'pageview');
+		    setPage();
+		</script>
+
+	</body>
+</html>

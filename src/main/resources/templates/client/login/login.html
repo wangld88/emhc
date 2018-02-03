@@ -7,7 +7,7 @@
 		<title>Sign-Up/Login Form</title>
 		<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' type='text/css' />
 		<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" /> -->
-  
+
 		<link rel="stylesheet" th:href="@{/css/student-login.css}" />
 		<link rel="stylesheet" th:href="@{/css/bootstrap-responsive.css}" />
 		<link rel="stylesheet" th:href="@{/color/default.css}" />
@@ -15,13 +15,13 @@
 			function loadOrgs(elmt) {
 				form = document.getElementById("orgForm");
 				form.action=form.action+"/"+elmt.value;
-				
+
 				form.submit();
 			}
-			
+
 			function setPage() {
 				var urlstr = window.location.href;
-				
+
 				if(location.search.split('login=')[1] == 1) {
 					document.getElementById("loginbtn").click();
 				}
@@ -54,22 +54,22 @@
 			</div>
 		</div>
 		<div class="form">
-      
+
 			<ul class="tab-group">
 				<li class="tab active"><a href="#signup" id="signbtn">Sign Up</a></li>
 				<li class="tab"><a href="#login" id="loginbtn">Log In</a></li>
 			</ul>
 
 			<div class="tab-content">
-				<div id="signup">   
+				<div id="signup">
 					<!-- <h1>Sign Up for Free</h1> -->
-					
+
 					<form th:object="${userDTO}" th:action="@{/client/registration}" method="post" role="form">
-    
+
 						<div th:if="${message != null and #strings.length(message.message) != 0}" th:class="${message.status}">
 							<font th:text="${message.message}" style="font-size: 12px;"></font>
 						</div>
-						<div class="top-row">				
+						<div class="top-row">
 	 						<div class="field-wrap">
 								<label class="active">
 									Organization<span class="req">*</span>
@@ -92,7 +92,7 @@
 							                th:text="${pro.name}"></option>
 							    </select>
 	  						</div>
-						</div>							
+						</div>
 						<!-- <div class="top-row"> -->
 						<div class="field-wrap" th:if="${userDTO.programs!=null}">
 							<label>
@@ -101,14 +101,14 @@
 							<input type="text" class="input" th:field="*{username}" required autocomplete="off" />
 							<input type="hidden" class="input" th:field="*{role}" />
 						</div>
-						  
+
 							<!-- <div class="field-wrap">
 								<label>
 									Role<span class="req">*</span>
 								</label>
 							</div> -->
 						<!-- </div> -->
-	
+
 						<div class="top-row" th:if="${userDTO.programs!=null}">
 							<div class="field-wrap">
 								<label>
@@ -116,17 +116,17 @@
 								</label>
 								<input type="text" class="input" th:field="*{firstname}" required autocomplete="off" />
 							</div>
-						  
+
 							<div class="field-wrap">
 								<label>
 									Last Name<span class="req">*</span>
 								</label>
 								<input type="text" class="input" th:field="*{lastname}" required autocomplete="off"/>
 							</div>
-						
+
 						</div>
-						
-	    
+
+
 						<div class="top-row" th:if="${userDTO.programs!=null}">
 							<div class="field-wrap">
 								<label>
@@ -141,7 +141,7 @@
 								<input type="password" class="input" th:field="*{confirmpassword}" required autocomplete="off"/>
 							</div>
 						</div>
-						
+
 						<div class="top-row" th:if="${userDTO.programs!=null}">
 							<div class="field-wrap">
 								<label>
@@ -153,22 +153,22 @@
 								<label>
 									Program Year<span class="req">*</span>
 								</label>
-								<input type="text" th:field="*{programyear}" class="input" required autocomplete="off" /> 
+								<input type="text" th:field="*{programyear}" class="input" required autocomplete="off" />
 							</div>
 						</div>
-						<button type="submit" class="button button-block" value="" th:if="${userDTO.programs!=null}" />Register User</button>
-					
+						<button type="submit" class="button button-block" value="" th:if="${userDTO.programs!=null}" >Register User</button>
+
 					</form>
 					<form id="orgForm" th:action="@{/client/registration}" method="get">
 					</form>
-	
+
 				</div>
-	  
+
 				<div id="login">
 					<!-- <h1>Welcome Back!</h1> -->
-				    
+
 					<form name="loginForm" id="loginFor" th:action="@{/client/login}" method="post">
-				    
+
 						<div th:if="${param.error}" class="alert alert-danger">
 							<font style="font-size: 12px;">Invalid username and password.</font>
 						</div>
@@ -178,29 +178,29 @@
 							</label>
 							<input type="text" class="input" name="username" id="username" required autocomplete="off"/>
 						</div>
-	    
+
 						<div class="field-wrap">
 							<label>
 								<span th:text="#{student.login.password}"></span><span class="req">*</span>
 							</label>
 							<input type="password" class="input" name="password" id="password" required autocomplete="off"/>
 						</div>
-						
+
  						<li><a th:href="@{/client/login/forgetPassword}">Forgot Password?</a></li>
- 						
+
 <!-- 						<form th:action="@{/client/login/forgetPassword}" method="get">
 							<button class="btn btn-md btn-warning btn-block" type="Submit">Forgot Password?</button>
-						</form>	
- -->						
+						</form>
+ -->
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 						<button class="button button-block"/><span th:text="#{student.login.login}"></span></button>
-					
+
 					</form>
-				
+
 				</div>
-			
+
 			</div><!-- tab-content -->
-	      
+
 		</div> <!-- /form -->
 		<footer>
 			<div class="container">
@@ -231,7 +231,7 @@
 		</footer>
 
 		<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-		
+
 		<script th:src="@{/js/student-login.js}"></script>
 		<script th:src="@{/js/jquery.js}"></script>
 		<script th:src="@{/js/jquery.scrollTo.js}"></script>
