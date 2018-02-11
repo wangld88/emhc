@@ -78,7 +78,7 @@ public class ClientForgetPasswordValidator implements Validator {
     		
     		String usrname = userExists.getUsername();
     	
-    	if(usrnam!=usrname){
+    	if(!usrnam.equals(usrname)){
             	errors.rejectValue("email", "Notmatch.forgetPasswordForm.email");
             }
             
