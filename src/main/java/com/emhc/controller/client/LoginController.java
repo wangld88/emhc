@@ -24,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
@@ -233,8 +234,9 @@ public class LoginController extends BaseController {
 		Message message = new Message();
 		String rtn = "/client/login/forgetPassword";
 		String username = form.getusername();
+		
 		logger.debug("Call doForgetPassword POST " + username);
-
+			
 		try {
 			
 			if (bindingResult.hasErrors()) {
@@ -242,11 +244,11 @@ public class LoginController extends BaseController {
 				logger.info("Forget Password form validation failed!!!!!!!!");
 				List<ObjectError> errors = bindingResult.getAllErrors();
 				String msg = messageSource.getMessage("Client.forgetPassword.validation", new Object[] {},
-						LocaleContextHolder.getLocale()) + "<br />";
+						LocaleContextHolder.getLocale()) + "<br/>";
 				for (ObjectError i : errors) {
 					if (i instanceof FieldError) {
 						FieldError fieldError = (FieldError) i;
-						msg += messageSource.getMessage(fieldError, LocaleContextHolder.getLocale()) + "<br />";
+						msg += messageSource.getMessage(fieldError, LocaleContextHolder.getLocale()) + "<br/>";
 					}
 				}
 				message.setStatus(Message.ERROR);
@@ -273,14 +275,18 @@ public class LoginController extends BaseController {
 				emailService.sendMail(from, to, subject, body);
 
 				rtn = "/client/login/sendPasswordSuccess";
-
+								
 				message.setStatus(Message.SUCCESS);
 				message.setMessage(messageSource.getMessage("StudentLogin.forgetPassword.success", new Object[] {},
-						LocaleContextHolder.getLocale()));
-			} else {
-				rtn = "/client/login/forgetPassword";
-
+					LocaleContextHolder.getLocale()));
+				return rtn;
+								
+			} 
+			
+			else {
+				
 				logger.debug("Could not find the client based on provided information - studentnumber: " + username);
+				rtn= "/client/login/forgetPassword";
 				message.setStatus(Message.ERROR);
 				message.setMessage(messageSource.getMessage("StudentLogin.forgetPassword.failure", new Object[] {},
 						LocaleContextHolder.getLocale()));
