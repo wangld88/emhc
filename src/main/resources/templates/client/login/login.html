@@ -141,13 +141,26 @@
 								<input type="password" class="input" th:field="*{confirmpassword}" required autocomplete="off"/>
 							</div>
 						</div>
-
-						<div class="top-row" th:if="${userDTO.programs!=null}">
+					<div class="top-row" th:if="${userDTO.programs!=null}">
 							<div class="field-wrap">
 								<label>
 									Email Address<span class="req">*</span>
 								</label>
 								<input type="email" class="input" th:field="*{email}" required autocomplete="off"/>
+							</div>
+							<div class="field-wrap">
+								<label>
+									Phone<span class="req">*</span>
+								</label>
+								<input type="text" th:field="*{phone}" class="input" required autocomplete="off" />
+							</div>
+						</div>
+						<div class="top-row" th:if="${userDTO.programs!=null}">
+							<div class="field-wrap">
+								<label>
+									Organization Email<span class="req">*</span>
+								</label>
+								<input type="email" class="input" th:field="*{orgemail}" required autocomplete="off"/>
 							</div>
 							<div class="field-wrap">
 								<label>
