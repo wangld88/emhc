@@ -17,6 +17,8 @@ public class UserForm {
 	private String firstname;
 	private String lastname;
 	private String email;
+	private String phone;
+	private String orgemail;
 	private String password;
 	private String confirmpassword;
 	private int programyear;
@@ -41,6 +43,8 @@ public class UserForm {
 		this.firstname = user.getFirstname();
 		this.lastname = user.getLastname();
 		this.email = user.getEmail();
+		this.phone = user.getPhone();
+		this.orgemail = user.getOrgemail(); 
 		this.password = user.getPassword();
 		this.program = user.getProgram();
 		this.createdby = user.getCreatedby();
@@ -61,6 +65,8 @@ public class UserForm {
 		user.setFirstname(this.firstname);
 		user.setLastname(this.lastname);
 		user.setEmail(this.email);
+		user.setPhone(this.phone);
+		user.setOrgemail(this.orgemail);
 		user.setPassword(this.password);
 		user.setProgram(this.program);
 		user.setCreatedby(this.createdby);
@@ -116,6 +122,18 @@ public class UserForm {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public String getPhone(){
+		return phone;	
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public String getOrgemail(){
+		return orgemail;	
+	}
+	public void setOrgemail(String orgemail) {
+		this.orgemail = orgemail;
 	}
 	public String getPassword() {
 		return password;

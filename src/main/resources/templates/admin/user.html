@@ -28,7 +28,7 @@
 							</div>
 							<label class="col-lg-8 col-sm-4 control-label">Program*</label>
 							<div class="col-lg-8 col-sm-4">
-								<select th:field="*{program.programid}" class="form-control" placeholder="Program" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Program">
+								    <select th:field="*{program.programid}" class="form-control" placeholder="Program" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Program">
 									<option th:each="program:${userForm.programs}" th:value="${program.programid}" th:text="${program.name}" th:selected="${program.programid==userForm.program.programid?'selected':''}" />
 								</select>
 							</div>
@@ -51,6 +51,14 @@
 							<label class="col-lg-8 col-sm-4 control-label">Email Address*</label>
 							<div class="col-lg-8 col-sm-4">
 								<input type="text" th:field="*{email}" class="form-control" placeholder="Email Address" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Email Address">
+							</div>
+							<label class="col-lg-8 col-sm-4 control-label">Phone*</label>
+							<div class="col-lg-8 col-sm-4">
+								<input type="text" th:field="*{phone}" class="form-control" placeholder="Phone" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Phone">
+							</div>
+							<label class="col-lg-8 col-sm-4 control-label">Organization Email*</label>
+							<div class="col-lg-8 col-sm-4">
+								<input type="text" th:field="*{orgemail}" class="form-control" placeholder="Organization Email" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Organization Email">
 							</div>
 							<label class="col-lg-8 col-sm-4 control-label">Program Year*</label>
 							<div class="col-lg-8 col-sm-4">
