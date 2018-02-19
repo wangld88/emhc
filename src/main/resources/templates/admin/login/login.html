@@ -8,9 +8,9 @@
 		<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" /> -->
 
 		<link rel="stylesheet" th:href="@{/css/admin-login.css}" />
-
-		<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script> -->
-		<script th:src="@{/js/admin-login.js}"></script>
+	   	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script> -->
+		<!--  <script th:src="@{/js/admin-login.js}"></script>-->
+		
 
 	</head>
 
@@ -20,7 +20,11 @@
 		
 		<div class="login">
 			<h1>EMHC Admin</h1>
-			<form th:action="@{/admin/login}" method="POST">
+			<form name="loginForm" id="loginFor" th:action="@{/admin/login}" method="POST">
+				<!-- valid username/password -->
+				<div th:if="${param.error}" class="alert alert-danger">
+							<font style="color:red;font-size: 12px;">Invalid Admin and password.</font>
+						</div>
 				<input type="text" id="username" name="username" placeholder="Username" required="required" />
 				<input type="password" id="password" name="password" placeholder="Password" required="required" />
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
