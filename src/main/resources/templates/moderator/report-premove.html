@@ -1,0 +1,257 @@
+<html layout:decorator="moderator/layout">
+
+	<div layout:fragment="content" class="container">
+	
+		<!-- Breadcrumbs-->
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">
+				<a th:href="@{/moderator/home}">Reports</a>
+			</li>
+			<li class="breadcrumb-item active">My Dashboard</li>
+		</ol>
+
+		<div class="col-xs-12 col-sm-12">
+			<div class="box">
+				<div class="box-content">
+					<form class="form-horizontal" id="rpt" th:action="@{/moderator/report}" method="post">
+						<div class="form-group" th:if="${programs == null or programs.size() == 0}">
+							<label class="col-sm-4 control-label">Organization*</label>
+							<div class="col-sm-4">
+								<select id="organizationid" name="organizationid" class="form-control" placeholder="Organization" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Organization" onchange="loadOrgs(this)">
+									<option th:each="org:${orgs}" th:value="${org.organizationid}" th:text="${org.name}" th:selected="${org.organizationid==orgid}" />
+								</select>
+							</div>
+						</div>
+						<div class="form-group" th:if="${programs != null and programs.size() > 0}">
+							<label class="col-sm-4 control-label">Organization*</label>
+							<div class="col-sm-4">
+								<select id="organizationid" name="organizationid" class="form-control" placeholder="Organization" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Organization" onchange="loadOrgs(this)">
+									<option th:each="org:${orgs}" th:value="${org.organizationid}" th:text="${org.name}" th:selected="${org.organizationid==orgid}" />
+								</select>
+							</div>
+							<label class="col-sm-4 control-label">Program*</label>
+							<div class="col-sm-4">
+								<label th:each="program:${programs}">
+									<input type="radio" id="programid" name="programid" th:value="${program.programid}" th:text="${program.name}"></input>
+								</label>
+							</div>
+							<div class="col-sm-4" style="height: 20px;">
+								<!-- <input type="hidden" th:field="*{templateid}" /> -->
+							</div>
+							<div class="col-sm-4">
+								<button type="submit" class="btn btn-primary btn-label-left">
+									<span><i class="fa fa-clock-o"></i></span>
+									Submit
+								</button>
+							</div>
+						</div>
+						
+					</form>
+					<form id="orgForm" th:action="@{/moderator/report/org/}" method="get">
+					</form>
+				</div>
+			</div>
+		</div>
+			
+			<!-- Example DataTables Card-->
+		<div class="col-xs-12 col-sm-12" th:if="${regists != null and regists.size() > 0}">
+			<div class="card mb-3">
+				    <div class="card-header">
+				      <i class="fa fa-table"></i> Data Table Example</div>
+				    <div class="card-body">
+				      <div class="table-responsive">
+				        <table class="table" id="dataTable" width="100%" cellspacing="0">
+				          <thead class="thead-light">
+				            <tr>
+				              <th>Name</th>
+				              <th>Session</th>
+				              <th>1</th>
+				              <th>2</th>
+				              <th>3</th>
+				              <th>4</th>
+				              <th>5</th>
+				              <th>6</th>
+				              <th>7</th>
+				              <th>8</th>
+				              <th>9</th>
+				              <th>10</th>
+				              <th>11</th>
+				              <th>12</th>
+				              <th>13</th>
+				              <th>14</th>
+				            </tr>
+				          </thead>
+				          <tfoot class="thead-light">
+				            <tr>
+				              <th>Name</th>
+				              <th>Session</th>
+				              <th>1</th>
+				              <th>2</th>
+				              <th>3</th>
+				              <th>4</th>
+				              <th>5</th>
+				              <th>6</th>
+				              <th>7</th>
+				              <th>8</th>
+				              <th>9</th>
+				              <th>10</th>
+				              <th>11</th>
+				              <th>12</th>
+				              <th>13</th>
+				              <th>14</th>
+				            </tr>
+				          </tfoot>
+				          <tbody>
+				          	<tr th:each="regist : ${regists}">
+				          		<td th:text="${regist.user.firstname}+' '+${regist.user.lastname}"></td>
+				          		<td th:text="${regist.schedule.session.sessiondate}+' '+${#dates.format(regist.schedule.scheduletime,'HH:mm a')}"></td>
+				          		<td th:text="${regist.user.answers.get(0).answer1==null?'N':'Y'}"></td>
+				          		<td th:text="${regist.user.answers.get(0).answer2==null?'N':'Y'}"></td>
+				          		<td th:text="${regist.user.answers.get(0).answer3==null?'N':'Y'}"></td>
+				          		<td th:text="${regist.user.answers.get(0).answer4==null?'N':'Y'}"></td>
+				          		<td th:text="${regist.user.answers.get(0).answer5==null?'N':'Y'}"></td>
+				          		<td th:text="${regist.user.answers.get(0).answer6==null?'N':'Y'}"></td>
+				          		<td th:text="${regist.user.answers.get(0).answer7==null?'N':'Y'}"></td>
+				          		<td th:text="${regist.user.answers.get(0).answer8==null?'N':'Y'}"></td>
+				          		<td th:text="${regist.user.answers.get(0).answer9==null?'N':'Y'}"></td>
+				          		<td th:text="${regist.user.answers.get(0).answer10==null?'N':'Y'}"></td>
+				          		<td th:text="${regist.user.answers.get(0).answer11==null?'N':'Y'}"></td>
+				          		<td th:text="${regist.user.answers.get(0).answer12==null?'N':'Y'}"></td>
+				          		<td th:text="${regist.user.answers.get(0).answer13==null?'N':'Y'}"></td>
+				          		<td th:text="${regist.user.answers.get(0).answer14==null?'N':'Y'}"></td>
+				          	</tr>
+				            <!-- <tr>
+				              <td>Tiger Nixon</td>
+				              <td>System Architect</td>
+				              <td>Edinburgh</td>
+				              <td>61</td>
+				              <td>2011/04/25</td>
+				              <td>$320,800</td>
+				            </tr>
+				            <tr>
+				              <td>Garrett Winters</td>
+				              <td>Accountant</td>
+				              <td>Tokyo</td>
+				              <td>63</td>
+				              <td>2011/07/25</td>
+				              <td>$170,750</td>
+				            </tr>
+				            <tr>
+				              <td>Ashton Cox</td>
+				              <td>Junior Technical Author</td>
+				              <td>San Francisco</td>
+				              <td>66</td>
+				              <td>2009/01/12</td>
+				              <td>$86,000</td>
+				            </tr>
+				            <tr>
+				              <td>Cedric Kelly</td>
+				              <td>Senior Javascript Developer</td>
+				              <td>Edinburgh</td>
+				              <td>22</td>
+				              <td>2012/03/29</td>
+				              <td>$433,060</td>
+				            </tr>
+				            <tr>
+				              <td>Airi Satou</td>
+				              <td>Accountant</td>
+				              <td>Tokyo</td>
+				              <td>33</td>
+				              <td>2008/11/28</td>
+				              <td>$162,700</td>
+				            </tr>
+				            <tr>
+				              <td>Brielle Williamson</td>
+				              <td>Integration Specialist</td>
+				              <td>New York</td>
+				              <td>61</td>
+				              <td>2012/12/02</td>
+				              <td>$372,000</td>
+				            </tr>
+				            <tr>
+				              <td>Herrod Chandler</td>
+				              <td>Sales Assistant</td>
+				              <td>San Francisco</td>
+				              <td>59</td>
+				              <td>2012/08/06</td>
+				              <td>$137,500</td>
+				            </tr>
+				            <tr>
+				              <td>Rhona Davidson</td>
+				              <td>Integration Specialist</td>
+				              <td>Tokyo</td>
+				              <td>55</td>
+				              <td>2010/10/14</td>
+				              <td>$327,900</td>
+				            </tr>
+				            <tr>
+				              <td>Colleen Hurst</td>
+				              <td>Javascript Developer</td>
+				              <td>San Francisco</td>
+				              <td>39</td>
+				              <td>2009/09/15</td>
+				              <td>$205,500</td>
+				            </tr>
+				            <tr>
+				              <td>Sonya Frost</td>
+				              <td>Software Engineer</td>
+				              <td>Edinburgh</td>
+				              <td>23</td>
+				              <td>2008/12/13</td>
+				              <td>$103,600</td>
+				            </tr>
+				            <tr>
+				              <td>Jena Gaines</td>
+				              <td>Office Manager</td>
+				              <td>London</td>
+				              <td>30</td>
+				              <td>2008/12/19</td>
+				              <td>$90,560</td>
+				            </tr>
+				            <tr>
+				              <td>Quinn Flynn</td>
+				              <td>Support Lead</td>
+				              <td>Edinburgh</td>
+				              <td>22</td>
+				              <td>2013/03/03</td>
+				              <td>$342,000</td>
+				            </tr>
+				            <tr>
+				              <td>Charde Marshall</td>
+				              <td>Regional Director</td>
+				              <td>San Francisco</td>
+				              <td>36</td>
+				              <td>2008/10/16</td>
+				              <td>$470,600</td>
+				            </tr>
+				            <tr>
+				              <td>Haley Kennedy</td>
+				              <td>Senior Marketing Designer</td>
+				              <td>London</td>
+				              <td>43</td>
+				              <td>2012/12/18</td>
+				              <td>$313,500</td>
+				            </tr> -->
+				          </tbody>
+				        </table>
+				      </div>
+				    </div>
+				    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+				  </div>
+		</div>
+		
+		<script th:inline="javascript">
+		/*<![CDATA[*/
+		
+		function loadOrgs(elmt) {
+			form = document.getElementById("orgForm");
+			form.action=form.action+"/"+elmt.value;
+			//alert("login action: "+form.action);
+			form.submit();
+		}
+	
+		/*]]>*/
+		</script>
+	</div>
+
+</html>

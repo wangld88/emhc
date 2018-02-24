@@ -75,20 +75,32 @@ public class CommonErrorController implements ErrorController {
             if(response.getStatus() == HttpStatus.FORBIDDEN.value()) {
             	if(path.indexOf("/admin") > 0) {
             		view = "/admin/login/login";
-    	        } else {
+    	        } 
+            	if (path.indexOf("/moderator") > 0) {
+            		view = "/moderator/login/login";
+            		}
+            	else {
     	        	view = "/client/login/login";
     	        }
             } else {
 	        	if(path.indexOf("/admin") > 0) {
 	        		view = "/admin" + PATH;
-		        } else {
+		        } 
+	        	if (path.indexOf("/moderator") > 0) {
+            		view = "/moderator"+PATH;
+            		}
+            	else {
 		        	view = "/client" + PATH;
 		        }
             }
         } else {
 	        if(url.indexOf("/admin") > 0) {
 	        	view = "/admin" + PATH;
-	        } else {
+	        } 
+	        if (url.indexOf("/moderator") > 0) {
+        		view = "/moderator"+PATH;
+        		}        	     
+	        else {
 	        	view = "/client" + PATH;
 	        }
         }

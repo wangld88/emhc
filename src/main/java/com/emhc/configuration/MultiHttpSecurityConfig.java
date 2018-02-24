@@ -90,7 +90,32 @@ public class MultiHttpSecurityConfig {
 		            .permitAll();
 		}
 	}
-
+	@Configuration
+	@Order(2)
+	public static class ModeratorSecurityConfiguration extends WebSecurityConfigurerAdapter {
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+			
+			http
+				.antMatcher("/moderator/**")
+				.authorizeRequests()
+	         	.antMatchers("/moderator/login/**").permitAll()
+	        	.antMatchers("/moderator/**").hasAuthority("MODERATOR")
+	                .anyRequest().authenticated()
+	        .and()
+		        .formLogin()
+		            .loginPage("/moderator/login")
+		            .successHandler(new CustomSuccessHandler())
+		            .usernameParameter("username")
+		            //.defaultSuccessUrl("/moderator/home")
+		            .permitAll()
+	        .and()
+		        .logout()
+		        	.logoutSuccessUrl("/moderator/login")
+		            .permitAll();
+		}
+	}
+	
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth)
 			throws Exception {

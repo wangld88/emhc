@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.emhc.model.Program;
 import com.emhc.model.User;
 import com.emhc.repository.UserRepository;
 
@@ -35,11 +36,25 @@ public class UserService{
 		return userRepository.findAll();
 	}
 	
+	public List<User> getByRoleNameNot(String roleid) {
+		return userRepository.findByRoleNameNot(roleid);
+	}
+	
+	public List<User> getByProgram(Program program){
+		return userRepository.findByProgram(program);
+	}
 	public User saveUser(User user) {
 		if(user.getUserid() == 0) { 
 			user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		}
+		
 		return userRepository.save(user);
+	}
+	
+	public User savUser(User user) {
+			user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+		
+			return userRepository.save(user);
 	}
 
     public User updatePassword(int userid, String password) {

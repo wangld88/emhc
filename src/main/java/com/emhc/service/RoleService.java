@@ -23,6 +23,9 @@ public class RoleService{
 	public List<Role> getAll() {
 		return roleRepository.findAll();
 	}
+	public List<Role> findByNameNot(String name){
+		return roleRepository.findByNameNot(name);
+	}
 
 	public Role saveProgram(Role role) {
 		return roleRepository.save(role);

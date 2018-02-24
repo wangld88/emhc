@@ -92,7 +92,10 @@ public class BaseController {
         
         if(url.indexOf("/admin") > 0) {
         	view = "/admin" + ERROR_VIEW;
-        } else {
+        } if (url.indexOf("/moderator") > 0){
+        	view = "/moderator" + ERROR_VIEW;
+        } 
+        else {
         	view = "/student" + ERROR_VIEW;
         }
         logger.info("view: " + view + ", URL: "+url);

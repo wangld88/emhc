@@ -1,4 +1,6 @@
-package com.emhc.controller.admin;
+package com.emhc.controller.moderator;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,33 +31,38 @@ import com.emhc.model.Program;
 import com.emhc.model.Role;
 import com.emhc.model.User;
 import com.emhc.security.LoginUser;
+import com.emhc.service.UserService;
 import com.emhc.validator.UserFormValidator;
 
-
 @Controller
-@RequestMapping({"/admin"})
-public class AdminUser extends BaseController {
+@RequestMapping({"/moderator"})
+public class ModeratorUser extends BaseController {
 
-	private static final Logger logger = LoggerFactory.getLogger(AdminUser.class);
+	private static final Logger logger = LoggerFactory.getLogger(ModeratorUser.class);
 
 	@Autowired
     UserFormValidator validator;
 	
  	@RequestMapping(value={"/user"}, method = RequestMethod.GET)
 	public String dspUser(Model model){
- 		String rtn = "/admin/user";
+ 		String rtn = "/moderator/user";
  		
 		User user = getPrincipal();
 		
 		if(user == null) {
-			rtn = "/admin/login";
+			rtn = "/moderator/login";
 		} else {
 			logger.info("dspUser");
 			UserForm userForm = new UserForm();
-			List<Organization> orgs = organizationService.findAll();
-			List<Role> roles = roleService.getAll();
-			userForm.setOrganizations(orgs);
+			Organization org = (user.getProgram()).getOrganization();
+			//List<Organization> orgs = organizationService.findAll();
+			List<Role> roles = roleService.findByNameNot("ADMIN");
+			//userForm.setOrganizations(orgs);
+			List<Program> programs = programService.getByOrganization(org);
+			userForm.setPrograms(programs);
 			userForm.setRoles(roles);
+			userForm.setOrganization(org);
+			
 			model.addAttribute("userForm", userForm);
 		}
 		
@@ -64,21 +71,24 @@ public class AdminUser extends BaseController {
 	
  	@RequestMapping(value={"/user/{userid}"}, method = RequestMethod.GET)
 	public String dspUser(Model model, @PathVariable("userid") Integer userid, HttpSession httpSession){
- 		String rtn = "/admin/user";
+ 		String rtn = "/moderator/user";
  		
 		User loginUser = getPrincipal();
 		
 		if(loginUser == null) {
-			rtn = "/admin/login";
+			rtn = "/moderator/login";
 		} else {
 			logger.info("dspUser");
 			User user = userService.getById(userid);
 			UserForm userForm = new UserForm(user);
-			List<Organization> orgs = organizationService.findAll();
-			List<Program> programs = programService.getByOrganization(user.getProgram().getOrganization());
+			Organization org = (loginUser.getProgram()).getOrganization();
+			userForm.setOrganization(org);
+			//List<Organization> orgs = organizationService.findAll();
+			List<Program> programs = programService.getByOrganization(org);
 			userForm.setPrograms(programs);
-			List<Role> roles = roleService.getAll();
-			userForm.setOrganizations(orgs);
+			List<Role> roles = roleService.findByNameNot("ADMIN");
+			//List<Role> roles = roleService.getAll();
+			//userForm.setOrganizations(orgs);
 			userForm.setRoles(roles);
 			model.addAttribute("userForm", userForm);
 		}
@@ -93,7 +103,7 @@ public class AdminUser extends BaseController {
 		User user = getPrincipal();
 		
 		if(user == null) {
-			return "/admin/login";
+			return "/moderator/login";
 		}
 		
 		UserForm userForm = new UserForm();
@@ -103,43 +113,48 @@ public class AdminUser extends BaseController {
 			List<Program> programs = programService.getByOrganization(organization);
 			userForm.setPrograms(programs);
 		}
-		List<Organization> organizations = organizationService.findAll();
-		List<Role> roles = roleService.getAll();
-		userForm.setOrganization(organization);
-		userForm.setOrganizations(organizations);
+		//Organization org = (user.getProgram()).getOrganization();
+		//List<Organization> organizations = organizationService.findAll();
+		List<Role> roles = roleService.findByNameNot("ADMIN");
 		userForm.setRoles(roles);
+		//List<Role> roles = roleService.getAll();
+		userForm.setOrganization(organization);
+		//userForm.setOrganizations(organizations);
+		
 		model.addAttribute("userForm", userForm);
 		
-		return "/admin/user";
+		return "/moderator/user";
 	}
 	
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
-	public String createUser(@Valid UserForm userForm, Errors errors, ModelMap model,BindingResult bindingResult) {
+	public String createUser(@Valid UserForm userForm, ModelMap model, Errors errors, BindingResult bindingResult) {
 
 		User loginUser = getPrincipal();
 		
-		String rtn = "redirect:/admin/users";
+		String rtn = "redirect:/moderator/users";
 		
 		if(loginUser == null) {
-			return "/admin/login";
+			return "/moderator/login";
 		} else {
 			//model.addAttribute("loginUser", user);
 		}
 		
 		List<Program> programs = new ArrayList<Program>();
-		programs = programService.findAll();
+		Organization org = (loginUser.getProgram()).getOrganization();
+		userForm.setOrganization(org);
+		programs = programService.getByOrganization(org);
 		userForm.setPrograms(programs);
-
+                
 		if (bindingResult.hasErrors()) {
 
-			return "/admin/user";
+			return "/moderator/user";
 		} else {
 			
 			try{
 		        //validator.validate(userForm, bindingResult);
 		         
 		        /*if (bindingResult.hasErrors()) {
-		        	return "/admin/user";
+		        	return "/moderator/user";
 		        }*/
 		        Role role = userForm.getRole(); //roleService.findById();
 		        userForm.setRole(role);
@@ -148,8 +163,6 @@ public class AdminUser extends BaseController {
 				//userForm.setCreationdate(date);
 				
 				User user = userForm.getUser();
-				//logger.info("useredit"+user.getUserid());
-				//logger.info("loginuseredit"+loginUser.getUserid());
 				user.setCreatedby(loginUser.getUserid());
 				user.setCreationdate(date);
 				
@@ -164,16 +177,15 @@ public class AdminUser extends BaseController {
 				//if (!passworduser.equals(passworduserform)){
 		    	 		logger.info("oldpsw.nomatch :" + passworduserform + ", " + passworduser);
 		    	 		errors.rejectValue("password", "NotMatch.password.adminuser");
-		    	 		String rtn2 = "/admin/user";
+		    	 		String rtn2 = "/moderator/user";
 		    	  		return rtn2;
 				 }
 				 else{
 					 userService.savUser(user);
 				 }
 				}
-				
-			
-				 model.addAttribute("successMessage", "User has been registered successfully");
+											
+				model.addAttribute("successMessage", "User has been registered successfully");
 			}
 			catch(Exception e){
 				e.printStackTrace();
@@ -181,20 +193,34 @@ public class AdminUser extends BaseController {
 			}
 		}
 		return rtn;
-}
+	}
 
 	@RequestMapping(value="/users", method=RequestMethod.GET)
 	public String dspUsers(Model model) {
-		String rtn = "/admin/users";
+		String rtn = "/moderator/users";
 		//logger.info("dspSessions is called");
 		User user = getPrincipal();
 	
 		if(user == null) {
-			rtn = "/admin/login";
+			rtn = "/moderator/login";
 		} else {
 			
-			List<User> users = userService.getAll();
-			
+		//get users by not admin under same organization
+			List<User> users = new ArrayList<User>();
+			List<User> usersbypro = new ArrayList<User>();
+			Organization org = (user.getProgram()).getOrganization();
+			List<Program> programs = programService.getByOrganization(org);
+			//List<Role> roles = roleService.findByNameNot("ADMIN");
+			for( int i = 0 ; i < programs.size() ; i++){
+				Program program = new Program();
+				program = programs.get(i);
+				List<User> usrs=userService.getByProgram(program);
+				usersbypro.addAll(usrs);
+			   }
+						
+			users = userService.getByRoleNameNot("ADMIN");
+			users.retainAll(usersbypro);
+						
 			model.addAttribute("users", users);
 		}
 		
