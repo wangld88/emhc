@@ -164,7 +164,7 @@ public class AdminUser extends BaseController {
 				//if (!passworduser.equals(passworduserform)){
 		    	 		logger.info("oldpsw.nomatch :" + passworduserform + ", " + passworduser);
 		    	 		errors.rejectValue("password", "NotMatch.password.adminuser");
-		    	 		String rtn2 = "/admin/user";
+		    	 		String rtn2 = "redirect:/admin/user/"+user.getUserid();
 		    	  		return rtn2;
 				 }
 				 else{

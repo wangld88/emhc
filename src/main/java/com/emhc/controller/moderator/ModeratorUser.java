@@ -13,6 +13,8 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -20,17 +22,24 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.emhc.controller.base.BaseController;
 import com.emhc.dto.UserForm;
+import com.emhc.error.Message;
 import com.emhc.model.Organization;
 import com.emhc.model.Program;
 import com.emhc.model.Role;
 import com.emhc.model.User;
 import com.emhc.security.LoginUser;
+import com.emhc.service.ProgramService;
 import com.emhc.service.UserService;
 import com.emhc.validator.UserFormValidator;
 
@@ -41,8 +50,19 @@ public class ModeratorUser extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(ModeratorUser.class);
 
 	@Autowired
+	private UserService userService;
+	@Autowired
+	private ProgramService programService;
+	@Autowired
+	private MessageSource messageSource;
+	
+	@Autowired
     UserFormValidator validator;
 	
+	@InitBinder("userForm")
+	public void initModeratorUserBinder(WebDataBinder binder) {
+		binder.addValidators(validator);
+	}
  	@RequestMapping(value={"/user"}, method = RequestMethod.GET)
 	public String dspUser(Model model){
  		String rtn = "/moderator/user";
@@ -127,11 +147,15 @@ public class ModeratorUser extends BaseController {
 	}
 	
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
-	public String createUser(@Valid UserForm userForm, ModelMap model, Errors errors, BindingResult bindingResult) {
+	public String createUser(@Valid @ModelAttribute("userForm") UserForm userForm, ModelMap model, BindingResult bindingResult) {
 
 		User loginUser = getPrincipal();
 		
 		String rtn = "redirect:/moderator/users";
+		
+		Message message = new Message();
+
+		logger.info("Processing moderatoruser form={}, bindingResult={}", userForm, bindingResult);
 		
 		if(loginUser == null) {
 			return "/moderator/login";
@@ -146,8 +170,23 @@ public class ModeratorUser extends BaseController {
 		userForm.setPrograms(programs);
                 
 		if (bindingResult.hasErrors()) {
+			
+		/*logger.info("moderator form validation failed!!!!!!!!");
+		List<ObjectError> errors = bindingResult.getAllErrors();
+		String msg = messageSource.getMessage("Moderator.userForm.validation", new Object[] {},
+				LocaleContextHolder.getLocale()) + "<br />";
+		for (ObjectError i : errors) {
+			if (i instanceof FieldError) {
+				FieldError fieldError = (FieldError) i;
+				msg += messageSource.getMessage(fieldError, LocaleContextHolder.getLocale()) + "<br />";
+			}
+		}
+		message.setStatus(Message.ERROR);
+		message.setMessage(msg);
+		model.addAttribute("message", message);*/
 
-			return "/moderator/user";
+		return "/moderator/user";
+		
 		} else {
 			
 			try{
@@ -176,22 +215,36 @@ public class ModeratorUser extends BaseController {
 				if (!passwordEncoder.matches(passworduserform,passworduser)){
 				//if (!passworduser.equals(passworduserform)){
 		    	 		logger.info("oldpsw.nomatch :" + passworduserform + ", " + passworduser);
-		    	 		errors.rejectValue("password", "NotMatch.password.adminuser");
-		    	 		String rtn2 = "/moderator/user";
+		    	 		message.setStatus(Message.ERROR);
+		    			message.setMessage(messageSource.getMessage("Moderator.userpassword.error", new Object[] {},
+								LocaleContextHolder.getLocale()));
+						
+		    			model.addAttribute("message", message);
+		    	 		//errors.rejectValue("password", "NotMatch.password.adminuser");
+		    	 		String rtn2 = "redirect:/moderator/user/"+user.getUserid();
 		    	  		return rtn2;
 				 }
 				 else{
 					 userService.savUser(user);
 				 }
 				}
-											
-				model.addAttribute("successMessage", "User has been registered successfully");
+				message.setStatus(Message.SUCCESS);
+				message.setMessage(messageSource.getMessage("Moderator.userForm.success", new Object[] {},
+						LocaleContextHolder.getLocale()));
+				
+				//model.addAttribute("successMessage", "User has been registered successfully");
 			}
 			catch(Exception e){
-				e.printStackTrace();
+				logger.info("Error in /moderator/user POST of moderatoruser.  Error: " + e.getMessage());
+				message.setStatus(Message.ERROR);
+				message.setMessage(messageSource.getMessage("Moderator.userForm.error", new Object[] {},
+						LocaleContextHolder.getLocale()));
 				
 			}
 		}
+		model.addAttribute("loginUser", getPrincipal());
+		model.addAttribute("message", message);
+
 		return rtn;
 	}
 
