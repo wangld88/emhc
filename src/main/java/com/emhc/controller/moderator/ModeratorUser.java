@@ -53,20 +53,20 @@ public class ModeratorUser extends BaseController {
 	private UserService userService;
 	@Autowired
 	private ProgramService programService;
-	@Autowired
-	private MessageSource messageSource;
+	//@Autowired
+	//private MessageSource messageSource;
 	
 	@Autowired
     UserFormValidator validator;
 	
-	@InitBinder("userForm")
+	/*@InitBinder("userForm")
 	public void initModeratorUserBinder(WebDataBinder binder) {
 		binder.addValidators(validator);
-	}
+	}*/
  	@RequestMapping(value={"/user"}, method = RequestMethod.GET)
 	public String dspUser(Model model){
  		String rtn = "/moderator/user";
- 		
+ 		int roleid =2;
 		User user = getPrincipal();
 		
 		if(user == null) {
@@ -76,11 +76,12 @@ public class ModeratorUser extends BaseController {
 			UserForm userForm = new UserForm();
 			Organization org = (user.getProgram()).getOrganization();
 			//List<Organization> orgs = organizationService.findAll();
-			List<Role> roles = roleService.findByNameNot("ADMIN");
+			Role role = roleService.findById(roleid);
+			//List<Role> roles = roleService.findByNameNot("ADMIN");
 			//userForm.setOrganizations(orgs);
 			List<Program> programs = programService.getByOrganization(org);
 			userForm.setPrograms(programs);
-			userForm.setRoles(roles);
+			userForm.setRole(role);
 			userForm.setOrganization(org);
 			
 			model.addAttribute("userForm", userForm);
@@ -99,6 +100,7 @@ public class ModeratorUser extends BaseController {
 			rtn = "/moderator/login";
 		} else {
 			logger.info("dspUser");
+			int roleid =2;
 			User user = userService.getById(userid);
 			UserForm userForm = new UserForm(user);
 			Organization org = (loginUser.getProgram()).getOrganization();
@@ -106,10 +108,11 @@ public class ModeratorUser extends BaseController {
 			//List<Organization> orgs = organizationService.findAll();
 			List<Program> programs = programService.getByOrganization(org);
 			userForm.setPrograms(programs);
-			List<Role> roles = roleService.findByNameNot("ADMIN");
+			Role role =roleService.findById(roleid);
+			//List<Role> roles = roleService.findByNameNot("ADMIN");
 			//List<Role> roles = roleService.getAll();
 			//userForm.setOrganizations(orgs);
-			userForm.setRoles(roles);
+			userForm.setRole(role);
 			model.addAttribute("userForm", userForm);
 		}
 		
@@ -135,9 +138,12 @@ public class ModeratorUser extends BaseController {
 		}
 		//Organization org = (user.getProgram()).getOrganization();
 		//List<Organization> organizations = organizationService.findAll();
-		List<Role> roles = roleService.findByNameNot("ADMIN");
-		userForm.setRoles(roles);
+		//List<Role> roles = roleService.findByNameNot("ADMIN");
+		//userForm.setRoles(roles);
 		//List<Role> roles = roleService.getAll();
+		int roleid =2;
+		Role role =roleService.findById(roleid);
+		userForm.setRole(role);
 		userForm.setOrganization(organization);
 		//userForm.setOrganizations(organizations);
 		
@@ -195,8 +201,8 @@ public class ModeratorUser extends BaseController {
 		        /*if (bindingResult.hasErrors()) {
 		        	return "/moderator/user";
 		        }*/
-		        Role role = userForm.getRole(); //roleService.findById();
-		        userForm.setRole(role);
+		        //Role role = userForm.getRole(); //roleService.findById();
+		        //userForm.setRole(role);
 				LocalDate localDate = LocalDate.now();
 				Date date = java.sql.Date.valueOf(localDate);
 				//userForm.setCreationdate(date);
@@ -204,11 +210,12 @@ public class ModeratorUser extends BaseController {
 				User user = userForm.getUser();
 				user.setCreatedby(loginUser.getUserid());
 				user.setCreationdate(date);
-				
+										
 				if(user.getUserid() == 0) { 
-					userService.savUser(user);}
+					userService.saveUser(user);}
+				
 				else{
-				BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();				
+				/*BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();				
 				String passworduser = (userService.getById((user.getUserid())).getPassword());
 				String passworduserform =userForm.getPassword();
 				
@@ -232,13 +239,18 @@ public class ModeratorUser extends BaseController {
 				message.setMessage(messageSource.getMessage("Moderator.userForm.success", new Object[] {},
 						LocaleContextHolder.getLocale()));
 				
+				
+			}*/
+				userService.savUser(user);
+			}
 				//model.addAttribute("successMessage", "User has been registered successfully");
 			}
 			catch(Exception e){
-				logger.info("Error in /moderator/user POST of moderatoruser.  Error: " + e.getMessage());
+				/*logger.info("Error in /moderator/user POST of moderatoruser.  Error: " + e.getMessage());
 				message.setStatus(Message.ERROR);
 				message.setMessage(messageSource.getMessage("Moderator.userForm.error", new Object[] {},
-						LocaleContextHolder.getLocale()));
+						LocaleContextHolder.getLocale()));*/
+				e.printStackTrace();
 				
 			}
 		}
@@ -271,9 +283,10 @@ public class ModeratorUser extends BaseController {
 				usersbypro.addAll(usrs);
 			   }
 						
-			users = userService.getByRoleNameNot("ADMIN");
+			users = userService.getByRoleName("CLIENT");
 			users.retainAll(usersbypro);
-						
+		    users.add(getPrincipal());
+			
 			model.addAttribute("users", users);
 		}
 		

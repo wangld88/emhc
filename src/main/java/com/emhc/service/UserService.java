@@ -40,6 +40,10 @@ public class UserService{
 		return userRepository.findByRoleNameNot(roleid);
 	}
 	
+	public List<User> getByRoleName(String role) {
+		return userRepository.findByRoleName(role);
+	}
+	
 	public List<User> getByProgram(Program program){
 		return userRepository.findByProgram(program);
 	}

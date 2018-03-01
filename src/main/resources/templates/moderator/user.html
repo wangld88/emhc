@@ -66,12 +66,13 @@
 							<div class="col-lg-8 col-sm-4">
 								<input type="text" th:field="*{programyear}" class="form-control" placeholder="Program Year" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Program Year" />
 							</div>
-							<label class="col-lg-8 col-sm-4 control-label">Role*</label>
-							<div class="col-lg-8 col-sm-4">
+							<div><input type="hidden" th:field="*{role}" name="role" /></div>
+							<!--<label class="col-lg-8 col-sm-4 control-label">Role*</label>
+							  <div class="col-lg-8 col-sm-4">
 								<select th:field="*{role.roleid}" class="form-control" placeholder="Role" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Role">
 									<option th:each="rol:${userForm.roles}" th:value="${rol.roleid}" th:text="${rol.name}" />
 								</select>
-							</div>
+							</div>-->
 							<div class="col-lg-8 col-sm-4" style="height: 20px;">
 								<input type="hidden" th:field="*{userid}" />
 							</div>

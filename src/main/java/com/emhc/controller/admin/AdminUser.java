@@ -154,8 +154,8 @@ public class AdminUser extends BaseController {
 				user.setCreationdate(date);
 				
 				if(user.getUserid() == 0) { 
-					userService.savUser(user);}
-				else{
+					userService.saveUser(user);}
+				/*else{
 				BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();				
 				String passworduser = (userService.getById((user.getUserid())).getPassword());
 				String passworduserform =userForm.getPassword();
@@ -166,13 +166,11 @@ public class AdminUser extends BaseController {
 		    	 		errors.rejectValue("password", "NotMatch.password.adminuser");
 		    	 		String rtn2 = "redirect:/admin/user/"+user.getUserid();
 		    	  		return rtn2;
-				 }
+				 }*/
 				 else{
 					 userService.savUser(user);
 				 }
-				}
 				
-			
 				 model.addAttribute("successMessage", "User has been registered successfully");
 			}
 			catch(Exception e){

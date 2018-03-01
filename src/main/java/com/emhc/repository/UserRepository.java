@@ -14,5 +14,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	// @Query(value="select users from User users where users.roleid !=?1",nativeQuery=true)
 	 //List<User> findByRoleIdNot(int roleid);
 	 List <User> findByRoleNameNot(String role);
-     List <User> findByProgram(Program program);    
+	 List <User> findByRoleName(String role);
+	 List <User> findByProgram(Program program);    
 }
