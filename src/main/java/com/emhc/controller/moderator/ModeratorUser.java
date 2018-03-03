@@ -187,7 +187,7 @@ import com.emhc.validator.UserFormValidator;
 	}*/
 	
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
-	public String createUser(@Valid @ModelAttribute("userForm") UserForm userForm, ModelMap model, BindingResult bindingResult) {
+	public String createUser(@Valid @ModelAttribute("userForm") UserForm userForm, BindingResult bindingResult, ModelMap model) {
 
 		
 		String rtn = "redirect:/moderator/users";
