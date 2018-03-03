@@ -13,12 +13,13 @@
 				<div class="box-content">
 					<!-- <h4 class="page-header">User form</h4> -->
 					<p>The field with (*) is mandatory.</p>
+													
+				<!--  <form class="form-horizontal" id="org" autocomplete="off" th:action="@{/moderator/user}" method="post" th:object="${userForm}">-->
+			<form autocomplete="off" th:action="@{/moderator/user}" th:object="${userForm}" method="post" class="form-horizontal">
 					
-					<div class="col-lg-8 col-sm-4" th:if="${message != null and #strings.length(message.message) != 0}" th:class="${message.status}">
+					<div th:if="${message != null and #strings.length(message.message) != 0}" th:class="${message.status}">
 						<font style="font-size: 12px;"><span th:utext="${message.message}" th:remove="tag" /></font>
 					</div>
-					
-					<form class="form-horizontal" id="org" th:action="@{/moderator/user}" method="post" th:object="${userForm}">
 					
 						<div class="form-group">
 							<!--  <label class="col-lg-8 col-sm-4 control-label">Organization*</label>
@@ -38,6 +39,7 @@
 							<div class="col-lg-8 col-sm-4">
 								<input type="text" th:field="*{username}" class="form-control" placeholder="User name" data-toggle="tooltip" data-placement="bottom" title="Tooltip for Username" autocomplete="off" />
 							</div>
+							<!--  <p th:if="${#fields.hasErrors('username')} " th:errors="*{username}" class="text-danger"></p>-->
 							<label class="col-lg-8 col-sm-4 control-label">First name*</label>
 							<div class="col-lg-8 col-sm-4">
 								<input type="text" th:field="*{firstname}" class="form-control" placeholder="First name" data-toggle="tooltip" data-placement="bottom" title="Tooltip for First name" autocomplete="off" />
@@ -84,7 +86,7 @@
 								<a th:href="@{/moderator/users}" class="btn btn-primary btn-label-left"><span><i class="fa fa-remove"></i></span> Cancel</a>
 							</div>
 						</div>
-						
+						<span th:utext="${successMessage}"></span>
 					</form>
 					<form id="orgForm" th:action="@{/moderator/user/org/}" method="get">
 					</form>

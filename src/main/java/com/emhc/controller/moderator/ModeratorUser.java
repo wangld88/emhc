@@ -1,7 +1,5 @@
 package com.emhc.controller.moderator;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,12 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
@@ -31,7 +27,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.emhc.controller.base.BaseController;
 import com.emhc.dto.UserForm;
 import com.emhc.error.Message;
 import com.emhc.model.Organization;
@@ -40,39 +35,49 @@ import com.emhc.model.Role;
 import com.emhc.model.User;
 import com.emhc.security.LoginUser;
 import com.emhc.service.ProgramService;
+import com.emhc.service.RoleService;
 import com.emhc.service.UserService;
 import com.emhc.validator.UserFormValidator;
 
 @Controller
-@RequestMapping({"/moderator"})
-public class ModeratorUser extends BaseController {
-
+@RequestMapping("/moderator")
+//public class ModeratorUser extends BaseController {
+	
+	public class ModeratorUser {
+	
 	private static final Logger logger = LoggerFactory.getLogger(ModeratorUser.class);
 
 	@Autowired
 	private UserService userService;
 	@Autowired
+	public RoleService roleService;
+	@Autowired
 	private ProgramService programService;
-	//@Autowired
-	//private MessageSource messageSource;
+	@Autowired
+	private MessageSource messageSource;
 	
 	@Autowired
-    UserFormValidator validator;
+    UserFormValidator userformValidator;
 	
-	/*@InitBinder("userForm")
+	@InitBinder("userForm")
 	public void initModeratorUserBinder(WebDataBinder binder) {
-		binder.addValidators(validator);
-	}*/
+		binder.addValidators(userformValidator);
+	}
+	
  	@RequestMapping(value={"/user"}, method = RequestMethod.GET)
 	public String dspUser(Model model){
+ 	
  		String rtn = "/moderator/user";
- 		int roleid =2;
-		User user = getPrincipal();
+ 		
+ 		//try {
+ 			
+ 			int roleid =2;
+ 			User user = getPrincipal();
 		
-		if(user == null) {
+		/*if(user == null) {
 			rtn = "/moderator/login";
 		} else {
-			logger.info("dspUser");
+			logger.info("dspUser");*/
 			UserForm userForm = new UserForm();
 			Organization org = (user.getProgram()).getOrganization();
 			//List<Organization> orgs = organizationService.findAll();
@@ -83,10 +88,22 @@ public class ModeratorUser extends BaseController {
 			userForm.setPrograms(programs);
 			userForm.setRole(role);
 			userForm.setOrganization(org);
-			
+			/*userForm.setUsername(user.getUsername());
+			userForm.setUserid(user.getUserid());
+			userForm.setFirstname(user.getFirstname());
+			userForm.setLastname(user.getLastname());
+			userForm.setEmail(user.getEmail());
+			userForm.setPhone(user.getPhone());
+			userForm.setOrgemail(user.getOrgemail());
+			userForm.setProgramyear(user.getProgramyear());
+			userForm.setProgram(user.getProgram());
+						
+			model.addAttribute("loginUser", getPrincipal());*/
 			model.addAttribute("userForm", userForm);
-		}
-		
+ 		
+ 		/*}	catch (Exception e) {
+			e.printStackTrace();
+		}*/
  		return rtn;
  	}
 	
@@ -94,11 +111,12 @@ public class ModeratorUser extends BaseController {
 	public String dspUser(Model model, @PathVariable("userid") Integer userid, HttpSession httpSession){
  		String rtn = "/moderator/user";
  		
+ 		try{
 		User loginUser = getPrincipal();
 		
-		if(loginUser == null) {
+		/*if(loginUser == null) {
 			rtn = "/moderator/login";
-		} else {
+		} else {*/
 			logger.info("dspUser");
 			int roleid =2;
 			User user = userService.getById(userid);
@@ -113,14 +131,30 @@ public class ModeratorUser extends BaseController {
 			//List<Role> roles = roleService.getAll();
 			//userForm.setOrganizations(orgs);
 			userForm.setRole(role);
+			userForm.setPrograms(programs);
+			userForm.setRole(role);
+			userForm.setOrganization(org);
+			userForm.setUsername(user.getUsername());
+			userForm.setUserid(user.getUserid());
+			userForm.setFirstname(user.getFirstname());
+			userForm.setLastname(user.getLastname());
+			userForm.setEmail(user.getEmail());
+			userForm.setPhone(user.getPhone());
+			userForm.setOrgemail(user.getOrgemail());
+			userForm.setProgramyear(user.getProgramyear());
+			userForm.setProgram(user.getProgram());
+						
+			model.addAttribute("loginUser", getPrincipal());
 			model.addAttribute("userForm", userForm);
-		}
 		
+ 	} catch (Exception e) {
+		e.printStackTrace();
+	}
  		return rtn;
  	}
 	
  	
-	@RequestMapping(value={"/user/org/{orgid}"}, method = RequestMethod.GET)
+	/*@RequestMapping(value={"/user/org/{orgid}"}, method = RequestMethod.GET)
 	public String dspOrganization(ModelMap model, @PathVariable("orgid") Long orgid, HttpSession httpSession) {
 		
 		User user = getPrincipal();
@@ -150,34 +184,58 @@ public class ModeratorUser extends BaseController {
 		model.addAttribute("userForm", userForm);
 		
 		return "/moderator/user";
-	}
+	}*/
 	
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
 	public String createUser(@Valid @ModelAttribute("userForm") UserForm userForm, ModelMap model, BindingResult bindingResult) {
 
-		User loginUser = getPrincipal();
 		
 		String rtn = "redirect:/moderator/users";
+		
+		User loginUser = getPrincipal();
 		
 		Message message = new Message();
 
 		logger.info("Processing moderatoruser form={}, bindingResult={}", userForm, bindingResult);
 		
-		if(loginUser == null) {
+		/*if(loginUser == null) {
 			return "/moderator/login";
 		} else {
 			//model.addAttribute("loginUser", user);
-		}
+		}*/
 		
-		List<Program> programs = new ArrayList<Program>();
+		String username = userForm.getUsername();
+		String firstname = userForm.getFirstname();
+		String lastname = userForm.getLastname();
+		String email = userForm.getEmail();
+		String phone = userForm.getPhone();
+		String orgemail = userForm.getOrgemail();
+		Integer programyear = userForm.getProgramyear();
+		Program program = userForm.getProgram();
+		
+		UserForm newForm = new UserForm(); 
+		//List<Program> programs = new ArrayList<Program>();
 		Organization org = (loginUser.getProgram()).getOrganization();
-		userForm.setOrganization(org);
-		programs = programService.getByOrganization(org);
-		userForm.setPrograms(programs);
-                
-		if (bindingResult.hasErrors()) {
+		newForm.setOrganization(org);
+		/*programs = programService.getByOrganization(org);
+		newForm.setPrograms(programs);
+		newForm.setUsername(username);
+		newForm.setFirstname(firstname);
+		newForm.setLastname(lastname);
+		newForm.setEmail(email);
+		newForm.setPhone(phone);
+		newForm.setOrgemail(orgemail);
+		newForm.setProgramyear(programyear);
+		newForm.setProgram(program);
+		
+		model.addAttribute("userForm", newForm);
+		model.addAttribute("loginUser", getPrincipal());*/
+
+		try{        
 			
-		/*logger.info("moderator form validation failed!!!!!!!!");
+			if (bindingResult.hasErrors()) {
+			
+		logger.info("moderator form validation failed!!!!!!!!");
 		List<ObjectError> errors = bindingResult.getAllErrors();
 		String msg = messageSource.getMessage("Moderator.userForm.validation", new Object[] {},
 				LocaleContextHolder.getLocale()) + "<br />";
@@ -187,22 +245,25 @@ public class ModeratorUser extends BaseController {
 				msg += messageSource.getMessage(fieldError, LocaleContextHolder.getLocale()) + "<br />";
 			}
 		}
+		logger.info("moderator.errors"+msg);
 		message.setStatus(Message.ERROR);
 		message.setMessage(msg);
-		model.addAttribute("message", message);*/
+		model.addAttribute("message", message);
 
-		return "/moderator/user";
+		String rtn1= "/moderator/user";
+		return rtn1;
 		
-		} else {
+		} 
+			/*else {
 			
-			try{
-		        //validator.validate(userForm, bindingResult);
+			
+		        validator.validate(userForm, bindingResult);
 		         
-		        /*if (bindingResult.hasErrors()) {
+		        if (bindingResult.hasErrors()) {
 		        	return "/moderator/user";
-		        }*/
-		        //Role role = userForm.getRole(); //roleService.findById();
-		        //userForm.setRole(role);
+		        }
+		        Role role = userForm.getRole(); //roleService.findById();
+		        userForm.setRole(role);*/
 				LocalDate localDate = LocalDate.now();
 				Date date = java.sql.Date.valueOf(localDate);
 				//userForm.setCreationdate(date);
@@ -210,7 +271,15 @@ public class ModeratorUser extends BaseController {
 				User user = userForm.getUser();
 				user.setCreatedby(loginUser.getUserid());
 				user.setCreationdate(date);
-										
+				user.setUsername(username);
+				user.setFirstname(firstname);
+				user.setLastname(lastname);
+				user.setEmail(email);
+				user.setPhone(phone);
+				user.setOrgemail(orgemail);
+				user.setProgramyear(programyear);
+				user.setProgram(program);
+				
 				if(user.getUserid() == 0) { 
 					userService.saveUser(user);}
 				
@@ -241,23 +310,27 @@ public class ModeratorUser extends BaseController {
 				
 				
 			}*/
+					
 				userService.savUser(user);
 			}
-				//model.addAttribute("successMessage", "User has been registered successfully");
-			}
-			catch(Exception e){
-				/*logger.info("Error in /moderator/user POST of moderatoruser.  Error: " + e.getMessage());
+			
+				message.setStatus(Message.SUCCESS);
+				message.setMessage(messageSource.getMessage("Moderator.userForm.success", new Object[] {},
+						LocaleContextHolder.getLocale()));
+			
+		} catch (Exception e) {
+						
+			logger.info("Error in /moderator/user POST of UserForm.  Error: " + e.getMessage());
 				message.setStatus(Message.ERROR);
-				message.setMessage(messageSource.getMessage("Moderator.userForm.error", new Object[] {},
-						LocaleContextHolder.getLocale()));*/
-				e.printStackTrace();
-				
+				message.setMessage(messageSource.getMessage("Moderaotr.userForm.error", new Object[] {},
+						LocaleContextHolder.getLocale()));
 			}
-		}
-		model.addAttribute("loginUser", getPrincipal());
-		model.addAttribute("message", message);
-
-		return rtn;
+		//model.addAttribute("loginUser", getPrincipal());
+		//model.addAttribute("message", message);
+			
+		//return "/moderator/user";
+			
+			return rtn;
 	}
 
 	@RequestMapping(value="/users", method=RequestMethod.GET)
