@@ -57,6 +57,14 @@ public class AssessmentController {
     	return new AnswerDTO();
     }
 
+	@RequestMapping(value = "/assessmentconfirm", method = RequestMethod.GET)
+	public String assessmentconfirm(Model model) {
+
+		String rtn = "client/assessmentconfirm";
+		model.addAttribute("loginUser", getPrincipal());
+
+		return rtn;
+	}
 	@RequestMapping(value = "/assessment", method = RequestMethod.GET)
 	public String assessment(Model model) {
 
@@ -77,9 +85,9 @@ public class AssessmentController {
 
 		Message message = new Message();
 
-		AnswerDTO newform = new AnswerDTO();
+		//AnswerDTO newform = new AnswerDTO();
 		// newform.setAnswer1(answer1);
-		model.addAttribute("answerDTO", newform);
+		//model.addAttribute("answerDTO", newform);
 
 		if (bindingResult.hasErrors()) {
 
@@ -115,6 +123,7 @@ public class AssessmentController {
 
 			}
 		}
+		model.addAttribute("answerDTO", form);
 		model.addAttribute("loginUser", getPrincipal());
 		model.addAttribute("message", message);
 		return rtn;
