@@ -69,11 +69,23 @@ public class AssessmentController {
 	public String assessment(Model model) {
 
 		String rtn = "client/assessment";
-		AnswerDTO form = new AnswerDTO();
-
+		User user = getPrincipal();
+		Answer answer = answerService.getByUserid(user.getUserid());
+		AnswerDTO form = new AnswerDTO(answer);
+		
+		/*if (answer.getAnswerid()==0){
+			AnswerDTO form = new AnswerDTO();
+			model.addAttribute("answerDTO", form);
+			}
+				
+		else {AnswerDTO form = new AnswerDTO(answer);
+			model.addAttribute("answerDTO", form);
+				}*/
+		
+		
 		model.addAttribute("loginUser", getPrincipal());
 		model.addAttribute("answerDTO", form);
-
+		
 		return rtn;
 	}
 
@@ -85,10 +97,16 @@ public class AssessmentController {
 
 		Message message = new Message();
 
+		//User user = getPrincipal();
+		//Answer answer = answerService.getByUserid(user.getUserid());
 		//AnswerDTO newform = new AnswerDTO();
 		// newform.setAnswer1(answer1);
 		//model.addAttribute("answerDTO", newform);
-
+		//if (answer.getAnswerid()==0){
+			//model.addAttribute("answerDTO", form);
+		//return rtn;	
+		//}
+		
 		if (bindingResult.hasErrors()) {
 
 			logger.info("Assessment form validation failed!!!!!!!!");
@@ -111,21 +129,54 @@ public class AssessmentController {
 		} else {
 
 			try {
-				Answer answer = form.getAnswer();
-				answer.setUser(getPrincipal());
-				answerService.saveAnswer(answer);
 
+				User user = getPrincipal();
+				Answer answer = answerService.getByUserid(user.getUserid());
+				answer.setAnswerid(answer.getAnswerid());
+				answer.setUser(getPrincipal());
+				answer.setAnswer1(form.getAnswer1());
+				answer.setAnswer2(form.getAnswer2());
+				answer.setAnswer3(form.getAnswer3());
+				answer.setAnswer4(form.getAnswer4());
+				answer.setAnswer5(form.getAnswer5());
+				answer.setAnswer6(form.getAnswer6());
+				answer.setAnswer7(form.getAnswer7());
+				answer.setAnswer8(form.getAnswer8());
+				answer.setAnswer9(form.getAnswer9());
+				answer.setAnswer10(form.getAnswer10());
+				answer.setAnswer11(form.getAnswer11());
+				answer.setAnswer12(form.getAnswer12());
+				answer.setAnswer13(form.getAnswer13());
+				answer.setAnswer14(form.getAnswer14());
+				answer.setButton01(form.getButton01());
+				answer.setButton02(form.getButton02());
+				answer.setButton03(form.getButton03());
+				answer.setButton04(form.getButton04());
+				answer.setButton05(form.getButton05());
+				answer.setButton06(form.getButton06());
+				answer.setButton07(form.getButton07());
+				answer.setButton08(form.getButton08());
+				answer.setButton09(form.getButton09());
+				answer.setButton10(form.getButton10());
+				answer.setButton11(form.getButton11());
+				answer.setButton12(form.getButton12());
+				answer.setButton13(form.getButton13());
+				answer.setButton14(form.getButton14());			
+				answerService.saveAnswer(answer);
+				
 				message.setStatus(Message.SUCCESS);
 				message.setMessage(messageSource.getMessage("Assessment.success", new Object[] {},
 						LocaleContextHolder.getLocale()));
+			
 			} catch (Exception e) {
 				e.printStackTrace();
 
 			}
 		}
-		model.addAttribute("answerDTO", form);
+		//model.addAttribute("answerDTO", form);
 		model.addAttribute("loginUser", getPrincipal());
 		model.addAttribute("message", message);
+		
 		return rtn;
 	}
 

@@ -1,25 +1,26 @@
 <html layout:decorator="client/template/layout"
-	xmlns:th="http://www.thymeleaf.org" 
->
+		xmlns:th="http://www.thymeleaf.org">
+
 <head>
 	<script>	
-	
-	function toggleTB(what,elid,state)
-	{
+		
+		
+	/*function toggleTB(what,elid,state)	{
 	    if(what.checked)
 	    {
-	        document.getElementById(elid).disabled=state
-	    }
-	    else
+	    	document.getElementById(elid).disabled=state
+	    	    	}
+		    else
 	    {
-	        document.getElementById(elid).disabled=state
-	    }
-	}
+	    	document.getElementById(elid).disabled=state
+	 	 	}
+	}*/
+					
+	function validation() {
 
-    function validation() {
-
+				
         //Make groups
-        var names = []
+    	 var names = []
         $('input:radio').each(function () {
             var rname = $(this).attr('name');
             if ($.inArray(rname, names) == -1) names.push(rname);
@@ -29,23 +30,53 @@
             if ($('input[name="' + name + '"]:checked').length == 0) {
                 radioError = true;
             }
-        });
-        
+            });
+                
         //check for error
         if(radioError) {
-            alert('You need to select 1 option from each group.');
-            return false;
-        }
         
-    }
+        	//var m = $(" #text01 ").val()
+        	//var mm = $(" input[ name='button01' ] ").val()
+ 			
+        	 alert('You need to select 1 option from each group.');
+            return false;
+        }	
+   
+       /*var txtArray = $("input[name^='text']");  
+       for(var i=0;i<txtArray.length;i++){
+                var txt =txtArray[i];
+                 if (txt.val()=='null'){
+                	 alert('the text should not be blank.');
+                 	return false;   	 
+                 }
+
+              }*/
+	}
+	
+	function enable(eid){
+		
+		 var id = "#"+eid;
+		 $(""+id+"").removeAttr("disabled");
+		 $(""+id+"").focus();   
+	}
+		
+	function disable(eid){
+		var id ="#"+eid;
+		$(""+id+"").val("");
+		$(""+id+"").attr("disabled","disabled");
+	}
+	
 	</script>
+
 </head>
+
 	<div layout:fragment="content">
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
- 				<form autocomplete="off" th:action="@{/client/assessment}"
+ 				  <form autocomplete="off" th:action="@{/client/assessment}"
 					th:object="${answerDTO}" onsubmit="return validation()" method="post" class="form-horizontal"
 					role="form">
+ 					
  					<h3>Primary Assessment</h3><hr>
 					<h4>Please add pertinent information to yes answers and be as explicit as possible, i.e. triggers & severity for asthma etc.</h4>
 
@@ -56,64 +87,64 @@
 							</div>
 								
 						<h5>Do you have or do you experience any of the following:</h5>
-						
+												
 					    <label>1. Asthma </label> <br>
-						<input type="radio" name="button01" value="Yes" onclick="toggleTB(this,'text01',0)">Yes
-						<input type="radio" name="button01" value="No" onclick="toggleTB(this,'text01',1)">No&nbsp;&nbsp;
-						<input type="text" th:field=*{answer1} name="mfi_nam9" class="text required" id="text01" disabled=1 style="height:36px;width:300px;" /><br>
-						 <!-- "alert('Please explain and be as explicit as possible, i.e. cause, symptoms, severity, frequency and any medical treatment')" -->
+						<input type="radio" name="button01" onclick="enable('text01')" value="Yes" th:checked="${answerDTO.button01 == 'Yes'}"/> Yes
+						<input type="radio" name="button01" onclick="disable('text01')" value="No" th:checked="${answerDTO.button01 == 'No'}"/>No&nbsp;&nbsp;
+						<input type="text"  th:field=*{answer1} name="mfi_nam9" class="text required" id="text01" th:disabled="${answerDTO.button01 == 'No'}" style="height:36px;width:300px;" /><br>
+					 <!-- "alert('Please explain and be as explicit as possible, i.e. cause, symptoms, severity, frequency and any medical treatment')" -->
 						<label>2. Claustrophobia </label> <br>
-						<input type="radio" name="button02" value="Yes" onclick="toggleTB(this,'text02',0)">Yes
-						<input type="radio" name="button02" value="No" onclick="toggleTB(this,'text02',1)">No&nbsp;&nbsp;
-						<input type="text" th:field=*{answer2} name="mfi_nam9" class="text required" id="text02" disabled=1 style="height:36px;width:300px;" /><br>
+						<input type="radio" name="button02" onclick="enable('text02')" value="Yes" th:checked="${answerDTO.button02 == 'Yes'}" >Yes
+						<input type="radio" name="button02" onclick="disable('text02')" value="No" th:checked="${answerDTO.button02 == 'No'}" >No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer2} th:disabled="${answerDTO.button02 == 'No'}" name="mfi_nam9" class="text required" id="text02"  style="height:36px;width:300px;" /><br>
 						<label>3. Panic attacks </label> <br>
-						<input type="radio" name="button03" value="Yes" onclick="toggleTB(this,'text03',0)">Yes
-						<input type="radio" name="button03" value="No" onclick="toggleTB(this,'text03',1)">No&nbsp;&nbsp;
-						<input type="text" th:field=*{answer3} name="mfi_nam9" class="text required" id="text03" disabled=1 style="height:36px;width:300px;" /><br>
-						 <label>4. Allergy to latex, artificial sweetener, citrus or any other allergy that you feel may be of concern?</label> <br>
-						<input type="radio" name="button04" value="Yes" onclick="toggleTB(this,'text04',0)">Yes
-						<input type="radio" name="button04" value="No" onclick="toggleTB(this,'text04',1)">No&nbsp;&nbsp;
-						<input type="text" th:field=*{answer4} name="mfi_nam9" class="text required" id="text04" disabled=1 style="height:36px;width:300px;" /><br>
+						<input type="radio" name="button03" onclick="enable('text03')" value="Yes" th:checked="${answerDTO.button03 == 'Yes'}" >Yes
+						<input type="radio" name="button03" onclick="disable('text03')" value="No" th:checked="${answerDTO.button03 == 'No'}" >No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer3} name="mfi_nam9" class="text required" id="text03" th:disabled="${answerDTO.button03 == 'No'}" style="height:36px;width:300px;" /><br>
+						<label>4. Allergy to latex, artificial sweetener, citrus or any other allergy that you feel may be of concern?</label> <br>
+						<input type="radio" name="button04" onclick="enable('text04')" value="Yes" th:checked="${answerDTO.button04 == 'Yes'}" >Yes
+						<input type="radio" name="button04" onclick="disable('text04')" value="No" th:checked="${answerDTO.button04 == 'No'}" >No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer4} name="mfi_nam9" class="text required" id="text04" th:disabled="${answerDTO.button04 == 'No'}"  style="height:36px;width:300px;" /><br>
 						 <label>5. Epilepsy </label> <br>
- 						<input type="radio" name="button05" value="Yes" onclick="toggleTB(this,'text05',0)">Yes
-						<input type="radio" name="button05" value="No" onclick="toggleTB(this,'text05',1)">No&nbsp;&nbsp;
-						<input type="text" th:field=*{answer5} name="mfi_nam9" class="text required" id="text05" disabled=1 style="height:36px;width:300px;" /><br>
+ 						<input type="radio" name="button05" onclick="enable('text05')" value="Yes" th:checked="${answerDTO.button05 == 'Yes'}" >Yes
+						<input type="radio" name="button05" onclick="disable('text05')" value="No" th:checked="${answerDTO.button05 == 'No'}" >No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer5} name="mfi_nam9" class="text required" id="text05" th:disabled="${answerDTO.button05 == 'No'}"  style="height:36px;width:300px;" /><br>
 						 <label>6. Heat Exhaustion/Heat Stroke </label> <br>
-						<input type="radio" name="button06" value="Yes" onclick="toggleTB(this,'text06',0)">Yes
-						<input type="radio" name="button06" value="No" onclick="toggleTB(this,'text06',1)">No&nbsp;&nbsp;
-						<input type="text" th:field=*{answer6} name="mfi_nam9" class="text required" id="text06" disabled=1 style="height:36px;width:300px;" /><br>
+						<input type="radio" name="button06" onclick="enable('text06')" value="Yes" th:checked="${answerDTO.button06 == 'Yes'}" >Yes
+						<input type="radio" name="button06" onclick="disable('text06')" value="No" th:checked="${answerDTO.button06 == 'No'}" >No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer6} name="mfi_nam9" class="text required" id="text06" th:disabled="${answerDTO.button06 == 'No'}"  style="height:36px;width:300px;" /><br>
 						 <label>7. High blood pressure </label> <br>
-						<input type="radio" name="button07" value="Yes" onclick="toggleTB(this,'text07',0)">Yes
-						<input type="radio" name="button07" value="No" onclick="toggleTB(this,'text07',1)">No&nbsp;&nbsp;
-						<input type="text" th:field=*{answer7} name="mfi_nam9" class="text required" id="text07" disabled=1 style="height:36px;width:300px;" /><br>
+						<input type="radio" name="button07" onclick="enable('text07')" value="Yes" th:checked="${answerDTO.button07 == 'Yes'}" >Yes
+						<input type="radio" name="button07" onclick="disable('text07')" value="No" th:checked="${answerDTO.button07 == 'No'}" >No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer7} name="mfi_nam9" class="text required" id="text07" th:disabled="${answerDTO.button07 == 'No'}"  style="height:36px;width:300px;" /><br>
 						<label>8. History of fainting </label> <br>
-						<input type="radio" name="button08" value="Yes" onclick="toggleTB(this,'text08',0)">Yes
-						<input type="radio" name="button08" value="No" onclick="toggleTB(this,'text08',1)">No&nbsp;&nbsp;
-						<input type="text" th:field=*{answer8} name="mfi_nam9" class="text required" id="text08" disabled=1 style="height:36px;width:300px;" /><br>
+						<input type="radio" name="button08" onclick="enable('text08')" value="Yes" th:checked="${answerDTO.button08 == 'Yes'}" >Yes
+						<input type="radio" name="button08" onclick="disable('text08')" value="No" th:checked="${answerDTO.button08 == 'No'}" >No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer8} name="mfi_nam9" class="text required" id="text08" th:disabled="${answerDTO.button08 == 'No'}"  style="height:36px;width:300px;" /><br>
 						<label>9. History of seizures </label> <br>
-						<input type="radio" name="button09" value="Yes" onclick="toggleTB(this,'text09',0)">Yes
-						<input type="radio" name="button09" value="No" onclick="toggleTB(this,'text09',1)">No&nbsp;&nbsp;
-						<input type="text" th:field=*{answer9} name="mfi_nam9" class="text required" id="text09" disabled=1 style="height:36px;width:300px;" /><br>
+						<input type="radio" name="button09" onclick="enable('text09')" value="Yes" th:checked="${answerDTO.button09 == 'Yes'}" >Yes
+						<input type="radio" name="button09" onclick="disable('text09')" value="No" th:checked="${answerDTO.button09 == 'No'}" >No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer9} name="mfi_nam9" class="text required" id="text09" th:disabled="${answerDTO.button09 == 'No'}"  style="height:36px;width:300px;" /><br>
 						<label>10. Lung disease/ Persistent Cough</label> <br>
-						<input type="radio" name="button10" value="Yes" onclick="toggleTB(this,'text10',0)">Yes
-						<input type="radio" name="button10" value="No" onclick="toggleTB(this,'text10',1)">No&nbsp;&nbsp;
-						<input type="text" th:field=*{answer10} name="mfi_nam9" class="text required" id="text10" disabled=1 style="height:36px;width:300px;" /><br>
+						<input type="radio" name="button10" onclick="enable('text10')" value="Yes" th:checked="${answerDTO.button10 == 'Yes'}" >Yes
+						<input type="radio" name="button10" onclick="disable('text10')" value="No" th:checked="${answerDTO.button10 == 'No'}" >No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer10} name="mfi_nam9" class="text required" id="text10" th:disabled="${answerDTO.button10 == 'No'}"  style="height:36px;width:300px;" /><br>
 						<label>11. Temperature susceptibility </label> <br>
-						<input type="radio" name="button11" value="Yes" onclick="toggleTB(this,'text11',0)">Yes
-						<input type="radio" name="button11" value="No" onclick="toggleTB(this,'text11',1)">No&nbsp;&nbsp;
-						<input type="text" th:field=*{answer11} name="mfi_nam9" class="text required" id="text11" disabled=1 style="height:36px;width:300px;" /><br>
+						<input type="radio" name="button11" onclick="enable('text11')" value="Yes" th:checked="${answerDTO.button11 == 'Yes'}" >Yes
+						<input type="radio" name="button11" onclick="disable('text11')" value="No" th:checked="${answerDTO.button11 == 'No'}" >No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer11} name="mfi_nam9" class="text required" id="text11" th:disabled="${answerDTO.button11 == 'No'}"  style="height:36px;width:300px;" /><br>
 						<label>12. Trouble tasting </label> <br>
-						<input type="radio" name="button12" value="Yes" onclick="toggleTB(this,'text12',0)">Yes
-						<input type="radio" name="button12" value="No" onclick="toggleTB(this,'text12',1)">No&nbsp;&nbsp;
-						<input type="text" th:field=*{answer12} name="mfi_nam9" class="text required" id="text12" disabled=1 style="height:36px;width:300px;" /><br>
+						<input type="radio" name="button12" onclick="enable('text12')" value="Yes" th:checked="${answerDTO.button12 == 'Yes'}" >Yes
+						<input type="radio" name="button12" onclick="disable('text12')" value="No" th:checked="${answerDTO.button12 == 'No'}" >No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer12} name="mfi_nam9" class="text required" id="text12" th:disabled="${answerDTO.button12 == 'No'}"  style="height:36px;width:300px;" /><br>
 						 <label>13. Are you pregnant? (If yes, do not register for Fit Testing) </label> <br>
-						<input type="radio" name="button13" value="Yes" onclick="toggleTB(this,'text13',0)">Yes
-						<input type="radio" name="button13" value="No" onclick="toggleTB(this,'text13',1)">No&nbsp;&nbsp;
-						<input type="text" th:field=*{answer13} name="mfi_nam9" class="text required" id="text13" disabled=1 style="height:36px;width:300px;" /><br>
+						<input type="radio" name="button13" onclick="enable('text13')" value="Yes" th:checked="${answerDTO.button13 == 'Yes'}" >Yes
+						<input type="radio" name="button13" onclick="disable('text13')" value="No" th:checked="${answerDTO.button13 == 'No'}" >No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer13} name="mfi_nam9" class="text required" id="text13" th:disabled="${answerDTO.button13 == 'No'}"  style="height:36px;width:300px;" /><br>
 						 <label>14. Other conditions, which might interfere with respirator use? </label> <br>
-						<input type="radio" name="button14" value="Yes" onclick="toggleTB(this,'text14',0)">Yes
-						<input type="radio" name="button14" value="No" onclick="toggleTB(this,'text14',1)">No&nbsp;&nbsp;
-						<input type="text" th:field=*{answer14} name="mfi_nam9" class="text required" id="text14" disabled=1 style="height:36px;width:300px;" /><br>
+						<input type="radio" name="button14" onclick="enable('text14')" value="Yes" th:checked="${answerDTO.button14 == 'Yes'}" >Yes
+						<input type="radio" name="button14" onclick="disable('text14')" value="No" th:checked="${answerDTO.button14 == 'No'}" >No&nbsp;&nbsp;
+						<input type="text" th:field=*{answer14} name="mfi_nam9" class="text required" id="text14" th:disabled="${answerDTO.button14 == 'No'}"  style="height:36px;width:300px;" /><br>
 						<br>										
 						<button type="submit" class="btn btn-primary btn-block">Submit</button>
 						</div>
