@@ -16,7 +16,7 @@
 	 	 	}
 	}*/
 					
-	function validation() {
+	/*function validation() {
 
 				
         //Make groups
@@ -50,8 +50,8 @@
                  	return false;   	 
                  }
 
-              }*/
-	}
+              }
+	}*/
 	
 	function enable(eid){
 		
@@ -74,7 +74,7 @@
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
  				  <form autocomplete="off" th:action="@{/client/assessment}"
-					th:object="${answerDTO}" onsubmit="return validation()" method="post" class="form-horizontal"
+					th:object="${answerDTO}" method="post" class="form-horizontal"
 					role="form">
  					
  					<h3>Primary Assessment</h3><hr>
@@ -92,7 +92,7 @@
 						<input type="radio" name="button01" onclick="enable('text01')" value="Yes" th:checked="${answerDTO.button01 == 'Yes'}"/> Yes
 						<input type="radio" name="button01" onclick="disable('text01')" value="No" th:checked="${answerDTO.button01 == 'No'}"/>No&nbsp;&nbsp;
 						<input type="text"  th:field=*{answer1} name="mfi_nam9" class="text required" id="text01" th:disabled="${answerDTO.button01 == 'No'}" style="height:36px;width:300px;" /><br>
-					 <!-- "alert('Please explain and be as explicit as possible, i.e. cause, symptoms, severity, frequency and any medical treatment')" -->
+					 <!--  onsubmit="return validation()" "alert('Please explain and be as explicit as possible, i.e. cause, symptoms, severity, frequency and any medical treatment')" -->
 						<label>2. Claustrophobia </label> <br>
 						<input type="radio" name="button02" onclick="enable('text02')" value="Yes" th:checked="${answerDTO.button02 == 'Yes'}" >Yes
 						<input type="radio" name="button02" onclick="disable('text02')" value="No" th:checked="${answerDTO.button02 == 'No'}" >No&nbsp;&nbsp;
