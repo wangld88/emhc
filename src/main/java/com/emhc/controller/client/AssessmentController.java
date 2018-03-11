@@ -65,13 +65,27 @@ public class AssessmentController {
 
 		return rtn;
 	}
+	
+	
 	@RequestMapping(value = "/assessment", method = RequestMethod.GET)
 	public String assessment(Model model) {
 
 		String rtn = "client/assessment";
 		User user = getPrincipal();
 		Answer answer = answerService.getByUserid(user.getUserid());
-		AnswerDTO form = new AnswerDTO(answer);
+		if(answer != null){
+			AnswerDTO form = new AnswerDTO(answer);
+			if (answer.getAnswer1()!=null){
+				form.setAnswer1(answer.getAnswer1());
+				form.setButton01("Yes");
+			}
+			else
+			{
+				form.setButton01("No");
+			}
+			model.addAttribute("answerDTO", form);
+			
+		}
 		
 		/*if (answer.getAnswerid()==0){
 			AnswerDTO form = new AnswerDTO();
@@ -84,7 +98,7 @@ public class AssessmentController {
 		
 		
 		model.addAttribute("loginUser", getPrincipal());
-		model.addAttribute("answerDTO", form);
+		model.addAttribute("answer", answer);
 		
 		return rtn;
 	}
@@ -132,10 +146,22 @@ public class AssessmentController {
 
 				User user = getPrincipal();
 				Answer answer = answerService.getByUserid(user.getUserid());
-				answer.setAnswerid(answer.getAnswerid());
-				answer.setUser(getPrincipal());
-				answer.setAnswer1(form.getAnswer1());
-				answer.setAnswer2(form.getAnswer2());
+				Answer answer1 = new Answer();
+				answer1.setUser(user);
+				//				answer.setAnswerid(answer.getAnswerid());
+//				answer.setUser(user);
+				if(answer == null)
+				{
+					
+					answer1.setAnswer1(form.getAnswer1());
+					answerService.saveAnswer(answer1);}
+				else
+				{	
+					answer.setUser(user);
+					answer.setAnswer1(form.getAnswer1());
+					answerService.saveAnswer(answer);
+				}
+/*				answer.setAnswer2(form.getAnswer2());
 				answer.setAnswer3(form.getAnswer3());
 				answer.setAnswer4(form.getAnswer4());
 				answer.setAnswer5(form.getAnswer5());
@@ -148,21 +174,7 @@ public class AssessmentController {
 				answer.setAnswer12(form.getAnswer12());
 				answer.setAnswer13(form.getAnswer13());
 				answer.setAnswer14(form.getAnswer14());
-				answer.setButton01(form.getButton01());
-				answer.setButton02(form.getButton02());
-				answer.setButton03(form.getButton03());
-				answer.setButton04(form.getButton04());
-				answer.setButton05(form.getButton05());
-				answer.setButton06(form.getButton06());
-				answer.setButton07(form.getButton07());
-				answer.setButton08(form.getButton08());
-				answer.setButton09(form.getButton09());
-				answer.setButton10(form.getButton10());
-				answer.setButton11(form.getButton11());
-				answer.setButton12(form.getButton12());
-				answer.setButton13(form.getButton13());
-				answer.setButton14(form.getButton14());			
-				answerService.saveAnswer(answer);
+*/				
 				
 				message.setStatus(Message.SUCCESS);
 				message.setMessage(messageSource.getMessage("Assessment.success", new Object[] {},

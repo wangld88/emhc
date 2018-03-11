@@ -43,7 +43,7 @@ public class AssessmentValidator implements Validator {
     	if (form.getButton01()==null){
     		errors.rejectValue("answer",null,null,"You need to select 1 option from group1");
     	}
-    	if (form.getButton02()==null){
+/*    	if (form.getButton02()==null){
     		errors.rejectValue("answer",null,null,"You need to select 1 option from group2");
     	}
     	if (form.getButton03()==null){
@@ -82,7 +82,7 @@ public class AssessmentValidator implements Validator {
     	if (form.getButton14()==null){
     		errors.rejectValue("answer",null,null,"You need to select 1 option from group14");
     	}
-    	    }	
+*/    	    }	
     
     
     private void validateAnswerDTO(Errors errors, AnswerDTO form) {
@@ -94,7 +94,7 @@ public class AssessmentValidator implements Validator {
     	 errors.rejectValue("answer",null,null,"Answer1 should not be blank.");
     	}
     
-
+/*
     	if ((form.getButton02()=="Yes")||(form.getAnswer2().length()==0)){
     		 errors.rejectValue("answer",null,null,"Answer2 should not be blank.");
     	}
@@ -142,7 +142,7 @@ public class AssessmentValidator implements Validator {
     	if ((form.getButton14()=="Yes")||(form.getAnswer14()=="")){
     		errors.rejectValue("answer",null,null,"Answer14 should not be blank.");
     	}
-    }
+*/    }
     	
         		/*Class<?> c = Class.forName(" com.emhc.dto.AnswerDTO");   
 			

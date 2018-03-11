@@ -87,13 +87,15 @@
 							</div>
 								
 						<h5>Do you have or do you experience any of the following:</h5>
-												
-					    <label>1. Asthma </label> <br>
-						<input type="radio" name="button01" onclick="enable('text01')" value="Yes" th:checked="${answerDTO.button01 == 'Yes'}"/> Yes
-						<input type="radio" name="button01" onclick="disable('text01')" value="No" th:checked="${answerDTO.button01 == 'No'}"/>No&nbsp;&nbsp;
-						<input type="text"  th:field=*{answer1} name="mfi_nam9" class="text required" id="text01" th:disabled="${answerDTO.button01 == 'No'}" style="height:36px;width:300px;" /><br>
-					 <!--  onsubmit="return validation()" "alert('Please explain and be as explicit as possible, i.e. cause, symptoms, severity, frequency and any medical treatment')" -->
-						<label>2. Claustrophobia </label> <br>
+			<!-- 			<div class="field-wrap" th:if="${answer!=null}">
+			 -->									
+						    <label>1. Asthma </label> <br>
+							<input type="radio" name="button01" onclick="enable('text01')" value="Yes" th:checked="${answerDTO.button01 == 'Yes'}"/> Yes
+							<input type="radio" name="button01" onclick="disable('text01')" value="No" th:checked="${answerDTO.button01 == 'No'}"/>No&nbsp;&nbsp;
+							<input type="text"  th:field=*{answer1} name="mfi_nam9" class="text required" id="text01" th:disabled="${answerDTO.button01 == 'No'}" style="height:36px;width:300px;" /><br>
+<!-- 						</div>
+ -->					 <!--  onsubmit="return validation()" "alert('Please explain and be as explicit as possible, i.e. cause, symptoms, severity, frequency and any medical treatment')" -->
+<!-- 						<label>2. Claustrophobia </label> <br>
 						<input type="radio" name="button02" onclick="enable('text02')" value="Yes" th:checked="${answerDTO.button02 == 'Yes'}" >Yes
 						<input type="radio" name="button02" onclick="disable('text02')" value="No" th:checked="${answerDTO.button02 == 'No'}" >No&nbsp;&nbsp;
 						<input type="text" th:field=*{answer2} th:disabled="${answerDTO.button02 == 'No'}" name="mfi_nam9" class="text required" id="text02"  style="height:36px;width:300px;" /><br>
@@ -145,7 +147,7 @@
 						<input type="radio" name="button14" onclick="enable('text14')" value="Yes" th:checked="${answerDTO.button14 == 'Yes'}" >Yes
 						<input type="radio" name="button14" onclick="disable('text14')" value="No" th:checked="${answerDTO.button14 == 'No'}" >No&nbsp;&nbsp;
 						<input type="text" th:field=*{answer14} name="mfi_nam9" class="text required" id="text14" th:disabled="${answerDTO.button14 == 'No'}"  style="height:36px;width:300px;" /><br>
-						<br>										
+ -->						<br>										
 						<button type="submit" class="btn btn-primary btn-block">Submit</button>
 						</div>
 						
