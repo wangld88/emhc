@@ -75,14 +75,133 @@ public class AssessmentController {
 		Answer answer = answerService.getByUserid(user.getUserid());
 		if(answer != null){
 			AnswerDTO form = new AnswerDTO(answer);
+			
 			if (answer.getAnswer1()!=null){
 				form.setAnswer1(answer.getAnswer1());
 				form.setButton01("Yes");
-			}
-			else
-			{
+				}
+				else
+				{
 				form.setButton01("No");
-			}
+				}
+			
+			if (answer.getAnswer2()!=null){
+				form.setAnswer2(answer.getAnswer2());
+				form.setButton02("Yes");
+				}
+				else
+				{
+				form.setButton02("No");
+				}
+			
+			if (answer.getAnswer3()!=null){
+				form.setAnswer3(answer.getAnswer3());
+				form.setButton03("Yes");
+				}
+				else
+				{
+				form.setButton03("No");
+				}
+			
+			if (answer.getAnswer4()!=null){
+				form.setAnswer4(answer.getAnswer4());
+				form.setButton04("Yes");
+				}
+				else
+				{
+				form.setButton04("No");
+				}
+			
+			if (answer.getAnswer5()!=null){
+				form.setAnswer5(answer.getAnswer5());
+				form.setButton05("Yes");
+				}
+				else
+				{
+				form.setButton05("No");
+				}
+			
+			if (answer.getAnswer6()!=null){
+				form.setAnswer6(answer.getAnswer6());
+				form.setButton06("Yes");
+				}
+				else
+				{
+				form.setButton06("No");
+				}
+			
+			if (answer.getAnswer7()!=null){
+				form.setAnswer7(answer.getAnswer7());
+				form.setButton07("Yes");
+				}
+				else
+				{
+				form.setButton07("No");
+				}
+			
+			if (answer.getAnswer8()!=null){
+				form.setAnswer8(answer.getAnswer8());
+				form.setButton08("Yes");
+				}
+				else
+				{
+				form.setButton08("No");
+				}
+			
+			if (answer.getAnswer9()!=null){
+				form.setAnswer9(answer.getAnswer9());
+				form.setButton09("Yes");
+				}
+				else
+				{
+				form.setButton09("No");
+				}
+			
+			if (answer.getAnswer10()!=null){
+				form.setAnswer10(answer.getAnswer10());
+				form.setButton10("Yes");
+				}
+				else
+				{
+				form.setButton10("No");
+				}
+			
+			if (answer.getAnswer11()!=null){
+				form.setAnswer11(answer.getAnswer11());
+				form.setButton11("Yes");
+				}
+				else
+				{
+				form.setButton11("No");
+				}
+			
+			if (answer.getAnswer12()!=null){
+				form.setAnswer12(answer.getAnswer12());
+				form.setButton12("Yes");
+				}
+				else
+				{
+				form.setButton12("No");
+				}
+			
+			if (answer.getAnswer13()!=null){
+				form.setAnswer13(answer.getAnswer13());
+				form.setButton13("Yes");
+				}
+				else
+				{
+				form.setButton13("No");
+				}
+			
+			if (answer.getAnswer14()!=null){
+				form.setAnswer14(answer.getAnswer14());
+				form.setButton14("Yes");
+				}
+				else
+				{
+				form.setButton14("No");
+				}
+			
 			model.addAttribute("answerDTO", form);
 			
 		}
@@ -154,27 +273,41 @@ public class AssessmentController {
 				{
 					
 					answer1.setAnswer1(form.getAnswer1());
+					answer1.setAnswer2(form.getAnswer2());
+					answer1.setAnswer3(form.getAnswer3());
+					answer1.setAnswer4(form.getAnswer4());
+					answer1.setAnswer5(form.getAnswer5());
+					answer1.setAnswer6(form.getAnswer6());
+					answer1.setAnswer7(form.getAnswer7());
+					answer1.setAnswer8(form.getAnswer8());
+					answer1.setAnswer9(form.getAnswer9());
+					answer1.setAnswer10(form.getAnswer10());
+					answer1.setAnswer11(form.getAnswer11());
+					answer1.setAnswer12(form.getAnswer12());
+					answer1.setAnswer13(form.getAnswer13());
+					answer1.setAnswer14(form.getAnswer14());
 					answerService.saveAnswer(answer1);}
 				else
 				{	
 					answer.setUser(user);
 					answer.setAnswer1(form.getAnswer1());
+					answer.setAnswer2(form.getAnswer2());
+					answer.setAnswer3(form.getAnswer3());
+					answer.setAnswer4(form.getAnswer4());
+					answer.setAnswer5(form.getAnswer5());
+					answer.setAnswer6(form.getAnswer6());
+					answer.setAnswer7(form.getAnswer7());
+					answer.setAnswer8(form.getAnswer8());
+					answer.setAnswer9(form.getAnswer9());
+					answer.setAnswer10(form.getAnswer10());
+					answer.setAnswer11(form.getAnswer11());
+					answer.setAnswer12(form.getAnswer12());
+					answer.setAnswer13(form.getAnswer13());
+					answer.setAnswer14(form.getAnswer14());
 					answerService.saveAnswer(answer);
 				}
-/*				answer.setAnswer2(form.getAnswer2());
-				answer.setAnswer3(form.getAnswer3());
-				answer.setAnswer4(form.getAnswer4());
-				answer.setAnswer5(form.getAnswer5());
-				answer.setAnswer6(form.getAnswer6());
-				answer.setAnswer7(form.getAnswer7());
-				answer.setAnswer8(form.getAnswer8());
-				answer.setAnswer9(form.getAnswer9());
-				answer.setAnswer10(form.getAnswer10());
-				answer.setAnswer11(form.getAnswer11());
-				answer.setAnswer12(form.getAnswer12());
-				answer.setAnswer13(form.getAnswer13());
-				answer.setAnswer14(form.getAnswer14());
-*/				
+				
+			
 				
 				message.setStatus(Message.SUCCESS);
 				message.setMessage(messageSource.getMessage("Assessment.success", new Object[] {},
