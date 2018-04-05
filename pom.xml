@@ -28,6 +28,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>dom4j</groupId>
+					<artifactId>dom4j</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -112,8 +118,12 @@
 			<artifactId>nekohtml</artifactId>
 			<version>1.9.21</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
-		<!-- logging -->
 		<dependency>
+		   <groupId>dom4j</groupId>
+		   <artifactId>dom4j</artifactId>
+		</dependency>
+		<!-- logging -->
+		<!-- <dependency>
 		    <groupId>org.slf4j</groupId>
 		    <artifactId>slf4j-jcl</artifactId>
 		    <version>1.7.5</version>
@@ -122,13 +132,7 @@
 		    <groupId>org.slf4j</groupId>
 		    <artifactId>slf4j-api</artifactId>
 		    <version>1.7.5</version>
-		</dependency>
-		<dependency>
-		   <groupId>dom4j</groupId>
-		   <artifactId>dom4j</artifactId>
-		   <version>1.6.1</version>
-		   <scope>provided</scope>
-		</dependency>
+		</dependency> -->
 	    <dependency>
 	        <groupId>org.springframework.boot</groupId>
 	        <artifactId>spring-boot-starter-web</artifactId>
@@ -146,12 +150,12 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
+				<!-- <configuration>
 					<warName>emhc.war</warName>
-				</configuration>
+				</configuration> -->
 			</plugin>
 		</plugins>
-		<finalName>emhc.war</finalName>
+		<finalName>emhc</finalName>
 	</build>
 
 

@@ -21,7 +21,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * The persistent class for the users database table.
- * 
+ *
  */
 @Entity
 @Table(name="users")
@@ -50,7 +50,7 @@ public class User implements Serializable {
 	@Column(name = "email")
 	@NotEmpty(message = "*Please provide an email")
 	private String email;
-	
+
 	@Column(name = "orgemail")
 	@NotEmpty(message = "*Please provide an email")
 	private String orgemail;
@@ -58,13 +58,13 @@ public class User implements Serializable {
 	@Column(name = "phone")
 	@NotEmpty(message = "*Please provide phone number")
 	private String phone;
-	
+
 	@Column(name = "password")
 	@Length(min = 3, message = "*Your password must have at least 3 characters")
 	@NotEmpty(message = "*Please provide your password")
 	//@Transient
 	private String password;
-	
+
 	@Column(name = "programyear")
 	private int programyear;
 
@@ -76,7 +76,7 @@ public class User implements Serializable {
 	private String username;
 
 	@Column(name = "viewer")
-	private byte viewer;
+	private Byte viewer;
 
 	//bi-directional many-to-one association to Answer
 	@OneToMany(mappedBy="user")
@@ -195,11 +195,11 @@ public class User implements Serializable {
 		this.username = username;
 	}
 
-	public byte getViewer() {
+	public Byte getViewer() {
 		return this.viewer;
 	}
 
-	public void setViewer(byte viewer) {
+	public void setViewer(Byte viewer) {
 		this.viewer = viewer;
 	}
 
