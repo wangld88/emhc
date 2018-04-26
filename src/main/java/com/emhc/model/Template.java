@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 /**
  * The persistent class for the templates database table.
- * 
+ *
  */
 @Entity
 @Table(name="templates")
@@ -15,12 +15,14 @@ public class Template implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "templateid", updatable = false, nullable = false)
 	private int templateid;
 
 	private String subject;
-	
+
 	private String description;
-	
+
 	private String bcc;
 
 	private String cc;
@@ -37,7 +39,7 @@ public class Template implements Serializable {
 
 	private String methodname;
 
-	
+
 	public Template() {
 	}
 

@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * The persistent class for the payments database table.
- * 
+ *
  */
 @Entity
 @Table(name="payments")
@@ -17,6 +17,8 @@ public class Payment implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "paymentid", updatable = false, nullable = false)
 	private int paymentid;
 
 	private double amount;

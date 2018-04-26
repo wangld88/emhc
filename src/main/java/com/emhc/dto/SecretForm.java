@@ -1,11 +1,22 @@
 package com.emhc.dto;
 
+import com.emhc.model.Secret;
+
 public class SecretForm {
-	
+
 	private int secretid;
 	private String oldcode;
 	private String code;
 	private String confirmcode;
+
+	public SecretForm() {
+
+	}
+
+	public SecretForm(Secret secret) {
+		this.secretid = secret.getSecretid();
+		this.code = secret.getCode();
+	}
 
 	public int getSecretid() {
 		return secretid;
@@ -30,5 +41,14 @@ public class SecretForm {
 	}
 	public void setConfirmcode(String confirmcode) {
 		this.confirmcode = confirmcode;
+	}
+
+	public Secret getSecret() {
+
+		Secret secret = new Secret();
+		secret.setSecretid(secretid);
+		secret.setCode(code);
+
+		return secret;
 	}
 }

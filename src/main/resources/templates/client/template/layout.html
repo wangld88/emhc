@@ -22,8 +22,8 @@
 		<link rel="stylesheet" th:href="@{/css/bootstrap.css}">
 		<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
-		<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-		<link href='http://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+		<link href='https://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
 		<!-- <link href="plugins/fancybox/jquery.fancybox.css" rel="stylesheet">
 		<link href="plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
 		<link href="plugins/xcharts/xcharts.min.css" rel="stylesheet">
@@ -33,8 +33,8 @@
 		<link href="plugins/chartist/chartist.min.css" rel="stylesheet"> -->
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
-				<script src="http://getbootstrap.com/docs-assets/js/html5shiv.js"></script>
-				<script src="http://getbootstrap.com/docs-assets/js/respond.min.js"></script>
+				<script src="https://getbootstrap.com/docs-assets/js/html5shiv.js"></script>
+				<script src="https://getbootstrap.com/docs-assets/js/respond.min.js"></script>
 		<![endif]-->
 
 	</head>
@@ -79,9 +79,9 @@
 												<img th:src="@{/images/avatar.jpg}" class="img-circle" alt="avatar" />
 											</div> -->
 											<i class="fa fa-angle-down pull-right"></i>
-											<div class="user-mini pull-right">
+											<div th:if="${loginUser!=null}" class="user-mini pull-right">
 												<span class="welcome">Welcome,</span>
-												<span th:text="${loginUser!=null?loginUser.firstname:''+' '+loginUser!=null?loginUser.lastname:''}">Jane emhc</span>
+												<span th:text="${loginUser.firstname+' '+loginUser.lastname}"></span>
 											</div>
 										</a>
 										<ul class="dropdown-menu">
@@ -110,7 +110,7 @@
 		<!--Start Container-->
 		<div id="main" class="container-fluid">
 			<div class="row">
-				<div id="sidebar-left" class="col-xs-2 col-sm-2">
+				<div th:if="${loginUser!=null}" id="sidebar-left" class="col-xs-2 col-sm-2">
 					<ul class="nav main-menu">
 						<li style="height: 20px;"></li>
 						<li>

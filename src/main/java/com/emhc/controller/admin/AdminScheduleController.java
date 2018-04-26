@@ -1,6 +1,8 @@
 package com.emhc.controller.admin;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -41,15 +43,15 @@ import com.emhc.validator.ScheduleFormValidator;
 public class AdminScheduleController extends BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(AdminScheduleController.class);
-	
+
     @Autowired
-    private ScheduleFormValidator scheduleFormValidator;	
-    
+    private ScheduleFormValidator scheduleFormValidator;
+
     @InitBinder("scheduleForm")
     public void initBinder(WebDataBinder binder) {
     	binder.addValidators(scheduleFormValidator);
     }
-    
+
     @ModelAttribute("scheduleForm")
     public ScheduleForm createDTO() {
     	return new ScheduleForm();
@@ -59,30 +61,30 @@ public class AdminScheduleController extends BaseController {
 	@RequestMapping(value="/schedule", method=RequestMethod.GET)
 	public String dspSchedule(Model model) {
 		String rtn = "/admin/schedule";
-		
+
 		User user = getPrincipal();
-	
+
 		List<Organization> orgs = organizationService.findAll();
-		
+
 		if(user == null) {
 			rtn = "/admin/login";
 		} else {
 			model.addAttribute("scheduleForm", new ScheduleForm());
 			model.addAttribute("orgs", orgs);
 		}
-		
+
 		return rtn;
 	}
 
-	
+
 	@RequestMapping(value="/schedule/{scheduleid}", method=RequestMethod.GET)
 	public String dspSchedule(@PathVariable("scheduleid") Integer scheduleid, @ModelAttribute("errMessage") Message errMessage, Model model) {
 		String rtn = "/admin/schedule";
-		
+
 		User user = getPrincipal();
 		ScheduleForm form = new ScheduleForm();
 		List<Session> sessions = new ArrayList<>();
-	
+
 		if(user == null) {
 			rtn = "/admin/login";
 		} else {
@@ -97,20 +99,20 @@ public class AdminScheduleController extends BaseController {
 		model.addAttribute("scheduleForm", form);
 		model.addAttribute("orgs", orgs);
 		model.addAttribute("sessions", sessions);
-		
+
 		return rtn;
 	}
 
-	
+
 	@RequestMapping(value="/schedule/org/{orgid}", method=RequestMethod.GET)
 	public String dspOrganization(@PathVariable("orgid") Long orgid, @ModelAttribute("errMessage") Message errMessage, Model model) {
 		String rtn = "/admin/schedule";
-		
+
 		User user = getPrincipal();
 		ScheduleForm form = new ScheduleForm();
-	
+
 		List<Session> sessions = new ArrayList<>();
-				
+
 		if(user == null) {
 			rtn = "/admin/login";
 		} else {
@@ -119,44 +121,44 @@ public class AdminScheduleController extends BaseController {
 		if(errMessage != null) {
 			model.addAttribute("message", errMessage);
 		}
-		
+
 		List<Organization> orgs = organizationService.findAll();
-		
+
 		form.setOrganizationid(orgid);
-		
+
 		model.addAttribute("orgs", orgs);
 		model.addAttribute("scheduleForm", form);
 		model.addAttribute("sessions", sessions);
-		
+
 		return rtn;
 	}
 
-	
+
 	@RequestMapping(value="/schedule", method=RequestMethod.POST)
-	public String doSchedule(@Valid @ModelAttribute("scheduleForm") ScheduleForm form, 
+	public String doSchedule(@Valid @ModelAttribute("scheduleForm") ScheduleForm form,
 		BindingResult bindingResult, Model model, HttpSession httpSession, final RedirectAttributes ra) {
-		
-		//logger.info("Processing updateProfile form={}, bindingResult={}", form, bindingResult);		
+
+		//logger.info("Processing updateProfile form={}, bindingResult={}", form, bindingResult);
 		String rtn = "/admin/schedules";
-		
+
 		User user = getPrincipal();
 		Message message = new Message();
-		
+
 		if(user == null) {
 			rtn = "/admin/login";
 		} else {
 			if (bindingResult.hasErrors()) {
-				
+
 				List<ObjectError> errors = bindingResult.getAllErrors();
 				String msg = messageHandler.get("Header.scheduleForm.validation") + "<br />";
-				
+
 				for(ObjectError i: errors) {
 					if(i instanceof FieldError) {
 						FieldError fieldError = (FieldError) i;
 						msg += messageHandler.get(fieldError.getCode()) + "<br />";
 					}
 				}
-				
+
 				List<Organization> orgs = organizationService.findAll();
 				List<Program> programs = programService.getByOrganizationId(form.getOrganizationid());
 				List<Location> locations = locationService.getByOrganizationid(form.getOrganizationid());
@@ -178,45 +180,90 @@ public class AdminScheduleController extends BaseController {
 			} else {
 				logger.info("Errors: "+bindingResult.getErrorCount());;
 			}
-			
+
 			Schedule schedule = form.getSchedule();
+
 			if(form.getSessionid() != 0) {
 				schedule.setSession(sessionService.getById(form.getSessionid()));
 			}
-			
-			schedule = scheduleService.save(schedule);
-			
+
+			int num = form.getNumschedule();
+
+			logger.info("Number of Schedule: " + num);
+
+			if(num > 1) {
+				for(int i = 0; i < num; i++) {
+					Schedule sch = new Schedule();;
+
+					Timestamp starttime = schedule.getScheduletime();
+					Calendar cal = Calendar.getInstance();
+
+					cal.setTimeInMillis(starttime.getTime());
+
+					cal.add(Calendar.MINUTE, schedule.getDuration()*i);
+
+					sch.setScheduletime(new Timestamp(cal.getTimeInMillis()));
+					sch.setCapacity(schedule.getCapacity());
+					sch.setDuration(schedule.getDuration());
+					Session session = sessionService.getById(form.getSessionid());
+					sch.setSession(session);
+
+					sch = scheduleService.save(sch);
+					logger.info("This is the "+i+", ID: "+sch.getScheduleid());
+				}
+			} else {
+				schedule = scheduleService.save(schedule);
+			}
+
 			List<Schedule> schedules = scheduleService.getAll();
-			
+
 			model.addAttribute("schedules", schedules);
 		}
-		
+
 		return rtn;
 	}
-	
+
+
+	@RequestMapping(value="/schedule/{scheduleid}", method=RequestMethod.POST)
+	public String deleteSchedule(@PathVariable("scheduleid") Integer scheduleid, Model model, HttpSession httpSession) {
+		String rtn = "/admin/schedules";
+
+		User user = getPrincipal();
+
+		if(user == null) {
+			rtn = "/admin/login";
+		} else {
+
+			scheduleService.delete(scheduleid);
+
+		}
+
+		return "redirect:" + rtn;
+	}
+
 
 	@RequestMapping(value="/schedules", method=RequestMethod.GET)
 	public String dspSchedules(Model model) {
 		String rtn = "/admin/schedules";
 		logger.info("dspSchedules is called");
 		User user = getPrincipal();
-	
+
 		if(user == null) {
 			rtn = "/admin/login";
 		} else {
-			
+
 			List<Schedule> schedules = scheduleService.getAll();
-			
+
 			model.addAttribute("schedules", schedules);
 		}
-		
+
 		return rtn;
 	}
-    
+
 	private User getPrincipal(){
     	User user = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        
+
         if (principal instanceof LoginUser) {
             user = ((LoginUser)principal).getUser();
         } else {

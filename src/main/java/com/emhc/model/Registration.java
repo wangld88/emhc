@@ -7,7 +7,7 @@ import java.util.Date;
 
 /**
  * The persistent class for the registrations database table.
- * 
+ *
  */
 @Entity
 @Table(name="registrations")
@@ -16,6 +16,8 @@ public class Registration implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "registrationid", updatable = false, nullable = false)
 	private int registrationid;
 
 	private String feedback;

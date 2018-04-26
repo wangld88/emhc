@@ -8,16 +8,18 @@ import java.util.List;
 
 /**
  * The persistent class for the sessions database table.
- * 
+ *
  */
 @Entity
 @Table(name="sessions")
 @NamedQuery(name="Session.findAll", query="SELECT s FROM Session s")
 public class Session implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "sessionid", updatable = false, nullable = false)
 	private int sessionid;
 
 	private String name;

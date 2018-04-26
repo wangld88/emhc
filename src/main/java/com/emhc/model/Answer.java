@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 /**
  * The persistent class for the answers database table.
- * 
+ *
  */
 @Entity
 @Table(name="answers")
@@ -15,6 +15,8 @@ public class Answer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "answerid", updatable = false, nullable = false)
 	private int answerid;
 
 	private String answer1;

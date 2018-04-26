@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * The persistent class for the locations database table.
- * 
+ *
  */
 @Entity
 @Table(name="locations")
@@ -16,6 +16,8 @@ public class Location implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "locationid", updatable = false, nullable = false)
 	private int locationid;
 
 	private String name;

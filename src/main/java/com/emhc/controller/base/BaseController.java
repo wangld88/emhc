@@ -22,6 +22,7 @@ import com.emhc.service.OrganizationService;
 import com.emhc.service.ProgramService;
 import com.emhc.service.RoleService;
 import com.emhc.service.ScheduleService;
+import com.emhc.service.SecretService;
 import com.emhc.service.SessionService;
 import com.emhc.service.TemplateService;
 import com.emhc.service.UserService;
@@ -30,11 +31,11 @@ import com.emhc.service.UserService;
 public class BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(BaseController.class);
-	
+
 	protected static final String DATE_FORMAT = "yyyy-MM-dd";
-	
+
 	protected static final String ERROR_VIEW = "/error";
-	
+
     @Autowired
     private ErrorAttributes errorAttributes;
 
@@ -43,41 +44,44 @@ public class BaseController {
 
 	@Autowired
 	public UserService userService;
-	
+
 	@Autowired
 	public RoleService roleService;
-	
+
     @Autowired
     public ProgramService programService;
-    
+
     @Autowired
 	public OrganizationService organizationService;
-	
+
     @Autowired
 	public LocationService locationService;
-	
+
 	@Autowired
 	public SessionService sessionService;
-	
+
 	@Autowired
 	public ScheduleService scheduleService;
-	
+
 	@Autowired
 	public TemplateService templateService;
-	
-    
+
+	@Autowired
+	public SecretService secretService;
+
+
 	@ExceptionHandler( TemplateInputException.class )
 	public ModelAndView templateInputExceptionHandler (TemplateInputException e, HttpServletResponse httpresponse) {
 		ModelAndView mv = new ModelAndView("/admin/organization");
-		
+
 		Message message = new Message();
 		message.setStatus(Message.ERROR);
 		message.setMessage("Load template " + e.getTemplateName() + " failed with error: " + e.getMessage());
 		mv.addObject("message", message);
-		
+
 		return mv;
 	}
-	
+
 	@ExceptionHandler({ Exception.class })
 	public ModelAndView uncaughtExceptionHandling (Exception e, HttpServletRequest request, HttpServletResponse httpresponse) {
 
@@ -85,40 +89,40 @@ public class BaseController {
 		//e.printStackTrace();
 		//String errorMsg = "";
 		String errorDetails = "N/A";
-		
+
         StringBuffer url = request.getRequestURL();
 
         String view = "";
-        
+
         if(url.indexOf("/admin") > 0) {
         	view = "/admin" + ERROR_VIEW;
         } if (url.indexOf("/moderator") > 0){
         	view = "/moderator" + ERROR_VIEW;
-        } 
+        }
         else {
         	view = "/student" + ERROR_VIEW;
         }
         logger.info("view: " + view + ", URL: "+url);
-        
+
 		final ModelAndView model = initModelView(view);
 		RequestAttributes requestAttributes = new ServletRequestAttributes(request);
 		Map<String, Object> att = errorAttributes.getErrorAttributes(requestAttributes, true);
-		
+
 		if (e != null) {
 			errorDetails = e.getMessage();
-			
+
 			if (e.getCause() != null && e.getCause().getMessage() != null) {
 				errorDetails += " - " + e.getCause().getMessage();
 			}
-			
+
 		}
-		
+
 		model.addObject("errordetails", errorDetails);
 		model.addObject("exception", att);
 		model.addObject("url", url);
 
 		return model;
-		
+
 	}
 
 	private ModelAndView initModelView(String view) {
@@ -128,7 +132,7 @@ public class BaseController {
 		}
 		/*
 		Boolean isAdmin = userService.isAdmin();
-		
+
 		model.addObject(USER_INFO, user);
 		model.addObject(IS_ADMIN, isAdmin);
 
@@ -138,7 +142,7 @@ public class BaseController {
 			model.addObject(ADMIN_STAGE, STAGE_HOME);
 			model.addObject(TYPES, types);
 		}*/
-		
+
 		return model;
 	}
 }

@@ -17,20 +17,22 @@ public class ScheduleForm {
 	private int duration;
 
 	private LocalTime scheduletime;
-	
+
 	private int hour;
-	
+
 	private int minute;
-	
+
 	private String am;
 
 	private int sessionid;
 
 	private long organizationid;
 
-	
+	private int numschedule;
+
+
 	public ScheduleForm() {
-		
+
 	}
 
 	public ScheduleForm(Schedule schedule) {
@@ -89,18 +91,19 @@ public class ScheduleForm {
 	public void setSessionid(int sessionid) {
 		this.sessionid = sessionid;
 	}
-	
+
 	public Schedule getSchedule() {
 		Schedule schedule = new Schedule();
 		schedule.setCapacity(capacity);
 		schedule.setScheduleid(scheduleid);
+		System.out.println("Time HOUR: "+hour);
 		if("PM".equals(am)) {
 			hour += 12;
 		}
 		scheduletime = LocalTime.of(hour, minute);
 		schedule.setScheduletime(Timestamp.valueOf(LocalDateTime.of(LocalDate.now(), scheduletime)));
 		schedule.setDuration(duration);
-		
+
 		return schedule;
 	}
 
@@ -134,5 +137,13 @@ public class ScheduleForm {
 
 	public void setAm(String am) {
 		this.am = am;
+	}
+
+	public int getNumschedule() {
+		return numschedule;
+	}
+
+	public void setNumschedule(int numschedule) {
+		this.numschedule = numschedule;
 	}
 }

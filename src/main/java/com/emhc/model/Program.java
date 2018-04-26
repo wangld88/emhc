@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * The persistent class for the programs database table.
- * 
+ *
  */
 @Entity
 @Table(name="programs")
@@ -16,6 +16,8 @@ public class Program implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "programid", updatable = false, nullable = false)
 	private int programid;
 
 	private String name;

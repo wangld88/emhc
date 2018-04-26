@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * The persistent class for the schedules database table.
- * 
+ *
  */
 @Entity
 @Table(name="schedules")
@@ -17,6 +17,8 @@ public class Schedule implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "scheduleid", updatable = false, nullable = false)
 	private int scheduleid;
 
 	private int capacity;

@@ -17,21 +17,21 @@ public class UserFormValidator implements Validator {
 
     private static final String EMAIL_REGEX = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
     private static final Logger logger = LoggerFactory.getLogger(UserFormValidator.class);
-    
+
 	/*@Autowired
 	private UserService userService;*/
-	
+
 	@Override
 	public boolean supports(Class<?> clazz) {
-		
+
 		return clazz.equals(UserForm.class);
 	}
 
 	@Override
 	public void validate(Object target,Errors errors) {
-		
+
 		logger.info("Moderator User Validating {} started", target);
-		
+
 		UserForm form = (UserForm) target;
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors,"username","error.username","User name is required.");
@@ -49,11 +49,11 @@ public class UserFormValidator implements Validator {
 		validatePhone(form, errors);
 		*/validateEmail(form, errors);
 		validateOrgemail(form,errors);
-		
+
 	}
 
     private void validateEmail(UserForm form,Errors errors) {
-    	
+
     	String email = form.getEmail();
 
     	if (email == null || email.length() == 0) {
@@ -81,7 +81,7 @@ public class UserFormValidator implements Validator {
 }
 
        /* private void validateFirstname(UserForm form,Errors errors) {
-        	
+
         	String firstname = form.getFirstname();
 
         	if (firstname == null || firstname.length() == 0) {
@@ -92,11 +92,11 @@ public class UserFormValidator implements Validator {
         	}
 }
 
-        
+
 }
 
        private void validateLastname(UserForm form,Errors errors) {
-        	
+
         	String lastname = form.getLastname();
 
         	if (lastname == null || lastname.length() == 0) {
@@ -107,9 +107,9 @@ public class UserFormValidator implements Validator {
         	}
 }
 
-        
+
 }       private void validatePassword(UserForm form,Errors errors) {
-	
+
 	String password = form.getPassword();
 
 	if (password == null || password.length() == 0) {
@@ -122,7 +122,7 @@ public class UserFormValidator implements Validator {
 
 
 }       private void validateProgramyear(UserForm form,Errors errors) {
-	
+
 	String programyear = form.getProgramyear()+"";
 
 	if (programyear == null || programyear.length() == 0) {
@@ -135,7 +135,7 @@ public class UserFormValidator implements Validator {
 
 
 }       private void validatePhone(UserForm form,Errors errors) {
-	
+
 	String phone = form.getPhone();
 
 	if (phone == null || phone.length() == 0) {
@@ -148,7 +148,7 @@ public class UserFormValidator implements Validator {
 
 /*
 }       private void validateUserName(UserForm form,Errors errors) {
-	
+
 	String username = form.getUsername();
 
 	if (username == null || username.length() == 0) {

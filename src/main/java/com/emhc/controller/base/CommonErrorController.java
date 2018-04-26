@@ -21,7 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.emhc.error.Message;
 
-	
+
 @Controller
 public class CommonErrorController implements ErrorController {
 
@@ -30,14 +30,14 @@ public class CommonErrorController implements ErrorController {
 
     @Value("${debug}")
     private boolean debug;
-    		
+
     @Autowired
     private ErrorAttributes errorAttributes;
 
-    
+
     @RequestMapping(value = PATH)
     public ModelAndView error(HttpServletRequest request, HttpServletResponse response) {
-        // Appropriate HTTP response code (e.g. 404 or 500) is automatically set by Spring. 
+        // Appropriate HTTP response code (e.g. 404 or 500) is automatically set by Spring.
         // Here we just define response body.
     	Map<String, Object> att = getErrorAttributes(request, debug);
     	logger.info("There is an error in CommonErrorController: "+response.getStatus());
@@ -45,66 +45,61 @@ public class CommonErrorController implements ErrorController {
     	return setErrorView(request, response, att, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    
+
     @Override
     public String getErrorPath() {
         return PATH;
     }
 
-    
+
     private Map<String, Object> getErrorAttributes(HttpServletRequest request, boolean includeStackTrace) {
         RequestAttributes requestAttributes = new ServletRequestAttributes(request);
         return errorAttributes.getErrorAttributes(requestAttributes, includeStackTrace);
     }
 
-    
+
     private ModelAndView setErrorView(HttpServletRequest request, HttpServletResponse response, Map<String, Object> att, HttpStatus httpStatus) {
-        
+
         ModelAndView mav = new ModelAndView();
-        
+
         Message message = new Message();
         message.setStatus(Message.ERROR);
-        
+
         StringBuffer url = request.getRequestURL();
-        
+
         String view = "";
-     
+
         if(att != null) {
         	String path = (String) att.get("path");
-        	
-            if(response.getStatus() == HttpStatus.FORBIDDEN.value()) {
+        	logger.info("Admin in path: "+ path.indexOf("/admin")+", Error: "+PATH);
+
+        	if(response.getStatus() == HttpStatus.FORBIDDEN.value()) {
             	if(path.indexOf("/admin") > 0) {
             		view = "/admin/login/login";
-    	        } 
-            	if (path.indexOf("/moderator") > 0) {
+    	        } else if (path.indexOf("/moderator") > 0) {
             		view = "/moderator/login/login";
-            		}
-            	else {
+            	} else {
     	        	view = "/client/login/login";
     	        }
             } else {
 	        	if(path.indexOf("/admin") > 0) {
 	        		view = "/admin" + PATH;
-		        } 
-	        	if (path.indexOf("/moderator") > 0) {
+		        } else if (path.indexOf("/moderator") > 0) {
             		view = "/moderator"+PATH;
-            		}
-            	else {
+            	} else {
 		        	view = "/client" + PATH;
 		        }
             }
         } else {
 	        if(url.indexOf("/admin") > 0) {
 	        	view = "/admin" + PATH;
-	        } 
-	        if (url.indexOf("/moderator") > 0) {
+	        } else if (url.indexOf("/moderator") > 0) {
         		view = "/moderator"+PATH;
-        		}        	     
-	        else {
+        	} else {
 	        	view = "/client" + PATH;
 	        }
         }
-        
+
     	mav.setViewName(view);
 
     	if (att != null) {
@@ -116,7 +111,7 @@ public class CommonErrorController implements ErrorController {
                 message.setMessage((String)att.get("error"));
                 mav.addObject("stackTrace", att.get("trace"));
         	}
-            
+
             mav.addObject("error", att.get("error"));
             for(String o: att.keySet()) {
             	logger.info(o+": " +att.get(o));
@@ -132,11 +127,11 @@ public class CommonErrorController implements ErrorController {
         	att.put("exception", "N/A");
         	message.setMessage("Unexpected Error Occurred!");
         }
-        
+
         mav.addObject("exception", att);
         mav.addObject("url", url);
         mav.addObject("message", message);
-        
+
     	response.setStatus(httpStatus.value());
 
         return mav;

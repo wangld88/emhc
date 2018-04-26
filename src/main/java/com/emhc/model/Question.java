@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 /**
  * The persistent class for the questions database table.
- * 
+ *
  */
 @Entity
 @Table(name="questions")
@@ -15,7 +15,8 @@ public class Question implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="questionid")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "questionid", updatable = false, nullable = false)
 	private int questionid;
 
 	@Column(name = "isprimary")

@@ -9,11 +9,14 @@
  		<meta name="_csrf" th:content="${_csrf.token}"/>
 		<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 		<link href="css/bootstrap-responsive.css" rel="stylesheet" />
+		<link href="css/jquery-ui-1.10.4.min.css" rel="stylesheet" />
 		<link href="css/style.css" rel="stylesheet" />
 		<link href="color/default.css" rel="stylesheet" />
 		<link rel="shortcut icon" href="images/favicon.ico" />
+		<link href="css/emh_style.css" rel="stylesheet" type="text/css">
+		<link href="css/common.css" rel="stylesheet" type="text/css">
 	</head>
-	
+
 	<body>
 		<!-- navbar -->
 		<div class="navbar-wrapper">
@@ -34,9 +37,19 @@
 							<li><a title="services" href="fit">Fit Testing</a></li>
 							<li><a title="blog" href="whychoose">Why EMH</a></li>
 							<li><a title="contact" href="contact">Contact</a></li>
-							<li><a href="client/login">Login</a></li>
+							<li><a id="popup" name="popup" style="cursor:pointer">Login</a></li>
 						</ul>
 						</nav>
+					</div>
+					<div id="dialog-form" class="form" title="Go to Login Page">
+						<form id="secretcodeForm" name="secretcodeForm" method="post" th:action="@{/client/login/secret}">
+							<div class="form-group">
+							    <label for="secretcode" class="control-label col-lg-3">Secret Code: </label>
+							    <div class="col-lg-9">
+									<input type="password" name="secretcode" id="secretcode" value="" class="form-control" size="22" />
+							    </div>
+							</div>
+						</form>
 					</div>
 					<div style="background: #B2CDEB; height: 20px;">
 					</div>
@@ -44,38 +57,7 @@
 			</div>
 		</div>
 		<!-- Header area -->
-		<!-- <div id="header-wrapper" class="header-slider" style="border: solid blue 1px;">
-			<header class="clearfix">
-			<div class="container">
-			
-				<div class="row">
-					<div class="span12">
-						<div id="main-flexslider" class="flexslider">
-							<ul class="slides">
-								<li>
-								<p class="home-slide-content">
-									<strong>creative</strong> and passion
-								</p>
-								</li>
-								<li>
-								<p class="home-slide-content">
-									Eat and drink <strong>design</strong>
-								</p>
-								</li>
-								<li>
-								<p class="home-slide-content">
-									We loves <strong>simplicity</strong>
-								</p>
-								</li>
-							</ul>
-						</div>
-						end slider
-					</div>
-				</div>
-			</div>
-			</header>
-		</div> -->
-		
+
 		<div class="container">
 			<div class="container-fluid" layout:fragment="content">
 				Real Content
@@ -125,9 +107,10 @@
 			</div>
 			<!-- ./container -->
 		</footer>
-		
+
 		<a href="#" class="scrollup"><i class="icon-angle-up icon-square icon-bgdark icon-2x"></i></a>
 		<script src="js/jquery.js"></script>
+		<script src="js/jquery-ui.min.js"></script>
 		<script src="js/jquery.scrollTo.js"></script>
 		<script src="js/jquery.nav.js"></script>
 		<script src="js/jquery.localscroll-1.2.7-min.js"></script>
@@ -145,6 +128,41 @@
 		    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 		    ga('create', 'UA-55234356-4', 'auto');
 		    ga('send', 'pageview');
+		</script>
+		<script>
+			$(document).ready(function() {
+			    var dialog, form;
+				dialog = $( "#dialog-form" ).dialog({
+					dialogClass: 'dialogStyle',
+					autoOpen: false,
+					resizable: false,
+					height: 200,
+					width: 350,
+					modal: true,
+					buttons: {
+						"Submit": function() {
+							document.getElementById("secretcodeForm").submit();},
+						Cancel: function() {
+							dialog.dialog( "close" );
+						}
+					},
+					close: function() {
+						form[ 0 ].reset();
+						//allFields.removeClass( "ui-state-error" );
+					},
+					open: function (event, ui) {
+					    $('#dialog-form').css('overflow', 'hidden');
+					}
+				});
+
+				form = dialog.find( "form" ).on( "submit", function( event ) {
+					event.preventDefault();
+					//addUser();
+				});
+				$('#popup').click(function(){
+				    dialog.dialog( "open" );
+				});
+			});
 		</script>
 	</body>
 </html>

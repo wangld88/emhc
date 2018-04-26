@@ -10,11 +10,11 @@
  		<meta name="_csrf" th:content="${_csrf.token}"/>
 		<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 		<title>EMHC Admin Template</title>
-		  
+
 		<!-- Bootstrap core CSS-->
 		<link rel="stylesheet" th:href="@{/css/bootstrap4.min.css}">
 		<!-- Custom fonts for this template-->
-		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
 		<!-- Page level plugin CSS-->
 		<link rel="stylesheet" th:href="@{/css/dataTables.bootstrap4.css}" />
 		<!-- Custom styles for this template-->
@@ -102,6 +102,12 @@
 							<span class="nav-link-text">Email Templates</span>
 						</a>
 					</li>
+					<li class="nav-item" data-toggle="tooltip" data-placement="right" title="User">
+						<a class="nav-link" th:href="@{/admin/secret}">
+							<i class="fa fa-fw fa-user"></i>
+							<span class="nav-link-text">Secret Code</span>
+						</a>
+					</li>
 				</ul>
 				<ul class="navbar-nav sidenav-toggler">
 					<li class="nav-item">
@@ -111,7 +117,7 @@
 					</li>
 				</ul>
 				<ul class="navbar-nav ml-auto">
-					<li class="nav-item dropdown">
+					<!-- <li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle mr-lg-2" id="messagesDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fa fa-fw fa-envelope"></i>
 							<span class="d-lg-none">Messages
@@ -196,7 +202,7 @@
 								</span>
 							</div>
 						</form>
-					</li>
+					</li> -->
 					<li class="nav-item">
 						<a class="nav-link" th:href="@{/admin/logout}"> <!-- data-toggle="modal" data-target="#exampleModal"  -->
 							<i class="fa fa-fw fa-sign-out"></i>Logout
@@ -205,7 +211,7 @@
 				</ul>
 			</div>
 		</nav>
-		
+
 		<div class="content-wrapper">
 			<div class="container-fluid" layout:fragment="content">
 				Real Content

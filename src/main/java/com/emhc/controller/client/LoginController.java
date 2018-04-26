@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,6 +45,7 @@ import com.emhc.error.Message;
 import com.emhc.model.Organization;
 import com.emhc.model.Program;
 import com.emhc.model.Role;
+import com.emhc.model.Secret;
 import com.emhc.model.User;
 import com.emhc.service.EmailService;
 import com.emhc.service.OrganizationService;
@@ -98,25 +100,63 @@ public class LoginController extends BaseController {
 		return new ClientResetPassword();
 	}
 
+
 	@RequestMapping(value = { "/", "/login" }, method = RequestMethod.GET)
-	public ModelAndView login() {
-		System.out.println("-------run to here login of student--------");
+	public String login(@RequestParam Map<String,String> requestParams, ModelMap model, HttpSession httpSession) {
+		System.out.println("-------run to here login of student: GET--------");
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		System.out.println("login auth.getName = " + auth.getName());
 
-		ModelAndView modelAndView = new ModelAndView();
-		UserDTO userDTO = new UserDTO();
+		String rtn = "client/login/login";
 
-		// List<Program> programs = programService.findAll();
-		List<Organization> organizations = organizationService.findAll();
-		// userDTO.setPrograms(programs);
-		// userDTO.setProgram(programs.get(0));
-		userDTO.setOrganizations(organizations);
-		modelAndView.addObject("userDTO", userDTO);
-		modelAndView.setViewName("client/login/login");
-		return modelAndView;
+		String secretcode = requestParams.get("secretcode");
+
+		if(secretcode == null || secretcode.isEmpty()) {
+			return "redirect:/home";
+		} else {
+			UserDTO userDTO = new UserDTO();
+
+			List<Organization> organizations = organizationService.findAll();
+			userDTO.setOrganizations(organizations);
+
+			model.addAttribute("userDTO", userDTO);
+		}
+
+		return rtn;
 	}
+
+
+	@RequestMapping(value = { "/login/secret" }, method = RequestMethod.POST)
+	public String doLogin(@RequestParam Map<String,String> requestParams, ModelMap model, HttpSession httpSession) {
+		System.out.println("-------run to here login of student: POST --------");
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		String rtn = "client/login/login";
+
+		String secretcode = requestParams.get("secretcode");
+
+		System.out.println("login auth.getName = " + secretcode);
+		if(secretcode == null || secretcode.isEmpty()) {
+			return "redirect:/home";
+		} else {
+			Secret sec = secretService.getByCode(secretcode);
+			if(sec == null) {
+				return "redirect:/home";
+			} else {
+				UserDTO userDTO = new UserDTO();
+
+				List<Organization> organizations = organizationService.findAll();
+				userDTO.setOrganizations(organizations);
+
+				model.addAttribute("userDTO", userDTO);
+			}
+		}
+
+		return rtn;
+	}
+
 
 	@RequestMapping(value = { "/login_emhc" }, method = RequestMethod.GET)
 	public ModelAndView login_emhc() {
@@ -135,7 +175,7 @@ public class LoginController extends BaseController {
 	 * public ModelAndView dspRegistration(ModelMap model, HttpSession
 	 * httpSession){ ModelAndView modelAndView = new ModelAndView(); UserDTO
 	 * userDTO = new UserDTO();
-	 * 
+	 *
 	 * //List<Program> programs = programService.findAll(); List<Organization>
 	 * organizations = organizationService.findAll();
 	 * //userDTO.setPrograms(programs); userDTO.setOrganizations(organizations);
@@ -234,11 +274,11 @@ public class LoginController extends BaseController {
 		Message message = new Message();
 		String rtn = "/client/login/forgetPassword";
 		String username = form.getusername();
-		
+
 		logger.debug("Call doForgetPassword POST " + username);
-			
+
 		try {
-			
+
 			if (bindingResult.hasErrors()) {
 
 				logger.info("Forget Password form validation failed!!!!!!!!");
@@ -275,16 +315,14 @@ public class LoginController extends BaseController {
 				emailService.sendMail(from, to, subject, body);
 
 				rtn = "/client/login/sendPasswordSuccess";
-								
+
 				message.setStatus(Message.SUCCESS);
 				message.setMessage(messageSource.getMessage("StudentLogin.forgetPassword.success", new Object[] {},
 					LocaleContextHolder.getLocale()));
 				return rtn;
-								
-			} 
-			
-			else {
-				
+
+			} else {
+
 				logger.debug("Could not find the client based on provided information - studentnumber: " + username);
 				rtn= "/client/login/forgetPassword";
 				message.setStatus(Message.ERROR);

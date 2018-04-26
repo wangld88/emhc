@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -40,13 +39,13 @@ public class AdminUser extends BaseController {
 
 	@Autowired
     UserFormValidator validator;
-	
+
  	@RequestMapping(value={"/user"}, method = RequestMethod.GET)
 	public String dspUser(Model model){
  		String rtn = "/admin/user";
- 		
+
 		User user = getPrincipal();
-		
+
 		if(user == null) {
 			rtn = "/admin/login";
 		} else {
@@ -58,16 +57,16 @@ public class AdminUser extends BaseController {
 			userForm.setRoles(roles);
 			model.addAttribute("userForm", userForm);
 		}
-		
+
  		return rtn;
  	}
-	
+
  	@RequestMapping(value={"/user/{userid}"}, method = RequestMethod.GET)
 	public String dspUser(Model model, @PathVariable("userid") Integer userid, HttpSession httpSession){
  		String rtn = "/admin/user";
- 		
+
 		User loginUser = getPrincipal();
-		
+
 		if(loginUser == null) {
 			rtn = "/admin/login";
 		} else {
@@ -82,20 +81,20 @@ public class AdminUser extends BaseController {
 			userForm.setRoles(roles);
 			model.addAttribute("userForm", userForm);
 		}
-		
+
  		return rtn;
  	}
-	
- 	
+
+
 	@RequestMapping(value={"/user/org/{orgid}"}, method = RequestMethod.GET)
 	public String dspOrganization(ModelMap model, @PathVariable("orgid") Long orgid, HttpSession httpSession) {
-		
+
 		User user = getPrincipal();
-		
+
 		if(user == null) {
 			return "/admin/login";
 		}
-		
+
 		UserForm userForm = new UserForm();
 		Organization organization = organizationService.getById(orgid);
 
@@ -109,23 +108,23 @@ public class AdminUser extends BaseController {
 		userForm.setOrganizations(organizations);
 		userForm.setRoles(roles);
 		model.addAttribute("userForm", userForm);
-		
+
 		return "/admin/user";
 	}
-	
+
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
 	public String createUser(@Valid UserForm userForm, Errors errors, ModelMap model,BindingResult bindingResult) {
 
 		User loginUser = getPrincipal();
-		
+
 		String rtn = "redirect:/admin/users";
-		
+
 		if(loginUser == null) {
 			return "/admin/login";
 		} else {
 			//model.addAttribute("loginUser", user);
 		}
-		
+
 		List<Program> programs = new ArrayList<Program>();
 		programs = programService.findAll();
 		userForm.setPrograms(programs);
@@ -134,10 +133,10 @@ public class AdminUser extends BaseController {
 
 			return "/admin/user";
 		} else {
-			
+
 			try{
 		        //validator.validate(userForm, bindingResult);
-		         
+
 		        /*if (bindingResult.hasErrors()) {
 		        	return "/admin/user";
 		        }*/
@@ -146,20 +145,20 @@ public class AdminUser extends BaseController {
 				LocalDate localDate = LocalDate.now();
 				Date date = java.sql.Date.valueOf(localDate);
 				//userForm.setCreationdate(date);
-				
+
 				User user = userForm.getUser();
 				//logger.info("useredit"+user.getUserid());
 				//logger.info("loginuseredit"+loginUser.getUserid());
 				user.setCreatedby(loginUser.getUserid());
 				user.setCreationdate(date);
-				
-				if(user.getUserid() == 0) { 
+
+				if(user.getUserid() == 0) {
 					userService.saveUser(user);}
 				/*else{
-				BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();				
+				BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 				String passworduser = (userService.getById((user.getUserid())).getPassword());
 				String passworduserform =userForm.getPassword();
-				
+
 				if (!passwordEncoder.matches(passworduserform,passworduser)){
 				//if (!passworduser.equals(passworduserform)){
 		    	 		logger.info("oldpsw.nomatch :" + passworduserform + ", " + passworduser);
@@ -170,12 +169,12 @@ public class AdminUser extends BaseController {
 				 else{
 					 userService.savUser(user);
 				 }
-				
+
 				 model.addAttribute("successMessage", "User has been registered successfully");
 			}
 			catch(Exception e){
 				e.printStackTrace();
-				
+
 			}
 		}
 		return rtn;
@@ -186,23 +185,23 @@ public class AdminUser extends BaseController {
 		String rtn = "/admin/users";
 		//logger.info("dspSessions is called");
 		User user = getPrincipal();
-	
+
 		if(user == null) {
 			rtn = "/admin/login";
 		} else {
-			
+
 			List<User> users = userService.getAll();
-			
+
 			model.addAttribute("users", users);
 		}
-		
+
 		return rtn;
 	}
-    
+
 	private User getPrincipal(){
     	User user = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        
+
         if (principal instanceof LoginUser) {
             user = ((LoginUser)principal).getUser();
         } else {
