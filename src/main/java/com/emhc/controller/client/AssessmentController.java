@@ -61,10 +61,149 @@ public class AssessmentController {
 	public String assessmentconfirm(Model model) {
 
 		String rtn = "client/assessmentconfirm";
+		User user = getPrincipal();
+		Answer answer = answerService.getByUserid(user.getUserid());
+		
+		if(answer != null){
+			rtn = "client/assessment";
+			AnswerDTO form = new AnswerDTO(answer);
+			
+			if (answer.getAnswer1()!=null){
+				form.setAnswer1(answer.getAnswer1());
+				form.setButton01("Yes");
+				}
+				else
+				{
+				form.setButton01("No");
+				}
+			
+			if (answer.getAnswer2()!=null){
+				form.setAnswer2(answer.getAnswer2());
+				form.setButton02("Yes");
+				}
+				else
+				{
+				form.setButton02("No");
+				}
+			
+			if (answer.getAnswer3()!=null){
+				form.setAnswer3(answer.getAnswer3());
+				form.setButton03("Yes");
+				}
+				else
+				{
+				form.setButton03("No");
+				}
+			
+			if (answer.getAnswer4()!=null){
+				form.setAnswer4(answer.getAnswer4());
+				form.setButton04("Yes");
+				}
+				else
+				{
+				form.setButton04("No");
+				}
+			
+			if (answer.getAnswer5()!=null){
+				form.setAnswer5(answer.getAnswer5());
+				form.setButton05("Yes");
+				}
+				else
+				{
+				form.setButton05("No");
+				}
+			
+			if (answer.getAnswer6()!=null){
+				form.setAnswer6(answer.getAnswer6());
+				form.setButton06("Yes");
+				}
+				else
+				{
+				form.setButton06("No");
+				}
+			
+			if (answer.getAnswer7()!=null){
+				form.setAnswer7(answer.getAnswer7());
+				form.setButton07("Yes");
+				}
+				else
+				{
+				form.setButton07("No");
+				}
+			
+			if (answer.getAnswer8()!=null){
+				form.setAnswer8(answer.getAnswer8());
+				form.setButton08("Yes");
+				}
+				else
+				{
+				form.setButton08("No");
+				}
+			
+			if (answer.getAnswer9()!=null){
+				form.setAnswer9(answer.getAnswer9());
+				form.setButton09("Yes");
+				}
+				else
+				{
+				form.setButton09("No");
+				}
+			
+			if (answer.getAnswer10()!=null){
+				form.setAnswer10(answer.getAnswer10());
+				form.setButton10("Yes");
+				}
+				else
+				{
+				form.setButton10("No");
+				}
+			
+			if (answer.getAnswer11()!=null){
+				form.setAnswer11(answer.getAnswer11());
+				form.setButton11("Yes");
+				}
+				else
+				{
+				form.setButton11("No");
+				}
+			
+			if (answer.getAnswer12()!=null){
+				form.setAnswer12(answer.getAnswer12());
+				form.setButton12("Yes");
+				}
+				else
+				{
+				form.setButton12("No");
+				}
+			
+			if (answer.getAnswer13()!=null){
+				form.setAnswer13(answer.getAnswer13());
+				form.setButton13("Yes");
+				}
+				else
+				{
+				form.setButton13("No");
+				}
+			
+			if (answer.getAnswer14()!=null){
+				form.setAnswer14(answer.getAnswer14());
+				form.setButton14("Yes");
+				}
+				else
+				{
+				form.setButton14("No");
+				}
+			
+			model.addAttribute("answerDTO", form);
+			
+		}
+		
 		model.addAttribute("loginUser", getPrincipal());
-
+		
+		
 		return rtn;
-	}
+	
+		}
 	
 	
 	@RequestMapping(value = "/assessment", method = RequestMethod.GET)
@@ -205,17 +344,7 @@ public class AssessmentController {
 			model.addAttribute("answerDTO", form);
 			
 		}
-		
-		/*if (answer.getAnswerid()==0){
-			AnswerDTO form = new AnswerDTO();
-			model.addAttribute("answerDTO", form);
-			}
-				
-		else {AnswerDTO form = new AnswerDTO(answer);
-			model.addAttribute("answerDTO", form);
-				}*/
-		
-		
+						
 		model.addAttribute("loginUser", getPrincipal());
 		model.addAttribute("answer", answer);
 		
@@ -229,17 +358,7 @@ public class AssessmentController {
 		String rtn = "client/assessment";
 
 		Message message = new Message();
-
-		//User user = getPrincipal();
-		//Answer answer = answerService.getByUserid(user.getUserid());
-		//AnswerDTO newform = new AnswerDTO();
-		// newform.setAnswer1(answer1);
-		//model.addAttribute("answerDTO", newform);
-		//if (answer.getAnswerid()==0){
-			//model.addAttribute("answerDTO", form);
-		//return rtn;	
-		//}
-		
+			
 		if (bindingResult.hasErrors()) {
 
 			logger.info("Assessment form validation failed!!!!!!!!");
@@ -267,8 +386,6 @@ public class AssessmentController {
 				Answer answer = answerService.getByUserid(user.getUserid());
 				Answer answer1 = new Answer();
 				answer1.setUser(user);
-				//				answer.setAnswerid(answer.getAnswerid());
-//				answer.setUser(user);
 				if(answer == null)
 				{
 					
@@ -318,7 +435,7 @@ public class AssessmentController {
 
 			}
 		}
-		//model.addAttribute("answerDTO", form);
+		
 		model.addAttribute("loginUser", getPrincipal());
 		model.addAttribute("message", message);
 		
