@@ -51,92 +51,92 @@ public class AssessmentValidator implements Validator {
     		errors.rejectValue("answer",null,null,"You need to select 1 option from group1");
     	 	}
     	
-    	else if (form.getAnswer1()==""){
+    	else if((form.getButton01().equals("Yes"))&&((form.getAnswer1().length()==0)||(form.getAnswer1().trim().isEmpty()))){
 	    	logger.info("-------------"+form.getButton01()+"+++++++++"+form.getAnswer1());
 	    	 errors.rejectValue("answer",null,null,"Answer1 should not be blank.");
     	}
-
+    		
     	if (form.getButton02()==null){
     		errors.rejectValue("answer",null,null,"You need to select 1 option from group2");
     	}
-    	else if (form.getAnswer2()==""){
+    	else if ((form.getButton02().equals("Yes"))&&((form.getAnswer2().length()==0)||(form.getAnswer2().trim().isEmpty()))){
 	    	 errors.rejectValue("answer",null,null,"Answer2 should not be blank.");
     	}
     	
     	if (form.getButton03()==null){
     		errors.rejectValue("answer",null,null,"You need to select 1 option from group3");
     	}
-    	else if (form.getAnswer3()==""){
+    	else if ((form.getButton03().equals("Yes"))&&((form.getAnswer3().length()==0)||(form.getAnswer3().trim().isEmpty()))){
 	    	 errors.rejectValue("answer",null,null,"Answer3 should not be blank.");
     	}
     	
     	if (form.getButton04()==null){
     		errors.rejectValue("answer",null,null,"You need to select 1 option from group4");
     	}
-    	else if (form.getAnswer4()==""){
+    	else if ((form.getButton04().equals("Yes"))&&((form.getAnswer4().length()==0)||(form.getAnswer4().trim().isEmpty()))){
 	    	 errors.rejectValue("answer",null,null,"Answer4 should not be blank.");
    	}
     	
     	if (form.getButton05()==null){
     		errors.rejectValue("answer",null,null,"You need to select 1 option from group5");
     	}
-    	else if (form.getAnswer5()==""){
+    	else if ((form.getButton05().equals("Yes"))&&((form.getAnswer5().length()==0)||(form.getAnswer5().trim().isEmpty()))){
 	    	 errors.rejectValue("answer",null,null,"Answer5 should not be blank.");
    	}
     	
     	if (form.getButton06()==null){
     		errors.rejectValue("answer",null,null,"You need to select 1 option from group6");
     	}
-    	else if (form.getAnswer6()==""){
+    	else if ((form.getButton06().equals("Yes"))&&((form.getAnswer6().length()==0)||(form.getAnswer6().trim().isEmpty()))){
 	    	 errors.rejectValue("answer",null,null,"Answer6 should not be blank.");
    	}
     	if (form.getButton07()==null){
     		errors.rejectValue("answer",null,null,"You need to select 1 option from group7");
     	}
-    	else if (form.getAnswer7()==""){
+    	else if ((form.getButton07().equals("Yes"))&&((form.getAnswer7().length()==0)||(form.getAnswer7().trim().isEmpty()))){
 	    	 errors.rejectValue("answer",null,null,"Answer7 should not be blank.");
    	}
     	if (form.getButton08()==null){
     		errors.rejectValue("answer",null,null,"You need to select 1 option from group8");
     	}
-    	else if (form.getAnswer8()==""){
+    	else if ((form.getButton08().equals("Yes"))&&((form.getAnswer8().length()==0)||(form.getAnswer8().trim().isEmpty()))){
 	    	 errors.rejectValue("answer",null,null,"Answer8 should not be blank.");
    	}
     	if (form.getButton09()==null){
     		errors.rejectValue("answer",null,null,"You need to select 1 option from group9");
     	}
-    	else if (form.getAnswer9()==""){
+    	else if ((form.getButton09().equals("Yes"))&&((form.getAnswer9().length()==0)||(form.getAnswer9().trim().isEmpty()))){
 	    	 errors.rejectValue("answer",null,null,"Answer9 should not be blank.");
    	}
     	if (form.getButton10()==null){
     		errors.rejectValue("answer",null,null,"You need to select 1 option from group10");
     	}
-    	else if (form.getAnswer10()==""){
+    	else if ((form.getButton10().equals("Yes"))&&((form.getAnswer10().length()==0)||(form.getAnswer10().trim().isEmpty()))){
 	    	 errors.rejectValue("answer",null,null,"Answer10 should not be blank.");
    	}
     	if (form.getButton11()==null){
     		errors.rejectValue("answer",null,null,"You need to select 1 option from group11");
     	}
-    	else if (form.getAnswer11()==""){
+    	else if ((form.getButton11().equals("Yes"))&&((form.getAnswer11().length()==0)||(form.getAnswer11().trim().isEmpty()))){
 	    	 errors.rejectValue("answer",null,null,"Answer11 should not be blank.");
    	}
     	if (form.getButton12()==null){
     		errors.rejectValue("answer",null,null,"You need to select 1 option from group12");
     	}
-    	else if (form.getAnswer12()==""){
+    	else if ((form.getButton12().equals("Yes"))&&((form.getAnswer12().length()==0)||(form.getAnswer12().trim().isEmpty()))){
 	    	 errors.rejectValue("answer",null,null,"Answer12 should not be blank.");
    	}
     	if (form.getButton13()==null){
     		errors.rejectValue("answer",null,null,"You need to select 1 option from group13");
     	}
-    	else if (form.getAnswer13()==""){
+    	else if ((form.getButton13().equals("Yes"))&&((form.getAnswer13().length()==0)||(form.getAnswer13().trim().isEmpty()))){
 	    	 errors.rejectValue("answer",null,null,"Answer13 should not be blank.");
    	}
     	
     	if (form.getButton14()==null){
     		errors.rejectValue("answer",null,null,"You need to select 1 option from group14");
     	}
-    	else if (form.getAnswer14()==""){
+    	else if ((form.getButton14().equals("Yes"))&&((form.getAnswer14().length()==0)||(form.getAnswer14().trim().isEmpty()))){
 	    	 errors.rejectValue("answer",null,null,"Answer14 should not be blank.");
    	}
     	    }	
