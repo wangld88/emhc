@@ -232,10 +232,12 @@ public class LoginController extends BaseController {
 				LocalDate localDate = LocalDate.now();
 				Date date = java.sql.Date.valueOf(localDate);
 				userDTO.setCreationdate(date);
-
 				userService.saveUser(userDTO.getUser());
 				modelAndView.addObject("successMessage", "User has been registered successfully");
+				String flag ="1";
+				modelAndView.addObject("stag",flag);
 				modelAndView.setViewName("/client/login/login");
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 

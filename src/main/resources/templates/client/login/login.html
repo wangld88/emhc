@@ -20,8 +20,11 @@
 			}
 
 			function setPage() {
+				var stag = $("#stag").val();
+				if(stag=="1"){
+					document.getElementById("loginbtn").click();
+				}					
 				var urlstr = window.location.href;
-
 				if(location.search.split('login=')[1] == 1) {
 					document.getElementById("loginbtn").click();
 				}
@@ -69,6 +72,7 @@
 						<div th:if="${message != null and #strings.length(message.message) != 0}" th:class="${message.status}">
 							<font th:text="${message.message}" style="font-size: 12px;"></font>
 						</div>
+						<input id="stag" type="hidden" th:value="${stag}" /> 
 						<div class="top-row">
 	 						<div class="field-wrap">
 								<label class="active">
@@ -168,6 +172,7 @@
 								</label>
 								<input type="text" th:field="*{programyear}" class="input" required autocomplete="off" />
 							</div>
+											
 						</div>
 						<button type="submit" class="button button-block" value="" th:if="${userDTO.programs!=null}" >Register User</button>
 
