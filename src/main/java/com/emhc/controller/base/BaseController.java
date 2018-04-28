@@ -20,6 +20,7 @@ import com.emhc.error.MessageHandler;
 import com.emhc.service.LocationService;
 import com.emhc.service.OrganizationService;
 import com.emhc.service.ProgramService;
+import com.emhc.service.QuestionService;
 import com.emhc.service.RoleService;
 import com.emhc.service.ScheduleService;
 import com.emhc.service.SecretService;
@@ -68,6 +69,9 @@ public class BaseController {
 
 	@Autowired
 	public SecretService secretService;
+
+	@Autowired
+	public QuestionService questionService;
 
 
 	@ExceptionHandler( TemplateInputException.class )
