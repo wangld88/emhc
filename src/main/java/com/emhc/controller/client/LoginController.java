@@ -25,7 +25,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
@@ -69,16 +68,28 @@ public class LoginController extends BaseController {
 	private OrganizationService organizationService;
 	@Autowired
 	private ProgramService programService;
-	@Autowired
-	UserDTOValidator validator;
+//	@Autowired
+//	UserDTOValidator validator;
 	@Autowired
 	private MessageSource messageSource;
+	@Autowired
+	private UserDTOValidator userdtoValidator;
 	@Autowired
 	private ClientForgetPasswordValidator passwordValidator;
 	@Autowired
 	private ClientResetPasswordValidator passwordUpdateValidator;
 	@Autowired
 	private PasswordtokenService passwordtokenService;
+
+	@InitBinder("userdtoForm")
+	public void initUserDTOBinder(WebDataBinder binder) {
+		binder.addValidators(userdtoValidator);
+	}
+
+	@ModelAttribute("userdtoForm")
+	public UserDTO createUserDTO() {
+		return new UserDTO();
+	}
 
 	@InitBinder("forgetpasswordForm")
 	public void initPasswordBinder(WebDataBinder binder) {
@@ -204,6 +215,50 @@ public class LoginController extends BaseController {
 	}
 
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
+	public String createNewUser(@Valid @ModelAttribute("userdtoForm") UserDTO form, BindingResult bindingResult, 
+			Model model) {
+		String rtn = "/client/login/login";
+		
+		System.out.println("------run to createNewUser-----");
+
+		List<Program> programs = new ArrayList<Program>();
+		programs = programService.findAll();
+		form.setPrograms(programs);
+		Message message = new Message();
+		
+
+		if (bindingResult.hasErrors()) {
+			logger.info("Register User form validation failed!!!!!!!!");
+			List<ObjectError> errors = bindingResult.getAllErrors();
+			String msg = messageSource.getMessage("Client.forgetPassword.validation", new Object[] {},
+					LocaleContextHolder.getLocale()) + "<br/>";
+			for (ObjectError i : errors) {
+				if (i instanceof FieldError) {
+					FieldError fieldError = (FieldError) i;
+					msg += messageSource.getMessage(fieldError, LocaleContextHolder.getLocale()) + "<br/>";
+				}
+			}
+			message.setStatus(Message.ERROR);
+			message.setMessage(msg);
+			model.addAttribute("message", message);
+			model.addAttribute("userDTO", form);
+			return rtn;
+		} else {
+			Role role = new Role();
+			role.setRoleid(2);
+			form.setRole(role);
+			LocalDate localDate = LocalDate.now();
+			Date date = java.sql.Date.valueOf(localDate);
+			form.setCreationdate(date);
+			userService.saveUser(form.getUser());
+			model.addAttribute("successMessage", "User has been registered successfully");
+			String flag = "1";
+			model.addAttribute("stag", flag);
+			model.addAttribute("userDTO", form);
+		}
+		return rtn;
+	}
+/*	@RequestMapping(value = "/registration", method = RequestMethod.POST)
 	public ModelAndView createNewUser(@Valid UserDTO userDTO, BindingResult bindingResult) {
 		System.out.println("------run to createNewUser-----");
 
@@ -246,7 +301,7 @@ public class LoginController extends BaseController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/home", method = RequestMethod.GET)
+*/	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String home(ModelMap model, HttpSession httpSession) {
 		String rtn = "client/home";
 
