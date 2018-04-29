@@ -28,8 +28,9 @@
 				if(location.search.split('login=')[1] == 1) {
 					document.getElementById("loginbtn").click();
 				}
-			}
-		</script>
+			}			
+			
+			</script>
 	</head>
 
 	<body>
@@ -70,8 +71,8 @@
 					<form th:object="${userDTO}" th:action="@{/client/registration}" method="post" role="form">
 
 						<div th:if="${message != null and #strings.length(message.message) != 0}" th:class="${message.status}">
-							<font th:text="${message.message}" style="font-size: 12px;"></font>
-						</div>
+							<font style="font-size: 12px;"><span th:utext="${message.message}" th:remove="tag" /></font>
+							</div>
 						<input id="stag" type="hidden" th:value="${stag}" /> 
 						<div class="top-row">
 	 						<div class="field-wrap">
@@ -89,13 +90,13 @@
 								<label class="active">
 									Program<span class="active">*</span>
 								</label>
-	 						    <select class="select" th:field="${userDTO.program.programid}" id="programid" name="programid">
+	 						    <select class="select" th:field="${userDTO.program.programid}" id="programid" name="programid" onchange="select()">
 							        <option value="0">Select</option>
 							        <option th:each="pro : ${userDTO.programs}"
 							                th:value="${pro.programid}"
 							                th:text="${pro.name}"></option>
-							    </select>
-	  						</div>
+							    </select>							    
+							 </div>
 						</div>
 						<!-- <div class="top-row"> -->
 						<div class="field-wrap" th:if="${userDTO.programs!=null}">
@@ -143,7 +144,7 @@
 									Confirm Password<span class="req">*</span>
 								</label>
 								<input type="password" class="input" th:field="*{confirmpassword}" required autocomplete="off"/>
-							</div>
+								</div>
 						</div>
 					<div class="top-row" th:if="${userDTO.programs!=null}">
 							<div class="field-wrap">
