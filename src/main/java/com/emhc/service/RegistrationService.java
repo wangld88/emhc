@@ -31,7 +31,7 @@ public class RegistrationService {
 	}
 
 	public List<Registration> getByPrograms(List<Program> programs) {
-		return registrationRepository.findBySchedule_session_programIn(programs);
+		return registrationRepository.findBySchedule_session_programInOrderByReviewedAscUser_programAscUser_lastnameAsc(programs);
 	}
 
 	public List<Registration> getByOrganizationid(long organizationid) {

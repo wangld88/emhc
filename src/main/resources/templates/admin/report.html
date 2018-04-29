@@ -88,50 +88,53 @@
 							<table class="table" id="dataTable" width="100%" cellspacing="0">
 								<thead class="thead-light">
 									<tr>
-				            			<th>Review</th>
+				            			<th>Reviewed</th>
 										<th>Name</th>
+										<th>Program</th>
 										<th>Session</th>
-										<th>1</th>
-										<th>2</th>
-										<th>3</th>
-										<th>4</th>
-										<th>5</th>
-										<th>6</th>
-										<th>7</th>
-										<th>8</th>
-										<th>9</th>
-										<th>10</th>
-										<th>11</th>
-										<th>12</th>
-										<th>13</th>
-										<th>14</th>
+										<th>Ast</th>
+										<th>Cla</th>
+										<th>Pan</th>
+										<th>All</th>
+										<th>Epi</th>
+										<th>Hea</th>
+										<th>BP</th>
+										<th>Fnt</th>
+										<th>Sei</th>
+										<th>Lun</th>
+										<th>Tmp</th>
+										<th>Tas</th>
+										<th>Prg</th>
+										<th>Oth</th>
 									</tr>
 								</thead>
 								<tfoot class="thead-light">
 									<tr>
-				            			<th>Review</th>
+				            			<th>Reviewed</th>
 										<th>Name</th>
+										<th>Program</th>
 										<th>Session</th>
-										<th>1</th>
-										<th>2</th>
-										<th>3</th>
-										<th>4</th>
-										<th>5</th>
-										<th>6</th>
-										<th>7</th>
-										<th>8</th>
-										<th>9</th>
-										<th>10</th>
-										<th>11</th>
-										<th>12</th>
-										<th>13</th>
-										<th>14</th>
+										<th>Ast</th>
+										<th>Cla</th>
+										<th>Pan</th>
+										<th>All</th>
+										<th>Epi</th>
+										<th>Hea</th>
+										<th>BP</th>
+										<th>Fnt</th>
+										<th>Sei</th>
+										<th>Lun</th>
+										<th>Tmp</th>
+										<th>Tas</th>
+										<th>Prg</th>
+										<th>Oth</th>
 									</tr>
 								</tfoot>
 							<tbody>
 								<tr th:each="regist : ${regists}">
-									<td th:text="${regist.reviewed==null?'N':'Y'}"></td>
+									<td th:text="${regist.reviewed==1?'Y':'N'}"></td>
 									<td><a th:href="${'javascript:openReview('+regist.registrationid+')'}" th:text="${regist.user.firstname}+' '+${regist.user.lastname}"></a></td>
+									<td th:text="${regist.user.program.name}"></td>
 									<td th:text="${regist.schedule.session.sessiondate}+' '+${#dates.format(regist.schedule.scheduletime,'HH:mm a')}"></td>
 									<td th:text="${regist.user.answers.get(0).answer1==null?'N':'Y'}"></td>
 									<td th:text="${regist.user.answers.get(0).answer2==null?'N':'Y'}"></td>

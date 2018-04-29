@@ -13,7 +13,7 @@ public interface RegistrationRepository extends JpaRepository<Registration, Inte
 	public Registration findByRegistrationid(int registrationid);
 	public Registration findByUser(User user);
 	public List<Registration> findBySchedule_session_program_programid(Integer programid);
-	public List<Registration> findBySchedule_session_programIn(List<Program> programs);
+	public List<Registration> findBySchedule_session_programInOrderByReviewedAscUser_programAscUser_lastnameAsc(List<Program> programs);
 	public List<Registration> findBySchedule_session_program_organization_organizationid(long organizationid);
 
 }
