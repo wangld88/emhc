@@ -90,7 +90,7 @@
 								<label class="active">
 									Program<span class="active">*</span>
 								</label>
-	 						    <select class="select" th:field="${userDTO.program.programid}" id="programid" name="programid" onchange="select()">
+	 						    <select class="select" th:field="${userDTO.program.programid}" id="programid" name="programid">
 							        <option value="0">Select</option>
 							        <option th:each="pro : ${userDTO.programs}"
 							                th:value="${pro.programid}"
@@ -168,10 +168,19 @@
 								<input type="email" class="input" th:field="*{orgemail}" required autocomplete="off"/>
 							</div>
 							<div class="field-wrap">
-								<label>
-									Program Year<span class="req">*</span>
+								<label class="active">
+									Program Year<span class="active">*</span>
 								</label>
-								<input type="text" th:field="*{programyear}" class="input" required autocomplete="off" />
+								<!--  <input type="text" th:field="*{programyear}" class="input" required autocomplete="off" />-->
+								<select class="select" th:field="*{programyear}" id="programyear" name="programyear">
+								  <option value="0">Select</option>
+ 						          <option value="1">1</option>
+ 						          <option value="2">2</option>
+ 						          <option value="3">3</option>
+ 						          <option value="4">4</option>
+ 						          <option value="5">5</option>
+ 						          <option value="6">6</option>
+						    </select>
 							</div>
 											
 						</div>

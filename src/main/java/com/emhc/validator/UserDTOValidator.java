@@ -33,8 +33,8 @@ public class UserDTOValidator implements Validator {
     private Matcher matcher;  
 
     private static final String EMAIL_REGEX = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
-  //  String ProgramYear_PATTERN = "[0-9]+";  
-//	private static final String MOBILE_PATTERN = "[0-9]{10}";  
+   // private static final String ProgramYear_PATTERN = "[0-9]+";  
+	private static final String MOBILE_PATTERN = "[0-9]{10}";  
 	
     private static final Logger logger = LoggerFactory.getLogger(UserDTOValidator.class);
     private final UserService userService;
@@ -72,8 +72,8 @@ public class UserDTOValidator implements Validator {
 		validateUsername(errors, form);
         validateEmail(errors, form);
         validateOrgemail(errors, form);
-       // validatePhone(errors, form);
-        //validateProgramYear(errors, form);
+        validatePhone(errors, form);
+        validateProgramYear(errors, form);
         validatePasswords(errors, form);
         validatePrograms(errors, form);
     }
@@ -139,7 +139,7 @@ public class UserDTOValidator implements Validator {
         }
     		
     }
-   /* private void validatePhone(Errors errors, UserDTO userForm) {
+    private void validatePhone(Errors errors, UserDTO userForm) {
     	 // phone number no provide return
     	    	 if ( userForm.getPhone()== null || userForm.getPhone().length() == 0) {
     	         	logger.info("phone.no_provide :" + userForm.getPhone());
@@ -153,7 +153,7 @@ public class UserDTOValidator implements Validator {
     	      errors.rejectValue("phone", "WrongFormat.ClientProfileUpdate.phone");  
     	     }  
     	    }
-    	    }*/
+    	    }
     private void validatePasswords(Errors errors,  UserDTO form) {
        
     		//password confirm match
@@ -172,17 +172,22 @@ public class UserDTOValidator implements Validator {
         	errors.rejectValue("program", null,null,"Please select program");
          	}  
 		  }
-   /* private void validateProgramYear(Errors errors, UserDTO userForm) {
+ 
+    private void validateProgramYear(Errors errors, UserDTO userForm) {
     	    
+    	    int programyear = userForm.getProgramyear();
     	    
-    		  if (Integer.toString(userForm.getProgramyear()) != null) {  
+    	    if (programyear==0){
+            	errors.rejectValue("programyear", null,null,"Please select programyear");
+             	} 
+    	    
+    		 /* if (Integer.toString(userForm.getProgramyear()) != null) {  
     			   pattern = Pattern.compile(ProgramYear_PATTERN);  
     			   matcher = pattern.matcher(Integer.toString(userForm.getProgramyear()));  
     			   
     			   if (!matcher.matches()) {  
     			    errors.rejectValue("programyear", "programyear.incorrect", "Enter a numeric value");  
-    			   }  
+    			   }*/  
     			   
     		  }
-}*/
 }
