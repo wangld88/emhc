@@ -20,14 +20,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.emhc.dto.AnswerDTO;
 import com.emhc.dto.StudentScheduleTest;
 import com.emhc.error.Message;
 import com.emhc.error.MessageHandler;
+import com.emhc.model.Answer;
 import com.emhc.model.Registration;
 import com.emhc.model.Schedule;
 import com.emhc.model.Session;
 import com.emhc.model.User;
 import com.emhc.security.LoginUser;
+import com.emhc.service.AnswerService;
 import com.emhc.service.EmailService;
 import com.emhc.service.RegistrationService;
 import com.emhc.service.ScheduleService;
@@ -51,6 +54,9 @@ public class ScheduleController {
 	private UserService userService;
 	
 	@Autowired
+	private AnswerService answerService;
+	
+	@Autowired
 	private RegistrationService registrationService;
 	
 	@Autowired
@@ -62,6 +68,46 @@ public class ScheduleController {
 	@Autowired
 	private MessageHandler messageHandler;
 
+	@RequestMapping(value = "/scheduleconfirm", method = RequestMethod.GET)
+	public String scheduleconfirm(Model model) {
+
+		String rtn = "client/scheduleconfirm";
+		User user = getPrincipal();
+		Answer answer = answerService.getByUserid(user.getUserid());
+		
+		if(answer != null){
+			rtn = "client/scheduleTest";
+			StudentScheduleTest form = new StudentScheduleTest();
+			
+			try {
+				logger.info("$$$$ SP status: " + user.getUserid());
+				Session session = new Session();
+				Registration regist = registrationService.findByUser(user);
+				if(regist != null) {
+					form.setRegistrationid(regist.getRegistrationid());
+					form.setScheduleid(regist.getSchedule().getScheduleid());
+					session = regist.getSchedule().getSession();
+					List<Schedule> schedules = scheduleService.getBySession(session);
+					form.setSchedules(schedules);
+				}
+				List<Session> sessions = sessionService.getByProgram(user.getProgram());
+				form.setSession(session);
+				form.setSessions(sessions);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			model.addAttribute("loginUser", user);
+			model.addAttribute("studentScheduleTest", form);
+			}
+		
+		model.addAttribute("loginUser", getPrincipal());
+		
+		
+		return rtn;
+	
+		}
 	
 	@RequestMapping(value = { "/schedule" }, method = RequestMethod.GET)
 	public String schedule(Model model) {
