@@ -144,7 +144,7 @@ public class AdminSessionController extends BaseController {
 	public String doSession(@Valid @ModelAttribute("sessionForm") SessionForm form,
 		BindingResult bindingResult, Model model, HttpSession httpSession, final RedirectAttributes ra) {
 
-		//logger.info("Processing updateProfile form={}, bindingResult={}", form, bindingResult);
+		logger.info("Processing session form={}, bindingResult={}", form, bindingResult);
 		String rtn = "/admin/sessions";
 
 		User user = getPrincipal();
@@ -161,6 +161,7 @@ public class AdminSessionController extends BaseController {
 				for(ObjectError i: errors) {
 					if(i instanceof FieldError) {
 						FieldError fieldError = (FieldError) i;
+						logger.error("FieldError: "+ fieldError.getCode() + ", Field:"+fieldError.getField());
 						msg += messageHandler.get(fieldError.getCode()) + "<br />";
 					}
 				}
@@ -181,7 +182,7 @@ public class AdminSessionController extends BaseController {
 					return "/admin/session";
 				} else {
 					ra.addFlashAttribute("errMessage", message);
-					return "redirect: session/" + sessionid;
+					return "redirect:session/" + sessionid;
 				}
 			} else {
 				logger.info("Errors: "+bindingResult.getErrorCount());;
@@ -196,7 +197,7 @@ public class AdminSessionController extends BaseController {
 			}
 
 			session.setCreatedby(user.getUserid());
-			session.setCreationdate(Calendar.getInstance().getTime());
+			session.setCreationdate(Calendar.getInstance());
 			session.setStatus(STATUS_INCOMPLETED);
 
 			session = sessionService.save(session);

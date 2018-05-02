@@ -155,6 +155,7 @@ public class AdminScheduleController extends BaseController {
 				for(ObjectError i: errors) {
 					if(i instanceof FieldError) {
 						FieldError fieldError = (FieldError) i;
+						logger.error("FieldError: "+ fieldError.getCode() + ", Field:"+fieldError.getField());
 						msg += messageHandler.get(fieldError.getCode()) + "<br />";
 					}
 				}
@@ -175,7 +176,7 @@ public class AdminScheduleController extends BaseController {
 					return "/admin/schedule";
 				} else {
 					ra.addFlashAttribute("errMessage", message);
-					return "redirect: schedule/" + scheduleid;
+					return "redirect:schedule/" + scheduleid;
 				}
 			} else {
 				logger.info("Errors: "+bindingResult.getErrorCount());;

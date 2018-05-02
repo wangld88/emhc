@@ -94,10 +94,11 @@
 			a = document.getElementById("numschedule");
 			b = document.getElementById("alb");
 			if(elmt.checked) {
+				a.value = "0";
 				a.style.display="";
 				b.style.display="";
 			} else {
-				a.value = "";
+				a.value = "0";
 				a.style.display="none";
 				b.style.display="none";
 			}

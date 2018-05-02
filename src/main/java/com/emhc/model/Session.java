@@ -2,7 +2,7 @@ package com.emhc.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -25,18 +25,18 @@ public class Session implements Serializable {
 	private String name;
 
 	@Temporal(TemporalType.DATE)
-	private Date registstart;
+	private Calendar registstart;
 
 	@Temporal(TemporalType.DATE)
-	private Date registend;
+	private Calendar registend;
 
 	@Temporal(TemporalType.DATE)
-	private Date sessiondate;
+	private Calendar sessiondate;
 
 	private int createdby;
 
 	@Temporal(TemporalType.DATE)
-	private Date creationdate;
+	private Calendar creationdate;
 
 	private String status;
 
@@ -77,11 +77,11 @@ public class Session implements Serializable {
 		this.createdby = createdby;
 	}
 
-	public Date getCreationdate() {
+	public Calendar getCreationdate() {
 		return this.creationdate;
 	}
 
-	public void setCreationdate(Date creationdate) {
+	public void setCreationdate(Calendar creationdate) {
 		this.creationdate = creationdate;
 	}
 
@@ -93,27 +93,27 @@ public class Session implements Serializable {
 		this.name = name;
 	}
 
-	public Date getRegistend() {
+	public Calendar getRegistend() {
 		return this.registend;
 	}
 
-	public void setRegistend(Date registend) {
+	public void setRegistend(Calendar registend) {
 		this.registend = registend;
 	}
 
-	public Date getRegiststart() {
+	public Calendar getRegiststart() {
 		return this.registstart;
 	}
 
-	public void setRegiststart(Date registstart) {
+	public void setRegiststart(Calendar registstart) {
 		this.registstart = registstart;
 	}
 
-	public Date getSessiondate() {
+	public Calendar getSessiondate() {
 		return this.sessiondate;
 	}
 
-	public void setSessiondate(Date sessiondate) {
+	public void setSessiondate(Calendar sessiondate) {
 		this.sessiondate = sessiondate;
 	}
 

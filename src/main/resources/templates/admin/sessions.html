@@ -47,9 +47,9 @@
 									<tbody>
 										<tr th:each="session:${sessions}">
 											<td><span th:text="${session.name}"></span></td>
-											<td><span th:text="${session.sessiondate}"></span></td>
-											<td><span th:text="${session.registstart}"></span></td>
-											<td><span th:text="${session.registend}"></span></td>
+											<td><span th:text="${#calendars.format(session.sessiondate,'dd/MM/yyyy')}"></span></td>
+											<td><span th:text="${#calendars.format(session.registstart,'dd/MM/yyyy')}"></span></td>
+											<td><span th:text="${#calendars.format(session.registend,'dd/MM/yyyy')}"></span></td>
 											<td><span th:text="${session.program.name}"></span></td>
 											<td><span th:text="${session.location.name}"></span></td>
 											<td><span th:text="${session.status}"></span></td>

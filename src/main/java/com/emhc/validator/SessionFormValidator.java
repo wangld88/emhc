@@ -24,10 +24,12 @@ public class SessionFormValidator implements Validator {
 
 	private void validateName(SessionForm form, Errors errors) {
 		String name = form.getName();
-		
+		Long orgid = form.getOrganizationid();
+
 		if(name == null || name.trim().isEmpty()) {
-			errors.rejectValue("Name", "NotProvide.organizationForm.name");
-		} else {
+			errors.rejectValue("Name", "NotProvide.sessionForm.name");
+		} else if(orgid == null) {
+			errors.rejectValue("organizationid", "NotProvide.sessionForm.oragnization");
 		}
 	}
 }

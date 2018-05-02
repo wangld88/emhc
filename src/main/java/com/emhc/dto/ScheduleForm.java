@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.emhc.model.Schedule;
 
 
@@ -16,6 +18,7 @@ public class ScheduleForm {
 
 	private int duration;
 
+	@DateTimeFormat(pattern="hh:mm")
 	private LocalTime scheduletime;
 
 	private int hour;
@@ -28,7 +31,7 @@ public class ScheduleForm {
 
 	private long organizationid;
 
-	private int numschedule;
+	private int numschedule = 0;
 
 
 	public ScheduleForm() {
@@ -50,6 +53,7 @@ public class ScheduleForm {
 		this.capacity = schedule.getCapacity();
 		this.sessionid = schedule.getSession().getSessionid();
 		this.organizationid = schedule.getSession().getProgram().getOrganization().getOrganizationid();
+		this.numschedule = 0;
 	}
 
 	public int getScheduleid() {

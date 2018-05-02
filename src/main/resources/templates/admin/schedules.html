@@ -43,7 +43,7 @@
 									<tbody>
 										<tr th:each="schedule:${schedules}">
 											<td><span th:text="${schedule.session.name}"></span></td>
-											<td><span th:text="${schedule.session!=null?schedule.session.sessiondate:''}"></span></td>
+											<td><span th:text="${schedule.session!=null?#calendars.format(schedule.session.sessiondate,'dd/MM/yyyy'):''}"></span></td>
 											<td><span th:text="${#dates.format(schedule.scheduletime,'HH:mm a')}"></span></td>
 											<td><span th:text="${schedule.duration}"></span></td>
 											<td><span th:text="${schedule.capacity}"></span></td>

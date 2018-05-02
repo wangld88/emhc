@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -196,16 +197,19 @@ public class AdminReport extends BaseController {
         int rowNum = 1;
         List<Registration> regists = (List<Registration>) httpSession.getAttribute("regists");
 
+        SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formater1 = new SimpleDateFormat("hh:mm a");
+
         for(Registration regist: regists) {
         	Row row = sheet.createRow(rowNum++);
         	User user = regist.getUser();
         	List<Answer> answers = user.getAnswers();
         	Answer answer = answers.get(0);
 
-        	row.createCell(0).setCellValue(regist.getReviewed());
+        	row.createCell(0).setCellValue(regist.getReviewed()==1?"Y":"N");
         	row.createCell(1).setCellValue(user.getFirstname() + " " + user.getLastname());
-        	row.createCell(2).setCellValue(regist.getSchedule().getSession().getSessiondate());
-        	row.createCell(3).setCellValue(regist.getSchedule().getScheduletime());
+        	row.createCell(2).setCellValue(formater.format(regist.getSchedule().getSession().getSessiondate().getTime()));
+        	row.createCell(3).setCellValue(formater1.format(regist.getSchedule().getScheduletime().getTime()));
         	row.createCell(4).setCellValue(answer.getAnswer1()==null?"N":answer.getAnswer1());
         	row.createCell(5).setCellValue(answer.getAnswer2()==null?"N":answer.getAnswer2());
         	row.createCell(6).setCellValue(answer.getAnswer3()==null?"N":answer.getAnswer3());
@@ -219,7 +223,7 @@ public class AdminReport extends BaseController {
         	row.createCell(14).setCellValue(answer.getAnswer11()==null?"N":answer.getAnswer11());
         	row.createCell(15).setCellValue(answer.getAnswer12()==null?"N":answer.getAnswer12());
         	row.createCell(16).setCellValue(answer.getAnswer13()==null?"N":answer.getAnswer13());
-        	row.createCell(14).setCellValue(answer.getAnswer14()==null?"N":answer.getAnswer14());
+        	row.createCell(17).setCellValue(answer.getAnswer14()==null?"N":answer.getAnswer14());
         }
 
 		// Resize all columns to fit the content size

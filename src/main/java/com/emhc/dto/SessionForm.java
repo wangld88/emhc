@@ -1,6 +1,8 @@
 package com.emhc.dto;
 
-import java.util.Date;
+import java.util.Calendar;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.emhc.model.Session;
 
@@ -11,11 +13,14 @@ public class SessionForm {
 
 	private String name;
 
-	private Date sessiondate;
+	@DateTimeFormat(pattern="dd/MM/yyyy")
+	private Calendar sessiondate;
 
-	private Date registend;
+	@DateTimeFormat(pattern="dd/MM/yyyy")
+	private Calendar registend;
 
-	private Date registstart;
+	@DateTimeFormat(pattern="dd/MM/yyyy")
+	private Calendar registstart;
 
 	private String status;
 
@@ -25,15 +30,15 @@ public class SessionForm {
 
 	private int locationid;
 
-	private Date creationdate;
+	private Calendar creationdate;
 
 	private long organizationid;
 
-	
+
 	public SessionForm() {
-		
+
 	}
-	
+
 	public SessionForm(Session session) {
 		this.name = session.getName();
 		this.sessionid = session.getSessionid();
@@ -64,27 +69,27 @@ public class SessionForm {
 		this.name = name;
 	}
 
-	public Date getSessiondate() {
+	public Calendar getSessiondate() {
 		return sessiondate;
 	}
 
-	public void setSessiondate(Date sessiondate) {
+	public void setSessiondate(Calendar sessiondate) {
 		this.sessiondate = sessiondate;
 	}
 
-	public Date getRegistend() {
+	public Calendar getRegistend() {
 		return registend;
 	}
 
-	public void setRegistend(Date registend) {
+	public void setRegistend(Calendar registend) {
 		this.registend = registend;
 	}
 
-	public Date getRegiststart() {
+	public Calendar getRegiststart() {
 		return registstart;
 	}
 
-	public void setRegiststart(Date registstart) {
+	public void setRegiststart(Calendar registstart) {
 		this.registstart = registstart;
 	}
 
@@ -120,14 +125,14 @@ public class SessionForm {
 		this.locationid = locationid;
 	}
 
-	public Date getCreationdate() {
+	public Calendar getCreationdate() {
 		return creationdate;
 	}
 
-	public void setCreationdate(Date creationdate) {
+	public void setCreationdate(Calendar creationdate) {
 		this.creationdate = creationdate;
 	}
-	
+
 	public Session getSession() {
 		Session session = new Session();
 		session.setSessionid(sessionid);
@@ -138,7 +143,7 @@ public class SessionForm {
 		session.setCreatedby(createdby);
 		session.setCreationdate(creationdate);
 		session.setStatus(status);
-		
+
 		return session;
 	}
 

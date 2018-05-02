@@ -25,122 +25,133 @@
 				<span th:text="${regist.user.firstname}+' '+${regist.user.lastname}"></span>
 			</div>
 			<div class="row" style="font-weight: bold; margin-left: 10px;">
+				<label>Email : </label>
+				<span th:text="${regist.user.email}"></span>
+			</div>
+			<div class="row" style="font-weight: bold; margin-left: 10px;">
+				<label>Organization : </label>
+				<span th:text="${regist.user.program.organization.name}"></span>
+			</div>
+			<div class="row" style="font-weight: bold; margin-left: 10px;">
+				<label>Program : </label>
+				<span th:text="${regist.user.program.name}"></span>
+			</div>
+			<div class="row" style="font-weight: bold; margin-left: 10px;">
 				<label>Session Date : </label>
-				<span th:text="${regist.schedule.session.sessiondate}+' '+${#dates.format(regist.schedule.scheduletime,'HH:mm a')}"></span>
+				<span th:text="${#calendars.format(regist.schedule.session.sessiondate,'dd/MM/yyyy')}+' '+${#dates.format(regist.schedule.scheduletime,'HH:mm a')}"></span>
 			</div>
 			<hr />
-			<div>
-				<div>
-					<label style="font-weight: bold;" th:text="${'1. '+quests.get(0).name}"></label>
-				</div>
-				<div>
-					<span th:text="${regist.user.answers.get(0).answer1==null?'Answer: No':('Answer: '+regist.user.answers.get(0).answer1)}"></span>
-				</div>
-			</div>
-			<div>
-				<div>
-					<label style="font-weight: bold;" th:text="${'2. '+quests.get(1).name}"></label>
-				</div>
-				<div>
-					<span th:text="${regist.user.answers.get(0).answer2==null?'Answer: No':('Answer: '+regist.user.answers.get(0).answer2)}"></span>
-				</div>
-			</div>
-			<div>
-				<div>
-					<label style="font-weight: bold;" th:text="${'3. '+quests.get(2).name}"></label>
-				</div>
-				<div>
-					<span th:text="${regist.user.answers.get(0).answer3==null?'Answer: No':('Answer: '+regist.user.answers.get(0).answer3)}"></span>
-				</div>
-			</div>
-			<div>
-				<div>
-					<label style="font-weight: bold;" th:text="${'4. '+quests.get(3).name}"></label>
-				</div>
-				<div>
-					<span th:text="${regist.user.answers.get(0).answer4==null?'Answer: No':('Answer: '+regist.user.answers.get(0).answer4)}"></span>
-				</div>
-			</div>
-			<div>
-				<div>
-					<label style="font-weight: bold;" th:text="${'5. '+quests.get(4).name}"></label>
-				</div>
-				<div>
-					<span th:text="${regist.user.answers.get(0).answer5==null?'Answer: No':('Answer: '+regist.user.answers.get(0).answer5)}"></span>
-				</div>
-			</div>
-			<div>
-				<div>
-					<label style="font-weight: bold;" th:text="${'6. '+quests.get(5).name}"></label>
-				</div>
-				<div>
-					<span th:text="${regist.user.answers.get(0).answer6==null?'Answer: No':('Answer: '+regist.user.answers.get(0).answer6)}"></span>
-				</div>
-			</div>
-			<div>
-				<div>
-					<label style="font-weight: bold;" th:text="${'7. '+quests.get(6).name}"></label>
-				</div>
-				<div>
-					<span th:text="${regist.user.answers.get(0).answer7==null?'Answer: No':('Answer: '+regist.user.answers.get(0).answer7)}"></span>
-				</div>
-			</div>
-			<div>
-				<div>
-					<label style="font-weight: bold;" th:text="${'8. '+quests.get(7).name}"></label>
-				</div>
-				<div>
-					<span th:text="${regist.user.answers.get(0).answer8==null?'Answer: No':('Answer: '+regist.user.answers.get(0).answer8)}"></span>
-				</div>
-			</div>
-			<div>
-				<div>
-					<label style="font-weight: bold;" th:text="${'9. '+quests.get(8).name}"></label>
-				</div>
-				<div>
-					<span th:text="${regist.user.answers.get(0).answer9==null?'Answer: No':('Answer: '+regist.user.answers.get(0).answer9)}"></span>
-				</div>
-			</div>
-			<div>
-				<div>
-					<label style="font-weight: bold;" th:text="${'10. '+quests.get(9).name}"></label>
-				</div>
-				<div>
-					<span th:text="${regist.user.answers.get(0).answer10==null?'Answer: No':('Answer: '+regist.user.answers.get(0).answer10)}"></span>
-				</div>
-			</div>
-			<div>
-				<div>
-					<label style="font-weight: bold;" th:text="${'11. '+quests.get(10).name}"></label>
-				</div>
-				<div>
-					<span th:text="${regist.user.answers.get(0).answer11==null?'Answer: No':('Answer: '+regist.user.answers.get(0).answer11)}"></span>
-				</div>
-			</div>
-			<div>
-				<div>
-					<label style="font-weight: bold;" th:text="${'12. '+quests.get(11).name}"></label>
-				</div>
-				<div>
-					<span th:text="${regist.user.answers.get(0).answer12==null?'Answer: No':('Answer: '+regist.user.answers.get(0).answer12)}"></span>
-				</div>
-			</div>
-			<div>
-				<div>
-					<label style="font-weight: bold;" th:text="${'13. '+quests.get(12).name}"></label>
-				</div>
-				<div>
-					<span th:text="${regist.user.answers.get(0).answer13==null?'Answer: No':('Answer: '+regist.user.answers.get(0).answer13)}"></span>
-				</div>
-			</div>
-			<div>
-				<div>
-					<label style="font-weight: bold;" th:text="${'14. '+quests.get(13).name}"></label>
-				</div>
-				<div>
-					<span th:text="${regist.user.answers.get(0).answer14==null?'Answer: No':('Answer: '+regist.user.answers.get(0).answer14)}"></span>
-				</div>
-			</div>
+			<table class="table table-striped table-bordered table-advance table-hover">
+				<thead>
+					<tr>
+						<th>No.</th>
+						<th>Question</th>
+						<th>Yes</th>
+						<th>No</th>
+						<th>Detail</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>1</td>
+						<td th:text="${quests.get(0).name}"></td>
+						<td th:text="${regist.user.answers.get(0).answer1!=null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer1==null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer1==null?'':regist.user.answers.get(0).answer1}"></td>
+					</tr>
+					<tr>
+						<td>2</td>
+						<td th:text="${quests.get(1).name}"></td>
+						<td th:text="${regist.user.answers.get(0).answer2!=null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer2==null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer2==null?'':regist.user.answers.get(0).answer2}"></td>
+					</tr>
+					<tr>
+						<td>3</td>
+						<td th:text="${quests.get(2).name}"></td>
+						<td th:text="${regist.user.answers.get(0).answer3!=null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer3==null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer3==null?'':regist.user.answers.get(0).answer3}"></td>
+					</tr>
+					<tr>
+						<td>4</td>
+						<td th:text="${quests.get(3).name}"></td>
+						<td th:text="${regist.user.answers.get(0).answer4!=null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer4==null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer4==null?'':regist.user.answers.get(0).answer4}"></td>
+					</tr>
+					<tr>
+						<td>5</td>
+						<td th:text="${quests.get(4).name}"></td>
+						<td th:text="${regist.user.answers.get(0).answer5!=null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer5==null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer5==null?'':regist.user.answers.get(0).answer5}"></td>
+					</tr>
+					<tr>
+						<td>6</td>
+						<td th:text="${quests.get(5).name}"></td>
+						<td th:text="${regist.user.answers.get(0).answer6!=null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer6==null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer6==null?'':regist.user.answers.get(0).answer6}"></td>
+					</tr>
+					<tr>
+						<td>7</td>
+						<td th:text="${quests.get(6).name}"></td>
+						<td th:text="${regist.user.answers.get(0).answer7!=null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer7==null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer7==null?'':regist.user.answers.get(0).answer7}"></td>
+					</tr>
+					<tr>
+						<td>8</td>
+						<td th:text="${quests.get(7).name}"></td>
+						<td th:text="${regist.user.answers.get(0).answer8!=null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer8==null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer8==null?'':regist.user.answers.get(0).answer8}"></td>
+					</tr>
+					<tr>
+						<td>9</td>
+						<td th:text="${quests.get(8).name}"></td>
+						<td th:text="${regist.user.answers.get(0).answer9!=null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer9==null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer9==null?'':regist.user.answers.get(0).answer9}"></td>
+					</tr>
+					<tr>
+						<td>10</td>
+						<td th:text="${quests.get(9).name}"></td>
+						<td th:text="${regist.user.answers.get(0).answer10!=null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer10==null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer10==null?'':regist.user.answers.get(0).answer10}"></td>
+					</tr>
+					<tr>
+						<td>11</td>
+						<td th:text="${quests.get(10).name}"></td>
+						<td th:text="${regist.user.answers.get(0).answer11!=null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer11==null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer11==null?'':regist.user.answers.get(0).answer11}"></td>
+					</tr>
+					<tr>
+						<td>12</td>
+						<td th:text="${quests.get(11).name}"></td>
+						<td th:text="${regist.user.answers.get(0).answer12!=null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer12==null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer12==null?'':regist.user.answers.get(0).answer12}"></td>
+					</tr>
+					<tr>
+						<td>13</td>
+						<td th:text="${quests.get(12).name}"></td>
+						<td th:text="${regist.user.answers.get(0).answer13!=null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer13==null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer13==null?'':regist.user.answers.get(0).answer13}"></td>
+					</tr>
+					<tr>
+						<td>14</td>
+						<td th:text="${quests.get(13).name}"></td>
+						<td th:text="${regist.user.answers.get(0).answer14!=null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer14==null?'X':''}"></td>
+						<td th:text="${regist.user.answers.get(0).answer14==null?'':regist.user.answers.get(0).answer14}"></td>
+					</tr>
+				</tbody>
+			</table>
 			<div class="row"><br /></div>
 			<div class="row">
 				<form id="review" th:action="@{/admin/review/}" method="post">

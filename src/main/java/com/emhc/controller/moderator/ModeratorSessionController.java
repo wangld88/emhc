@@ -41,18 +41,18 @@ import com.emhc.validator.SessionFormValidator;
 public class ModeratorSessionController extends BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(ModeratorSessionController.class);
-	
+
 	private static final String STATUS_INCOMPLETED = "incompleted";
 	private static final String STATUS_COMPLETED = "completed";
-	
+
     @Autowired
-    private SessionFormValidator sessionFormValidator;	
-    
+    private SessionFormValidator sessionFormValidator;
+
     @InitBinder("sessionForm")
     public void initBinder(WebDataBinder binder) {
     	binder.addValidators(sessionFormValidator);
     }
-    
+
     @ModelAttribute("sessionForm")
     public SessionForm createDTO() {
     	return new SessionForm();
@@ -62,31 +62,31 @@ public class ModeratorSessionController extends BaseController {
 	@RequestMapping(value="/session", method=RequestMethod.GET)
 	public String dspSession(Model model) {
 		String rtn = "/moderator/session";
-		
+
 		User user = getPrincipal();
-	
+
 		List<Organization> orgs = organizationService.findAll();
-		
+
 		if(user == null) {
 			rtn = "/moderator/login";
 		} else {
 			model.addAttribute("sessionForm", new SessionForm());
 			model.addAttribute("orgs", orgs);
 		}
-		
+
 		return rtn;
 	}
 
-	
+
 	@RequestMapping(value="/session/{sessionid}", method=RequestMethod.GET)
 	public String dspSession(@PathVariable("sessionid") Integer sessionid, @ModelAttribute("errMessage") Message errMessage, Model model) {
 		String rtn = "/moderator/session";
-		
+
 		User user = getPrincipal();
 		SessionForm form = new SessionForm();
 		List<Program> programs = new ArrayList<>();
 		List<Location> locations = new ArrayList<>();
-	
+
 		if(user == null) {
 			rtn = "/moderator/login";
 		} else {
@@ -98,28 +98,28 @@ public class ModeratorSessionController extends BaseController {
 		if(errMessage != null) {
 			model.addAttribute("message", errMessage);
 		}
-		
+
 		List<Organization> orgs = organizationService.findAll();
-		
+
 		model.addAttribute("orgs", orgs);
 		model.addAttribute("programs", programs);
 		model.addAttribute("locations", locations);
 		model.addAttribute("sessionForm", form);
-		
+
 		return rtn;
 	}
 
-	
+
 	@RequestMapping(value="/session/org/{orgid}", method=RequestMethod.GET)
 	public String dspOrganization(@PathVariable("orgid") Long orgid, @ModelAttribute("errMessage") Message errMessage, Model model) {
 		String rtn = "/moderator/session";
-		
+
 		User user = getPrincipal();
 		SessionForm form = new SessionForm();
-	
+
 		List<Program> programs = new ArrayList<>();
 		List<Location> locations = new ArrayList<>();
-				
+
 		if(user == null) {
 			rtn = "/moderator/login";
 		} else {
@@ -135,36 +135,36 @@ public class ModeratorSessionController extends BaseController {
 		model.addAttribute("sessionForm", form);
 		model.addAttribute("programs", programs);
 		model.addAttribute("locations", locations);
-		
+
 		return rtn;
 	}
 
-	
+
 	@RequestMapping(value="/session", method=RequestMethod.POST)
-	public String doSession(@Valid @ModelAttribute("sessionForm") SessionForm form, 
+	public String doSession(@Valid @ModelAttribute("sessionForm") SessionForm form,
 		BindingResult bindingResult, Model model, HttpSession httpSession, final RedirectAttributes ra) {
-		
-		//logger.info("Processing updateProfile form={}, bindingResult={}", form, bindingResult);		
+
+		//logger.info("Processing updateProfile form={}, bindingResult={}", form, bindingResult);
 		String rtn = "/moderator/sessions";
-		
+
 		User user = getPrincipal();
 		Message message = new Message();
-		
+
 		if(user == null) {
 			rtn = "/moderator/login";
 		} else {
 			if (bindingResult.hasErrors()) {
-				
+
 				List<ObjectError> errors = bindingResult.getAllErrors();
 				String msg = messageHandler.get("Header.sessionForm.validation") + "<br />";
-				
+
 				for(ObjectError i: errors) {
 					if(i instanceof FieldError) {
 						FieldError fieldError = (FieldError) i;
 						msg += messageHandler.get(fieldError.getCode()) + "<br />";
 					}
 				}
-				
+
 				List<Organization> orgs = organizationService.findAll();
 				List<Program> programs = programService.getByOrganizationId(form.getOrganizationid());
 				List<Location> locations = locationService.getByOrganizationid(form.getOrganizationid());
@@ -186,7 +186,7 @@ public class ModeratorSessionController extends BaseController {
 			} else {
 				logger.info("Errors: "+bindingResult.getErrorCount());;
 			}
-			
+
 			Session session = form.getSession();
 			if(form.getProgramid() != 0) {
 				session.setProgram(programService.getById(form.getProgramid()));
@@ -194,44 +194,44 @@ public class ModeratorSessionController extends BaseController {
 			if(form.getLocationid() != 0) {
 				session.setLocation(locationService.getById(form.getLocationid()));
 			}
-			
+
 			session.setCreatedby(user.getUserid());
-			session.setCreationdate(Calendar.getInstance().getTime());
+			session.setCreationdate(Calendar.getInstance());
 			session.setStatus(STATUS_INCOMPLETED);
-			
+
 			session = sessionService.save(session);
-			
+
 			List<Session> sessions = sessionService.getAll();
-			
+
 			model.addAttribute("sessions", sessions);
 		}
-		
+
 		return rtn;
 	}
-	
+
 
 	@RequestMapping(value="/sessions", method=RequestMethod.GET)
 	public String dspSessions(Model model) {
 		String rtn = "/moderator/sessions";
 		logger.info("dspSessions is called");
 		User user = getPrincipal();
-	
+
 		if(user == null) {
 			rtn = "/moderator/login";
 		} else {
-			
+
 			List<Session> sessions = sessionService.getAll();
-			
+
 			model.addAttribute("sessions", sessions);
 		}
-		
+
 		return rtn;
 	}
-    
+
 	private User getPrincipal(){
     	User user = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        
+
         if (principal instanceof LoginUser) {
             user = ((LoginUser)principal).getUser();
         } else {
