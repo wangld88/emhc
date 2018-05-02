@@ -180,13 +180,13 @@ public class ScheduleController {
 				register = registrationService.saveRegistration(register);
 				form.setRegistrationid(register.getRegistrationid());
 
-				String from = "scjimcc@gmail.com";
+/*				String from = "scjimcc@gmail.com";
 				String to = "ldcticti@gmail.com";
 				String subject = "JavaMailSender";
 				String body = "Just-Testing222222222222222222222222!";
 
 				emailService.sendMail(from, to, subject, body);
-				String param = "" + currentUser.getUserid();
+*/				String param = "" + currentUser.getUserid();
 				emailService.sendEmail(1, param, "");
 				
 				msg = messageHandler.get("StudentSchedule.scheduleTest.success");

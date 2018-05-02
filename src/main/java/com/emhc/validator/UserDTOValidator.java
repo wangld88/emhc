@@ -72,7 +72,7 @@ public class UserDTOValidator implements Validator {
 		validateUsername(errors, form);
         validateEmail(errors, form);
         validateOrgemail(errors, form);
-        validatePhone(errors, form);
+ //       validatePhone(errors, form);
         validateProgramYear(errors, form);
         validatePasswords(errors, form);
         validatePrograms(errors, form);

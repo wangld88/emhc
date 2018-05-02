@@ -21,7 +21,7 @@
 					        <option value="0">Select First</option>
 					        <option th:each="ses : ${studentScheduleTest.sessions}"
 					                th:value="${ses.sessionid}"
-					                th:text="${ses.name + ' (' + ses.sessiondate + ')'}"></option>
+					                th:text="${ses.name}"></option>
 					    </select>
 					</div>
 				</div>
