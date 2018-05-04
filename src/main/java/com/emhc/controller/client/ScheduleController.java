@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -15,6 +16,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,6 +40,8 @@ import com.emhc.service.RegistrationService;
 import com.emhc.service.ScheduleService;
 import com.emhc.service.SessionService;
 import com.emhc.service.UserService;
+import com.emhc.validator.ScheduleFormValidator;
+import com.emhc.validator.UserDTOValidator;
 
 /**
  * 
@@ -68,6 +74,7 @@ public class ScheduleController {
 	@Autowired
 	private MessageHandler messageHandler;
 
+	
 	@RequestMapping(value = "/scheduleconfirm", method = RequestMethod.GET)
 	public String scheduleconfirm(Model model) {
 
@@ -142,7 +149,7 @@ public class ScheduleController {
 	}
 
 	@RequestMapping(value = { "/schedule/{sesid}" }, method = RequestMethod.GET)
-	public String schedule(Model model, @PathVariable("sesid") int sesid) {
+	public String schedule(Model model, @PathVariable("sesid") int sesid,HttpSession httpSession) {
 		String rtn = "/client/scheduleTest";
 
 		try {
@@ -232,8 +239,9 @@ public class ScheduleController {
 				String body = "Just-Testing222222222222222222222222!";
 
 				emailService.sendMail(from, to, subject, body);
-*/				String param = "" + currentUser.getUserid();
-				emailService.sendEmail(1, param, "");
+*/				
+				//String param = "" + currentUser.getUserid();
+				//emailService.sendEmail(1, param, "");
 				
 				msg = messageHandler.get("StudentSchedule.scheduleTest.success");
 				message.setStatus(Message.SUCCESS);

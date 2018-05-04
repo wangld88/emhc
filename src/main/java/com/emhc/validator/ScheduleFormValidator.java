@@ -24,6 +24,12 @@ public class ScheduleFormValidator implements Validator {
 	}
 
 	private void validateName(ScheduleForm form, Errors errors) {
+	
+		int sessionid = form.getSessionid();
+		
+		if (sessionid==0) {
+			errors.rejectValue("sessionid",null,null, "Please select session");
+		}
 		/*String name = form.getName();
 		
 		if(name == null || name.trim().isEmpty()) {
