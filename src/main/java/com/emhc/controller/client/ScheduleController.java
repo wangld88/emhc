@@ -240,8 +240,8 @@ public class ScheduleController {
 
 				emailService.sendMail(from, to, subject, body);
 */				
-				//String param = "" + currentUser.getUserid();
-				//emailService.sendEmail(1, param, "");
+				String param = "" + currentUser.getUserid();
+				emailService.sendEmail(1, param, "");
 				
 				msg = messageHandler.get("StudentSchedule.scheduleTest.success");
 				message.setStatus(Message.SUCCESS);
