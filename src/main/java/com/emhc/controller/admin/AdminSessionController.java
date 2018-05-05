@@ -31,6 +31,7 @@ import com.emhc.model.Session;
 import com.emhc.model.Location;
 import com.emhc.model.Organization;
 import com.emhc.model.Program;
+import com.emhc.model.Schedule;
 import com.emhc.model.User;
 import com.emhc.security.LoginUser;
 import com.emhc.validator.SessionFormValidator;
@@ -212,7 +213,7 @@ public class AdminSessionController extends BaseController {
 
 
 	@RequestMapping(value="/session/{sessionid}", method=RequestMethod.POST)
-	public String deleteSession(@PathVariable("sessionid") Integer sessionid, Model model, HttpSession httpSession) {
+	public String deleteSession(@PathVariable("sessionid") Integer sessionid, Model model, HttpSession httpSession, RedirectAttributes ra) {
 		String rtn = "/admin/sessions";
 
 		User user = getPrincipal();
@@ -221,10 +222,12 @@ public class AdminSessionController extends BaseController {
 			rtn = "/admin/login";
 		} else {
 
-			try {
+			Session session = sessionService.getById(sessionid);
+			List<Schedule> schs = scheduleService.getBySession(session);
+			if(schs == null || schs.isEmpty()) {
 				sessionService.delete(sessionid);
-			} catch(Exception e) {
-				e.printStackTrace();
+			} else {
+				ra.addAttribute("message", "There are schedules under this session, can not be removed.");
 			}
 		}
 
@@ -233,7 +236,7 @@ public class AdminSessionController extends BaseController {
 
 
 	@RequestMapping(value="/sessions", method=RequestMethod.GET)
-	public String dspSessions(Model model) {
+	public String dspSessions(@ModelAttribute("message") String message, Model model) {
 		String rtn = "/admin/sessions";
 		logger.info("dspSessions is called");
 		User user = getPrincipal();
@@ -243,6 +246,10 @@ public class AdminSessionController extends BaseController {
 		} else {
 
 			List<Session> sessions = sessionService.getAll();
+
+			if(message != null && !message.isEmpty()) {
+				model.addAttribute("message", message);
+			}
 
 			model.addAttribute("sessions", sessions);
 		}

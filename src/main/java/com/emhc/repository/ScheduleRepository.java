@@ -10,7 +10,7 @@ import com.emhc.model.Session;
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 
 	public Schedule findByScheduleid(int scheduleid);
-	
-	public List<Schedule> findBySession(Session session);
-	
+
+	public List<Schedule> findBySessionOrderBySession_sessiondateAscScheduletimeAsc(Session session);
+
 }

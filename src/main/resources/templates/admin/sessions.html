@@ -12,7 +12,7 @@
 			<div class="box">
 				<div class="box-content">
 					<h4 class="page-header">Sessions</h4>
-					<p></p>
+					<p th:text="${message!=null?message:''}"></p>
 					<div class="card mb-3">
 						<div class="card-header">
 							<i class="fa fa-table"></i> Sessions <a th:href="@{/admin/session}" title="Add Session"><i class="fa fa-plus-circle"></i></a>
@@ -56,7 +56,7 @@
 											<td>
 											<form th:id="${'sessions'+session.sessionid}" th:name="${'sessions'+session.sessionid}" th:action="@{/admin/session/}+${session.sessionid}" method="post">
 												<a th:href="@{'/admin/session/'}+${session.sessionid}" title="Edit"><i class="fa fa-edit"></i></a>
-												<a href="" title="Delete" th:onclick="${'deleteSession('+session.sessionid+')'}"><i class="fa fa-trash"></i></a>
+												<a title="Delete" th:onclick="${'deleteSession('+session.sessionid+')'}"><i class="fa fa-trash"></i></a>
 											</form>
 											</td>
 										</tr>

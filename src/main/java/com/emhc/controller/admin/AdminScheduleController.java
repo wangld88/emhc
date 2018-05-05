@@ -32,6 +32,7 @@ import com.emhc.model.Session;
 import com.emhc.model.Location;
 import com.emhc.model.Organization;
 import com.emhc.model.Program;
+import com.emhc.model.Registration;
 import com.emhc.model.Schedule;
 import com.emhc.model.User;
 import com.emhc.security.LoginUser;
@@ -138,7 +139,7 @@ public class AdminScheduleController extends BaseController {
 	public String doSchedule(@Valid @ModelAttribute("scheduleForm") ScheduleForm form,
 		BindingResult bindingResult, Model model, HttpSession httpSession, final RedirectAttributes ra) {
 
-		//logger.info("Processing updateProfile form={}, bindingResult={}", form, bindingResult);
+		logger.info("Processing doSchedule !!!!!!!!!!!!!");
 		String rtn = "/admin/schedules";
 
 		User user = getPrincipal();
@@ -226,16 +227,24 @@ public class AdminScheduleController extends BaseController {
 
 
 	@RequestMapping(value="/schedule/{scheduleid}", method=RequestMethod.POST)
-	public String deleteSchedule(@PathVariable("scheduleid") Integer scheduleid, Model model, HttpSession httpSession) {
+	public String deleteSchedule(@PathVariable("scheduleid") Integer scheduleid, Model model, HttpSession httpSession, RedirectAttributes ra) {
 		String rtn = "/admin/schedules";
 
+		logger.info("Delete Schedule ID: {}", scheduleid);
 		User user = getPrincipal();
 
 		if(user == null) {
 			rtn = "/admin/login";
 		} else {
+			Schedule sch = scheduleService.getById(scheduleid);
 
-			scheduleService.delete(scheduleid);
+			List<Registration> regists = sch.getRegistrations();
+
+			if(regists == null || regists.isEmpty()) {
+				scheduleService.delete(scheduleid);
+			} else {
+				ra.addAttribute("message", "The Schedule has been registered by student, can not be removed.");
+			}
 
 		}
 
@@ -244,7 +253,7 @@ public class AdminScheduleController extends BaseController {
 
 
 	@RequestMapping(value="/schedules", method=RequestMethod.GET)
-	public String dspSchedules(Model model) {
+	public String dspSchedules(@ModelAttribute("message") String message, Model model) {
 		String rtn = "/admin/schedules";
 		logger.info("dspSchedules is called");
 		User user = getPrincipal();
@@ -255,6 +264,9 @@ public class AdminScheduleController extends BaseController {
 
 			List<Schedule> schedules = scheduleService.getAll();
 
+			if(message != null && !message.isEmpty()) {
+				model.addAttribute("message", message);
+			}
 			model.addAttribute("schedules", schedules);
 		}
 

@@ -23,7 +23,7 @@ public class ScheduleService {
 	}
 
 	public List<Schedule> getBySession(Session session) {
-		return scheduleRepository.findBySession(session);
+		return scheduleRepository.findBySessionOrderBySession_sessiondateAscScheduletimeAsc(session);
 	}
 
 	public List<Schedule> getAll() {
