@@ -58,6 +58,14 @@
 			}
 			function validateRadioButtons(){ 
 		        //Make groups
+		        
+		        
+		        var sid = document.getElementById("sessionid").value;
+		        if (sid==0){
+		        	alert('Please select session first');
+		        	return false;
+		        }
+		        
 		        var names = []
 		        $('input:radio').each(function () {
 		            var rname = $(this).attr('name');
