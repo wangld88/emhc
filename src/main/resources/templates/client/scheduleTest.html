@@ -1,5 +1,18 @@
-<html layout:decorator="client/template/layout">
-
+<html layout:decorator="client/template/layout"
+		xmlns:th="http://www.thymeleaf.org">
+	
+<head>
+	<script type="text/javascript">
+	
+	function submitdisable(){
+		   $("#scheduletestsubmit").text("submitting......");  
+		   $("#scheduletestsubmit").attr("disabled","disabled");  
+		   alert("pause");
+		   return true;
+		   	}
+		   	</script>
+	</head>
+	
 	<div layout:fragment="content">
 	
 		<div class="row">
@@ -38,7 +51,7 @@
  
  				<div class="form-group" th:if="${studentScheduleTest.schedules!=null}">
 					<div class="col-sm-9">
- 						<button class="btn btn-primary btn-block" type="Submit">Submit</button>
+ 						<button class="btn btn-primary btn-block" type="Submit" id="scheduletestsubmit" value="Submit" onclick="return submitdisable();">Submit</button>
 					</div>
 				</div>		
 

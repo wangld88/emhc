@@ -1,7 +1,20 @@
-<html layout:decorator="client/template/layout">
+<html layout:decorator="client/template/layout"
+	xmlns:th="http://www.thymeleaf.org">
+	
 	<!-- <title>Update Profile Form</title>
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+	<head>
+	<script type="text/javascript">
+	
+	function submitdisable(){
+		   $("#profilesubmit").text("updating......");  
+		   $("#profilesubmit").attr("disabled","disabled");  
+		   alert("pause");
+		   return true;
+		   	}
+		   	</script>
+	</head>
 	
 	<div layout:fragment="content">
 	
@@ -83,7 +96,7 @@
 					
 					<div class="form-group">
 						<div class="col-sm-9">
-							<button type="submit" class="btn btn-primary btn-block">Update</button>
+							<button type="submit" id="profilesubmit" class="btn btn-primary btn-block" value="Submit" onclick="return submitdisable();">Update</button>
 						</div>
 					</div>
 					<!-- <input type="hidden" name="userid" th:value="${studentProfileUpdate.userid}"> -->

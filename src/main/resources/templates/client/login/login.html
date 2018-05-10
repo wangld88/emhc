@@ -19,6 +19,20 @@
 				form.submit();
 			}
 
+			function registerdisable(){
+				   $("#registersubmit").text("registering......");  
+				   $("#registersubmit").attr("disabled","disabled");  
+				   alert("pause");
+				   return true;
+				   	}
+			
+			function logindisable(){
+				   $("#loginsubmit").text("logining......");  
+				   $("#loginsubmit").attr("disabled","disabled");  
+				   alert("pause");
+				   return true;
+				   	}
+			
 			function setPage() {
 				var stag = $("#stag").val();
 				if(stag=="1"){
@@ -184,7 +198,7 @@
 							</div>
 											
 						</div>
-						<button type="submit" class="button button-block" value="" th:if="${userDTO.programs!=null}" >Register User</button>
+						<button type="submit" class="button button-block" id="registersubmit" value="" th:if="${userDTO.programs!=null}" onclick="return registerdisable();">Register User</button>
 
 					</form>
 					<form id="orgForm" th:action="@{/client/registration}" method="get">
@@ -221,7 +235,7 @@
 						</form>
  -->
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-						<button class="button button-block"/><span th:text="#{student.login.login}"></span></button>
+						<button class="button button-block" id="loginsubmit" onclick="return logindisable();"/><span th:text="#{student.login.login}"></span></button>
 
 					</form>
 
