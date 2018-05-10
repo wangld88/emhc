@@ -215,17 +215,17 @@ public class LoginController extends BaseController {
 	}
 
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-	public String createNewUser(@Valid @ModelAttribute("userdtoForm") UserDTO form, BindingResult bindingResult, 
+	public String createNewUser(@Valid @ModelAttribute("userdtoForm") UserDTO form, BindingResult bindingResult,
 			Model model) {
 		String rtn = "/client/login/login";
-		
+
 		System.out.println("------run to createNewUser-----");
 
 		List<Program> programs = new ArrayList<Program>();
 		programs = programService.findAll();
 		form.setPrograms(programs);
 		Message message = new Message();
-		
+
 
 		if (bindingResult.hasErrors()) {
 			logger.info("Register User form validation failed!!!!!!!!");
@@ -250,14 +250,19 @@ public class LoginController extends BaseController {
 			LocalDate localDate = LocalDate.now();
 			Date date = java.sql.Date.valueOf(localDate);
 			form.setCreationdate(date);
-			userService.saveUser(form.getUser());
+			User user = userService.saveUser(form.getUser());
 			model.addAttribute("successMessage", "User has been registered successfully");
 			String flag = "1";
+
+			String param = "" + user.getUserid();
+			emailService.sendEmail(1, param, "");
+
 			model.addAttribute("stag", flag);
 			model.addAttribute("userDTO", form);
 		}
 		return rtn;
 	}
+
 /*	@RequestMapping(value = "/registration", method = RequestMethod.POST)
 	public ModelAndView createNewUser(@Valid UserDTO userDTO, BindingResult bindingResult) {
 		System.out.println("------run to createNewUser-----");
@@ -292,7 +297,7 @@ public class LoginController extends BaseController {
 				String flag ="1";
 				modelAndView.addObject("stag",flag);
 				modelAndView.setViewName("/client/login/login");
-				
+
 			} catch (Exception e) {
 				e.printStackTrace();
 

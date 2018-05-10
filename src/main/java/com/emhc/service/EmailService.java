@@ -21,6 +21,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.emhc.dto.RegistrationForm;
+import com.emhc.dto.UserForm;
 import com.emhc.exception.CommonErrorData;
 import com.emhc.exception.ServiceRunTimeException;
 import com.emhc.model.Registration;
@@ -31,7 +32,7 @@ import com.sun.mail.smtp.SMTPMessage;
 
 /**
  * Email processing service, which will generate email based on template
- * 
+ *
  * @author Jerry
  *
  */
@@ -43,16 +44,16 @@ public class EmailService {
 
 	@Autowired
 	private TemplateService templateService;
-	
+
 	@Autowired
 	private RegistrationService registrationService;
-	
+
 	@Autowired
 	private EmailContentService emailContentService;
-	
+
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	
+
 	public void sendMail(String from, String to, String subject, String body) {
 
 		SimpleMailMessage mail = new SimpleMailMessage();
@@ -68,15 +69,15 @@ public class EmailService {
 
 		logger.info("Done!");
 	}
-	
+
 	public void sendMailByTemplate(int templateid, User user) {
 
 		SimpleMailMessage mail = new SimpleMailMessage();
 
 		Template t = templateService.getById(templateid);
-		
+
 		Registration regist = registrationService.findByUser(user);
-		
+
 		mail.setSubject(t.getSubject());
 		mail.setFrom("noreply@emhc.ca");
 		mail.setTo(user.getEmail());
@@ -93,61 +94,69 @@ public class EmailService {
 	}
 
 	public boolean sendEmail (int templateid, String param, String extraText) throws ServiceRunTimeException {
-		
+
 		Template tpl = templateService.getById(templateid);
-		
+
+		System.out.println("template: "+tpl);
 		String subject = tpl.getSubject();
-		
+
 		String htmlTemp = tpl.getHtmlcontent();
-		
+
 		String textTemp = tpl.getTextcontent();
-		
+
 		String[] attachments = null;
-		
+
 		/*if (tpl.getAttachment() != null && !tpl.getAttachment().isEmpty()) {
 			attachments = tpl.getAttachment().split(";");
 		}*/
-		
+
 		String service = tpl.getServicename();
-		
+
 		String method = tpl.getMethodname();
-		
+
 		MimeMessage msg = mailSender.createMimeMessage();
-		
+
 		Class<?>[] paramInt = new Class[1];
 		paramInt[0] = Integer.TYPE;
-		
+
 		Class<?>[] paramString = new Class[1];
 		paramString[0] = String.class;
 
 		Class<?> noparams[] = {};
-		
+
 		String[] params = param.split(":");
 		Class<?>[] paramLong = new Class[params.length];
 		Long[] lParams = new Long[params.length];
-		
+
 		Method mtd = null;
 		Object entity = null;
-		
+
 		try {
 			logger.info("service NAME IS: "+service);
 			Class<?> cls = Class.forName("com.emhc.service." + service);
-			
+
 			switch(method) {
+				case "getUserInfo":
+
+					mtd = cls.getDeclaredMethod(method, Integer.class);
+					entity = (UserForm) mtd.invoke(emailContentService, Integer.parseInt(param));
+					logger.info("Student Info: "+entity.toString());
+
+					break;
 				case "getRegistrationInfo":
-					
+
 					mtd = cls.getDeclaredMethod(method, Integer.class);
 					entity = (RegistrationForm) mtd.invoke(emailContentService, Integer.parseInt(param));
-					logger.info("Student Info: "+entity.toString());
-					
+					logger.info("Student Registration Info: "+entity.toString());
+
 					break;
 				default:
 					break;
 			}
-			
+
 			Class<?> clazz = entity.getClass();
 			String recipient = "";
-			
+
 			for(Field field : clazz.getDeclaredFields()) {
 				String value = "";
 				String name = field.getName();
@@ -156,7 +165,7 @@ public class EmailService {
 				String original = "\\{\\+" + name + "\\+\\}";
 				String fullname = field.toGenericString();
 				logger.info("!!!Replacement item: " + original + ", method name: " + mtdname + ", Type: " + type + ", :"+field.getModifiers()+", :"+field.getAnnotations().length);
-				
+
 				if(!fullname.contains("static")) {
 					Object obj = entity.getClass().getDeclaredMethod(mtdname, noparams).invoke(entity, null);
 					if (obj != null) {
@@ -177,10 +186,10 @@ public class EmailService {
 					subject = subject.replaceAll(original, value);
 				}
 			}
-			
+
 			htmlTemp = htmlTemp + extraText;
 			textTemp = textTemp + extraText;
-			
+
 			htmlTemp = htmlTemp.replaceAll("(\\\r\\\n|\\\n\\\r|\\\r|\\\n)", "<BR />");
 			//textTemp = textTemp.replaceAll("(\\r\\n|\\n\\r|\\r|\\n)", "<BR />");//"<BR>", System.lineSeparator());
 			MimeMessageHelper helper = new MimeMessageHelper(msg, true, "UTF-8");
@@ -190,9 +199,9 @@ public class EmailService {
 				helper.addBcc(tpl.getBcc());
 			}*/
 			helper.setSubject(subject);
-			helper.setFrom(tpl.getSender()); 
-			helper.setReplyTo(tpl.getSender()); 
-			
+			helper.setFrom(tpl.getSender());
+			helper.setReplyTo(tpl.getSender());
+
 			if (attachments != null && attachments.length > 0) {
 				for (int i = 0; i < attachments.length; i++) {
 					String filename = attachments[i];
@@ -201,7 +210,7 @@ public class EmailService {
 					helper.addAttachment(filename, file);
 				}
 			}
-			
+
 			if (textTemp != null) {
 				if (htmlTemp != null) {
 					helper.setText(textTemp, htmlTemp);
@@ -210,7 +219,7 @@ public class EmailService {
 				}
 				helper.setText(textTemp);
 			}
-		
+
 		} catch (ClassNotFoundException ce) {
 			ce.printStackTrace();
 			CommonErrorData ced = new CommonErrorData();
@@ -259,16 +268,16 @@ public class EmailService {
 			logger.info("Exception caught in EmailService: " + e.getMessage());
 			throw new ServiceRunTimeException(ced, e);
 		}
-		
+
 		try{
 			SMTPMessage smtpMessage = new SMTPMessage(msg);
 			/*if (message.getEnvelopeFrom() != null && message.getEnvelopeFrom().length() > 0) {
 				smtpMessage.setEnvelopeFrom(message.getEnvelopeFrom());
 			}*/
 			((JavaMailSenderImpl) mailSender).send(smtpMessage);
-			
+
 			//logger.info("Email sent TO: " + ((Address) smtpMessage.getRecipients(RecipientType.TO)[0]).toString() + ", BCC: " + ((Address) smtpMessage.getRecipients(RecipientType.BCC)[0]).toString());
-			
+
 		}
 		catch(Exception e){
 			/*for (Iterator failedRecipients = Arrays.asList(tpl.getReceiver().split(",")).iterator(); failedRecipients.hasNext(); ) {
@@ -282,8 +291,8 @@ public class EmailService {
 			logger.info("Exception caught in EmailService: " + e.getMessage());
 
 			throw new ServiceRunTimeException(ced, e);
-		}		
-		
+		}
+
 		return true;
 	}
 }

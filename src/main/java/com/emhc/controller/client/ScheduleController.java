@@ -44,7 +44,7 @@ import com.emhc.validator.ScheduleFormValidator;
 import com.emhc.validator.UserDTOValidator;
 
 /**
- * 
+ *
  * @author dong.liu
  *
  */
@@ -55,37 +55,37 @@ public class ScheduleController {
 
 	@Autowired
 	private EmailService emailService;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private AnswerService answerService;
-	
+
 	@Autowired
 	private RegistrationService registrationService;
-	
+
 	@Autowired
 	private ScheduleService scheduleService;
-	
+
 	@Autowired
 	private SessionService sessionService;
-	
+
 	@Autowired
 	private MessageHandler messageHandler;
 
-	
+
 	@RequestMapping(value = "/scheduleconfirm", method = RequestMethod.GET)
 	public String scheduleconfirm(Model model) {
 
 		String rtn = "client/scheduleconfirm";
 		User user = getPrincipal();
 		Answer answer = answerService.getByUserid(user.getUserid());
-		
+
 		if(answer != null){
 			rtn = "client/scheduleTest";
 			StudentScheduleTest form = new StudentScheduleTest();
-			
+
 			try {
 				logger.info("$$$$ SP status: " + user.getUserid());
 				Session session = new Session();
@@ -104,18 +104,18 @@ public class ScheduleController {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 			model.addAttribute("loginUser", user);
 			model.addAttribute("studentScheduleTest", form);
 			}
-		
+
 		model.addAttribute("loginUser", getPrincipal());
-		
-		
+
+
 		return rtn;
-	
+
 		}
-	
+
 	@RequestMapping(value = { "/schedule" }, method = RequestMethod.GET)
 	public String schedule(Model model) {
 		String rtn = "/client/scheduleTest";
@@ -141,10 +141,10 @@ public class ScheduleController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		model.addAttribute("loginUser", user);
 		model.addAttribute("studentScheduleTest", form);
-		
+
 		return rtn;
 	}
 
@@ -176,7 +176,7 @@ public class ScheduleController {
 			form.setSessions(sessions);
 			model.addAttribute("loginUser", user);
 			model.addAttribute("studentScheduleTest", form);
-			
+
 			return rtn;
 
 		} catch (Exception e) {
@@ -239,10 +239,10 @@ public class ScheduleController {
 				String body = "Just-Testing222222222222222222222222!";
 
 				emailService.sendMail(from, to, subject, body);
-*/				
-				//String param = "" + currentUser.getUserid();
-				//emailService.sendEmail(1, param, "");
-				
+*/
+				String param = "" + currentUser.getUserid();
+				emailService.sendEmail(2, param, "");
+
 				msg = messageHandler.get("StudentSchedule.scheduleTest.success");
 				message.setStatus(Message.SUCCESS);
 				message.setMessage(msg);
@@ -252,7 +252,7 @@ public class ScheduleController {
 				message.setMessage(messageHandler.get("StudentSchedule.scheduleTest.error"));
 
 			}
-			
+
 			rtn = "redirect:/client/schedule/" + sessionid;
 
 		} catch (Exception e) {
@@ -265,7 +265,7 @@ public class ScheduleController {
 		attrs.addFlashAttribute("message", message);
 		attrs.addFlashAttribute("studentScheduleTest", form);
 		model.addAttribute("loginUser", getPrincipal());
-		
+
 		return rtn;
 	}
 
