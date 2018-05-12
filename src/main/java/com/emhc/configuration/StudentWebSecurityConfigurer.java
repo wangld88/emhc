@@ -38,11 +38,11 @@ public class StudentWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Autowired
 	AuthUserService studentUserService;
-	
+
 	@Autowired
 	CustomSuccessHandler customSuccessHandler;
-	
-	
+
+
    /* @Bean
     public ServiceProperties serviceProperties() {
         ServiceProperties sp = new ServiceProperties();
@@ -74,15 +74,14 @@ public class StudentWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         return new Cas20ServiceTicketValidator(env.getRequiredProperty(CAS_URL_PREFIX));
     }*/
 
-    
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-    	
+
     	try{
-    		
+
         http.authorizeRequests()
         	.antMatchers("/").permitAll()
-        	.antMatchers("/service/runlottery/**").permitAll()
         	.antMatchers("/error/**").permitAll()
         	.antMatchers("/image/**").permitAll()
         	.antMatchers("/css/**").permitAll()
@@ -108,10 +107,10 @@ public class StudentWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     	}
 		catch(Exception e){
 			e.printStackTrace();
-			
+
 		}
     }
-	
+
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
         //auth.userDetailsService(studentUserService); //un-encrypted password
@@ -124,9 +123,9 @@ public class StudentWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring()
 		.antMatchers("/i18n/**")
-		.antMatchers("/static/**");  
+		.antMatchers("/static/**");
 	}
-    
+
     @Bean
     public DaoAuthenticationProvider getAuthProvider() {
         final UserAuthenticationProvider authProvider = new UserAuthenticationProvider();
@@ -134,5 +133,5 @@ public class StudentWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         authProvider.setPasswordEncoder(new BCryptPasswordEncoder());
         return authProvider;
     }
-    
+
 }

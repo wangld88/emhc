@@ -90,7 +90,7 @@ public class BaseController {
 	public ModelAndView uncaughtExceptionHandling (Exception e, HttpServletRequest request, HttpServletResponse httpresponse) {
 
 		logger.info("General Error is caught: " + e.getMessage());
-		//e.printStackTrace();
+		e.printStackTrace();
 		//String errorMsg = "";
 		String errorDetails = "N/A";
 
@@ -104,7 +104,7 @@ public class BaseController {
         	view = "/moderator" + ERROR_VIEW;
         }
         else {
-        	view = "/student" + ERROR_VIEW;
+        	view = "/client" + ERROR_VIEW;
         }
         logger.info("view: " + view + ", URL: "+url);
 

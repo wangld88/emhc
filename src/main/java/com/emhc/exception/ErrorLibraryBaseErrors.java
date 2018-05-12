@@ -6,12 +6,12 @@ import java.util.List;
 
 public class ErrorLibraryBaseErrors {
 
-	private final static String ORGANIZATION = "Ryerson";
+	private final static String ORGANIZATION = "EMHC";
 
-	private final static String DOMAIN = "midwifery";
+	private final static String DOMAIN = "emhc";
 
 	private final static String SUBDOMAIN = "ErrorLibrary";
-	
+
 	/*
 	 * Error messages for the ErrorLibrray bootstrap errors that are not locale specific
 	 */
@@ -28,16 +28,16 @@ public class ErrorLibraryBaseErrors {
 
 	private final static String EL_ERRORCOLLECTION_NOT_AVAILABLE_MESSAGE = "Unable to instantiate {0} with class {1}. " +
 						"Class not found";
-	
+
 	private final static String EL_INST_EXCEPTION_MESSAGE = "Unable to instantiate class {0}. " +
-						"Instantiation exception"; 
-	
+						"Instantiation exception";
+
 	private final static String EL_NO_ERROR_DATA_PROVIDER_MESSAGE = "Error Data Provider is not " +
-						"configured for domain {0}"; 
-	
-	private final static String EL_IO_ERROR_MESSAGE = "I/O error reading file: {0}"; 
-		
-		
+						"configured for domain {0}";
+
+	private final static String EL_IO_ERROR_MESSAGE = "I/O error reading file: {0}";
+
+
 
 	/**
 	 * Initialization failed.
@@ -68,23 +68,23 @@ public class ErrorLibraryBaseErrors {
 	 */
 	public final static CommonErrorData el_errorcollection_not_available = createCommonErrorData(
 			13003L, (ErrorSeverity.ERROR), (ErrorCategory.SYSTEM),
-			"el_errorcollection_not_available", EL_ERRORCOLLECTION_NOT_AVAILABLE_MESSAGE, 
+			"el_errorcollection_not_available", EL_ERRORCOLLECTION_NOT_AVAILABLE_MESSAGE,
 			DOMAIN, SUBDOMAIN, (null));
-	
+
 	/**
 	 * Installation error.
 	 */
 	public final static CommonErrorData el_inst_exception = createCommonErrorData(
 			13004L, (ErrorSeverity.ERROR), (ErrorCategory.SYSTEM),
-			"el_inst_exception", EL_INST_EXCEPTION_MESSAGE, 
+			"el_inst_exception", EL_INST_EXCEPTION_MESSAGE,
 			DOMAIN, SUBDOMAIN, (null));
-	
+
 	/**
 	 * No-error-data error.
 	 */
 	public final static CommonErrorData el_no_error_data_provider = createCommonErrorData(
 			13005L, (ErrorSeverity.ERROR), (ErrorCategory.SYSTEM),
-			"el_no_error_data_provider", EL_NO_ERROR_DATA_PROVIDER_MESSAGE, 
+			"el_no_error_data_provider", EL_NO_ERROR_DATA_PROVIDER_MESSAGE,
 			DOMAIN, SUBDOMAIN, (null));
 
 	/**
@@ -92,10 +92,10 @@ public class ErrorLibraryBaseErrors {
 	 */
 	public final static CommonErrorData el_io_error = createCommonErrorData(
 			13006L, (ErrorSeverity.ERROR), (ErrorCategory.SYSTEM),
-			"el_io_error", EL_IO_ERROR_MESSAGE, 
+			"el_io_error", EL_IO_ERROR_MESSAGE,
 			DOMAIN, SUBDOMAIN, (null));
 
-	
+
 	private static CommonErrorData createCommonErrorData(long errorId,
 			ErrorSeverity severity, ErrorCategory category, String errorName,
 			String message, String domain, String subDomain, String errorGroup) {
@@ -111,10 +111,10 @@ public class ErrorLibraryBaseErrors {
 		errorData.setOrganization(ORGANIZATION);
 		return errorData;
 	}
-	
+
 	/**
 	 * Insert the parameters into the errer data.
-	 * @param errorData contains the message as the template 
+	 * @param errorData contains the message as the template
 	 * @param params parameters to be added to the message
 	 */
 	public static void buildBootstrapErrorMessage(CommonErrorData errorData, Object[] params){
@@ -150,7 +150,7 @@ public class ErrorLibraryBaseErrors {
 		CommonErrorData firstError = errorDataList.get(0);
 		return firstError.getMessage();
 	}
-	
+
 	/**
 	 * Creates a new error message containing the error data.
 	 * @param errorData the error data
@@ -159,9 +159,9 @@ public class ErrorLibraryBaseErrors {
 	public static ErrorMessage getNewErrorMessage(CommonErrorData errorData){
 		List<CommonErrorData> errorDataList = new ArrayList<CommonErrorData>();
 		errorDataList.add(errorData);
-		return getNewErrorMessage(errorDataList); 
+		return getNewErrorMessage(errorDataList);
 	}
-	
+
 	/**
 	 * Creates a new error message containing the error data.
 	 * @param errorData a list of error data
@@ -170,7 +170,7 @@ public class ErrorLibraryBaseErrors {
 	public static ErrorMessage getNewErrorMessage(List<CommonErrorData> errorData){
 		ErrorMessage errorMessage = new ErrorMessage();
 		errorMessage.getError().addAll(errorData);
-		
+
 		return errorMessage;
 	}
 
