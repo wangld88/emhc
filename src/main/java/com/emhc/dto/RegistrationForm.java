@@ -185,15 +185,15 @@ public class RegistrationForm {
 				sb.append("<TR>");
 				sb.append("<TD>" + questions.get(i).getName() + "</TD>");
 				if(ans == null) {
-					textSB.append("|   X   |      |  \n");
-					sb.append("<TD>X</TD>");
+					textSB.append("|       |   X   |  \n");
 					sb.append("<TD></TD>");
+					sb.append("<TD>X</TD>");
 					sb.append("<TD></TD>");
 				} else {
-					textSB.append("|      |   X   |");
+					textSB.append("|   X   |       |");
 					textSB.append(ans + " \n");
-					sb.append("<TD></TD>");
 					sb.append("<TD>X</TD>");
+					sb.append("<TD></TD>");
 					sb.append("<TD>" + ans + "</TD>");
 				}
 				sb.append("</TR>");
