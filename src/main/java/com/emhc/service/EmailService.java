@@ -195,9 +195,14 @@ public class EmailService {
 			MimeMessageHelper helper = new MimeMessageHelper(msg, true, "UTF-8");
 			logger.info("Email sent From: " + tpl.getSender());
 			helper.addTo(recipient);
-			/*if(tpl.getBcc() != null) {
+
+			if(tpl.getCc() != null) {
+				helper.addCc(tpl.getCc());
+			}
+
+			if(tpl.getBcc() != null) {
 				helper.addBcc(tpl.getBcc());
-			}*/
+			}
 			helper.setSubject(subject);
 			helper.setFrom(tpl.getSender());
 			helper.setReplyTo(tpl.getSender());

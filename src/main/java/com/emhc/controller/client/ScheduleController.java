@@ -44,7 +44,7 @@ import com.emhc.validator.ScheduleFormValidator;
 import com.emhc.validator.UserDTOValidator;
 
 /**
- * 
+ *
  * @author dong.liu
  *
  */
@@ -241,7 +241,7 @@ public class ScheduleController {
 				emailService.sendMail(from, to, subject, body);
 */
 				String param = "" + currentUser.getUserid();
-				emailService.sendEmail(1, param, "");
+				emailService.sendEmail(2, param, "");
 
 				msg = messageHandler.get("StudentSchedule.scheduleTest.success");
 				message.setStatus(Message.SUCCESS);
