@@ -1,11 +1,27 @@
-<html layout:decorator="client/template/layout">
-
+<html layout:decorator="client/template/layout"
+		xmlns:th="http://www.thymeleaf.org">
+	
+<head>
+	<script type="text/javascript">
+	
+	function submitdisable(){		
+		$("#scheduletestsubmit").text("submitting...");  
+		   $("#scheduletestsubmit").attr("disabled","disabled");  
+		   //alert("pause");
+		   //$("#scheduletestsubmit").text("submit"); 
+		   setTimeout("$('#scheduletestsubmit').text('submit')",1000);
+		  // setTimeout("$('#scheduletestsubmit').removeAttr('disabled')",1000);
+		   $("#scheduletestform").submit();		    	   
+	}
+		   	</script>
+	</head>
+	
 	<div layout:fragment="content">
 	
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
 
- 				<form autocomplete="off" th:object="${studentScheduleTest}" th:action="@{/client/schedule}" onsubmit="return validateRadioButtons()" method="post"  class="form-horizontal" role="form">
+ 				<form autocomplete="off" th:object="${studentScheduleTest}" id="scheduletestform" th:action="@{/client/schedule}" onsubmit="return validateRadioButtons()" method="post"  class="form-horizontal" role="form">
  				<h3>Make a Schedule</h3><hr>
 				<h4>Please pick up the time slot you want</h4>
 				<h6>Student from University of Toronto will have the mask test at Toronto </h6>
@@ -38,7 +54,7 @@
  
  				<div class="form-group" th:if="${studentScheduleTest.schedules!=null}">
 					<div class="col-sm-9">
- 						<button class="btn btn-primary btn-block" type="Submit">Submit</button>
+ 						<button class="btn btn-primary btn-block" type="Submit" id="scheduletestsubmit" value="Submit" onclick="submitdisable();">Submit</button>
 					</div>
 				</div>		
 
@@ -57,6 +73,11 @@
 	 			form.submit();
 			}
 			function validateRadioButtons(){ 
+		       	var sid = document.getElementById("sessionid").value;
+		        if (sid==0){
+		        	alert('Please select session first');
+		        	return false;
+		        } 
 		        //Make groups
 		        var names = []
 		        $('input:radio').each(function () {

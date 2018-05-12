@@ -217,7 +217,7 @@ public class EmailService {
 				} else {
 					helper.setText(textTemp);
 				}
-				helper.setText(textTemp);
+				//helper.setText(textTemp);
 			}
 
 		} catch (ClassNotFoundException ce) {

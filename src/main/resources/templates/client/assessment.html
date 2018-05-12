@@ -66,6 +66,13 @@
 		$(""+id+"").attr("disabled","disabled");
 	}
 	
+	function submitdisable(){
+		   $("#assessmentsubmit").text("submitting...");  
+		   $("#assessmentsubmit").attr("disabled","disabled");  
+		   //alert("pause");
+		    $("#assessform").submit();
+		   	}
+	
 	</script>
 
 </head>
@@ -73,7 +80,7 @@
 	<div layout:fragment="content">
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
- 				  <form autocomplete="off" th:action="@{/client/assessment}"
+ 				  <form autocomplete="off" id="assessform" th:action="@{/client/assessment}"
 					th:object="${answerDTO}" method="post" class="form-horizontal"
 					role="form">
  					
@@ -148,7 +155,7 @@
 						<input type="radio" name="button14" onclick="disable('text14')" value="No" th:checked="${answerDTO.button14 == 'No'}" >No&nbsp;&nbsp;
 						<input type="text" th:field=*{answer14} name="mfi_nam9" class="text required" id="text14" th:disabled="${answerDTO.button14 == 'No'}"  style="height:36px;width:300px;" /><br>
  						<br>										
-						<button type="submit" class="btn btn-primary btn-block">Submit</button>
+						<button type="submit" class="btn btn-primary btn-block" id="assessmentsubmit" value="Submit" onclick="submitdisable();">Submit</button>
 						</div>
 						
 					</div>

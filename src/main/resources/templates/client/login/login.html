@@ -15,10 +15,25 @@
 			function loadOrgs(elmt) {
 				form = document.getElementById("orgForm");
 				form.action=form.action+"/"+elmt.value;
-
 				form.submit();
 			}
 
+			function registerdisable(){
+				   $("#registersubmit").text("registering...");
+				   $("#registersubmit").attr("disabled","disabled");  
+				   $("#registerform").submit();
+				   //alert("pause");
+				   //return true;
+				   	}
+			
+			function logindisable(){
+				   $("#loginsubmit").text("logining...");  
+				   $("#loginsubmit").attr("disabled","disabled");  
+				   $("#loginFor").submit();
+				   //alert("pause");
+				   //return true;
+				   	}
+						
 			function setPage() {
 				var stag = $("#stag").val();
 				if(stag=="1"){
@@ -68,7 +83,7 @@
 				<div id="signup">
 					<!-- <h1>Sign Up for Free</h1> -->
 
-					<form th:object="${userDTO}" th:action="@{/client/registration}" method="post" role="form">
+					<form th:object="${userDTO}" id="registerform" th:action="@{/client/registration}" method="post" role="form">
 
 						<div th:if="${message != null and #strings.length(message.message) != 0}" th:class="${message.status}">
 							<font style="font-size: 12px;"><span th:utext="${message.message}" th:remove="tag" /></font>
@@ -184,7 +199,7 @@
 							</div>
 
 						</div>
-						<button type="submit" class="button button-block" value="" th:if="${userDTO.programs!=null}" >Register User</button>
+						<button type="submit" class="button button-block" id="registersubmit" value="" th:if="${userDTO.programs!=null}" onclick="registerdisable();">Register User</button>
 
 					</form>
 					<form id="orgForm" th:action="@{/client/registration}" method="get">
@@ -221,7 +236,7 @@
 						</form>
  -->
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-						<button class="button button-block"/><span th:text="#{student.login.login}"></span></button>
+						<button class="button button-block" id="loginsubmit"><span th:text="#{student.login.login}" onclick="logindisable();"></span></button>
 
 					</form>
 
@@ -281,7 +296,7 @@
 		    ga('create', 'UA-55234356-4', 'auto');
 		    ga('send', 'pageview');
 		    setPage();
-		</script>
+		    </script>
 
 	</body>
 </html>
